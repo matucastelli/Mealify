@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header id="header-principal">
+            <img src="logo.png" alt="logo" id="logo">
+            <button id="btnMenu">
+                <span class="barra"></span>
+                <span class="barra"></span>
+                <span class="barra"></span>
+            </button>
+            
+            <nav id="nav-principal" class="nav-oculto ">
+                <button class="tab" data-seccion="buscar">Buscar</button>
+                <button class="tab" data-seccion="favoritos">Favoritos</button>
+                <button class="tab" data-seccion="planificador">Planificador</button>
+                <button class="tab" data-seccion="compras">Lista de compras</button>
+            </nav>
+        </header>
+        <section id="buscar" class="seccion">
+                <input type="text" id="buscador" placeholder="Buscar receta...">
+                <button id="btnBuscar">Buscar</button>
+                <div id="resultados"></div>
+        </section>
+
+        <section id="favoritos" class="seccion">
+            <div id="listaFavoritos"></div>
+        </section>
+
+        <section id="planificador" class="seccion">
+            <div class="dia" data-dia="lunes">Lunes</div>
+            <div class="dia" data-dia="martes">Martes</div>
+            <div class="dia" data-dia="miercoles">Miércoles</div>
+            <div class="dia" data-dia="jueves">Jueves</div>
+            <div class="dia" data-dia="viernes">Viernes</div>
+            <div class="dia" data-dia="sabado">Sábado</div>
+            <div class="dia" data-dia="domingo">Domingo</div>
+        </section>
+
+        <section id="compras" class="seccion">
+            <button id="btnGenerarLista">Generar lista de compras</button>
+            <ul id="listaCompras"></ul>
+        </section>
+    </div>
+    <script type="module" src="JS/main.js"></script>
+</body>
+</html>
