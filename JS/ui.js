@@ -1,4 +1,5 @@
 const resultados = document.querySelector("#resultados");
+const modalDetalle = document.querySelector("#modal-detalle");
 
 export function renderRecetas(recetas, favoritos) {
     resultados.innerHTML = '';
@@ -9,12 +10,42 @@ export function renderRecetas(recetas, favoritos) {
         const tarjetaHTML = `
             <div class="receta-card" data-id="${receta.idMeal}">
                 <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
-                <p>${receta.strMeal}</p>
-                <p>"${receta.strCategory}"</p>
+                <div class="receta-info">
+                    <p>${receta.strMeal}</p>
+                    <p>"${receta.strCategory}"</p>
+                </div>
                 <button class="btn-favorito ${claseActiva}">★</button>
-                <button class="btn-ver-receta">X</button>
+                <button class="btn-ver-receta">Ver receta</button>
             </div>`
         html += tarjetaHTML;
     });
     resultados.innerHTML = html;
+}
+
+export function renderDetalleReceta(receta) {
+    const infoHTML = `
+        <div class="receta-detallada-wrapper">
+            <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
+            <p class="receta-detallada-titulo">${receta.strMeal}</p>
+            <span class="receta-detallada-categoria">${receta.strCategory}</span>
+        </div>`;
+
+    let ingredientesHTML = '';
+    for (let i = 1; i <= 20; i++) {
+        const ingrediente = receta[`strIngredient${i}`];
+        const medida = receta[`strMeasure${i}`];
+        if (ingrediente && ingrediente.trim() !== "") {
+            ingredientesHTML += `<li>${medida} - ${ingrediente}</li>`;
+        }
+    }
+
+    const instruccionesHTML = `<p>${receta.strInstructions}</p>`;
+
+    const htmlFinal = infoHTML
+        + `<h3 class="modal-subtitulo">Ingredientes</h3>`
+        + `<ul>${ingredientesHTML}</ul>`
+        + `<h3 class="modal-subtitulo">Instrucciones</h3>`
+        + instruccionesHTML;
+
+    modalDetalle.innerHTML = htmlFinal;
 }

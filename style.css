@@ -5,8 +5,9 @@
 }
 
 :root {
-    --color-primario: #3a7d44;
-    --color-secundario: #D96C2C;
+    --color-primario: #D96C2C;
+    --color-secundario: #f4f4f4;
+    --color-terciario: #ccc;
     --color-texto: #222;
     --color-fondo: #fff;
     --espaciado-chico: 0.5rem;
@@ -22,6 +23,8 @@ body {
     background-color: var(--color-fondo);
 }
 
+/*-------- Seccion Header --------*/
+
 #header-principal {
     width: 100%;
     display: flex;
@@ -35,7 +38,7 @@ body {
     width: 100%;
 }
 
-#nav-principal:not(.nav-oculto) {
+#nav-principal:not(.oculto) {
     display: flex;
     flex-direction: column;
     gap: var(--espaciado-chico);
@@ -58,18 +61,20 @@ body {
 .barra {
     width: 25px;
     height: 4px;
-    background-color: var(--color-secundario);
+    background-color: var(--color-primario);
     border-radius: var(--radio-borde);
 }
 
-.nav-oculto {
-    display: none;
+.oculto {
+    display: none; 
 }
 
 #logo {
     height: 40px;
     width: auto;
 }
+
+/*-------- Queries Header --------*/
 
 @media (min-width: 768px) {
     #header-principal {
@@ -88,3 +93,182 @@ body {
         gap: var(--espaciado-medio);
     }
 }
+
+/*-------- Ends Header --------*/
+
+/*-------- Seccion Tarjetas --------*/
+
+#resultados {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaciado-chico);
+}
+
+.receta-card {
+    display: flex;
+    margin-top: var(--espaciado-chico);
+    flex-direction: row;
+    align-items: center;
+    gap: var(--espaciado-chico);
+    padding: var(--espaciado-medio);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-secundario);
+    border-radius: var(--radio-borde);
+    margin-left: var(--espaciado-chico);
+    margin-right: var(--espaciado-chico);;
+}
+
+.receta-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--radio-borde);
+}
+
+
+.receta-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.receta-info p:first-child {
+    font-weight: 700;
+}
+
+.receta-info p:last-child {
+    opacity: 0.7;
+    color: var(--color-texto);
+}
+
+.btn-favorito {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #ccc; 
+}
+
+.btn-favorito.activo {
+    color: var(--color-primario); 
+}
+
+.btn-ver-receta {
+    padding: var(--espaciado-chico);
+    background-color: var(--color-primario);
+    color: var(--color-secundario);
+    border-radius: var(--radio-borde);
+    border: none;
+    cursor: pointer;
+}
+
+#modal-receta {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+#modal-receta.oculto {
+    display: none;
+}
+
+.modal-contenido {
+    background-color: var(--color-fondo);
+    padding: var(--espaciado-grande);
+    border-radius: var(--radio-borde);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#btnCerrarModal {
+    position: absolute;
+    font-size: 20px;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--color-primario);
+    cursor: pointer;
+    font-weight: 900;
+}
+
+#btnCerrarModal:hover {
+    opacity: 0.8;
+}
+
+.receta-detallada-wrapper img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--radio-borde);
+}
+
+.receta-detallada-wrapper .receta-detallada-titulo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: var(--espaciado-chico);
+}
+
+.receta-detallada-wrapper .receta-detallada-categoria {
+    display: inline-block;
+    background-color: var(--color-secundario);
+    color: var(--color-texto);
+    font-size: 0.8rem;
+    padding: 2px 10px;
+    border-radius: var(--radio-borde);
+    margin-top: var(--espaciado-chico);
+}
+
+.modal-subtitulo {
+    font-size: 1.1rem;
+    margin-top: var(--espaciado-grande);
+    margin-bottom: var(--espaciado-chico);
+}
+
+.modal-contenido ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.modal-contenido li {
+    margin-bottom: var(--espaciado-chico);
+    line-height: 1.4;
+}
+
+.modal-contenido p {
+    line-height: 1.6;
+}
+
+/*-------- Queries Tarjetas --------*/
+@media (min-width: 768px) {
+    #resultados {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: var(--espaciado-chico);
+        margin-left: var(--espaciado-grande);
+        margin-right: var(--espaciado-grande);
+    }
+    .receta-card {
+        flex-direction: column;
+    }
+    .receta-card img {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radio-borde);
+    }
+}
+
+/*-------- Tarjetas ENDS --------*/

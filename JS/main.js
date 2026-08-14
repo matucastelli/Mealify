@@ -1,10 +1,11 @@
-import { buscarRecetas } from "./api.js";
-import { renderRecetas } from "./ui.js";
+import { buscarRecetas, obtenerDetalleReceta} from "./api.js";
+import { renderRecetas, renderDetalleReceta } from "./ui.js";
 import { toggleFavorito, getFavoritos } from "./storage.js";
 
 const btnBuscar = document.querySelector("#btnBuscar");
 const inputBuscador = document.querySelector("#buscador");
 const resultados = document.querySelector("#resultados");
+const modalReceta = document.querySelector("#modal-receta");
 
 let ultimaBusqueda = [];
 
@@ -24,3 +25,20 @@ resultados.addEventListener("click", (e) => {
         renderRecetas(ultimaBusqueda, getFavoritos())
     }
 })
+
+resultados.addEventListener("click", async (e) => {
+    const botonVer = e.target.closest('.btn-ver-receta');
+    if (botonVer) {
+        const tarjeta = botonVer.closest('.receta-card');
+        const id = tarjeta.dataset.id;
+        const recetaDetalle = await obtenerDetalleReceta(id);
+        renderDetalleReceta(recetaDetalle);
+        modalReceta.classList.remove("oculto");
+    }
+})    
+
+const btnCerrarModal = document.querySelector("#btnCerrarModal");
+
+btnCerrarModal.addEventListener("click", () => {
+    modalReceta.classList.add("oculto");
+});

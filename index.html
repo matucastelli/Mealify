@@ -16,7 +16,7 @@
                 <span class="barra"></span>
             </button>
             
-            <nav id="nav-principal" class="nav-oculto ">
+            <nav id="nav-principal" class="oculto ">
                 <button class="tab" data-seccion="buscar">Buscar</button>
                 <button class="tab" data-seccion="favoritos">Favoritos</button>
                 <button class="tab" data-seccion="planificador">Planificador</button>
@@ -47,6 +47,12 @@
             <button id="btnGenerarLista">Generar lista de compras</button>
             <ul id="listaCompras"></ul>
         </section>
+    </div>
+    <div id="modal-receta" class="oculto">
+        <div class="modal-contenido">
+            <button id="btnCerrarModal">×</button>
+            <div id="modal-detalle"></div>
+        </div>
     </div>
     <script type="module" src="JS/main.js"></script>
 </body>
