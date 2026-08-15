@@ -64,12 +64,13 @@ export async function renderPlanSemanal(plan) {
             for (const id of idsRecetas) {
                 const receta = await obtenerDetalleReceta(id);
                 const tarjetaHTML = `
-                <div class="receta-plan-card">
+                <div class="receta-plan-card" data-id="${id}">
                     <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
                     <div>
                         <p>${receta.strMeal}</p>
                         <span class="receta-detallada-categoria">${receta.strCategory}</span>
                     </div>
+                    <button class="btn-eliminar-plan" data-dia="${dia}" data-franja="${franja}">×</button>
                 </div>`
             contenedor.innerHTML += tarjetaHTML;
             }

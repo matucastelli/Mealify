@@ -38,7 +38,20 @@ export function getPlanSemanal() {
 export function asignarReceta(idReceta, dia, franja) {
     const planSemanal = getPlanSemanal();
     const planes = planSemanal[dia][franja];
-    const plan = [...planes, idReceta];
-    planSemanal[dia][franja] = plan;
-    localStorage.setItem("plan", JSON.stringify(planSemanal))
+
+    if (planes.includes(idReceta)) {
+        return false;
+    } else {
+        const plan = [...planes, idReceta];
+        planSemanal[dia][franja] = plan;
+        localStorage.setItem("plan", JSON.stringify(planSemanal));
+        return true;
+    }
+}
+
+export function eliminarReceta(id, dia, franja) {
+    const plan = getPlanSemanal();
+    let planEliminarReceta = plan[dia][franja].filter(idGuardado => idGuardado !== id);
+    plan[dia][franja] = planEliminarReceta;
+    localStorage.setItem("plan", JSON.stringify(plan));
 }

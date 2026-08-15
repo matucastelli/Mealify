@@ -204,7 +204,7 @@ h1 {
     position: relative;
 }
 
-#btnCerrarModal, #btnCerrarAsignar {
+#btnCerrarModal, #btnCerrarAsignar, .btn-eliminar-plan {
     position: absolute;
     font-size: 20px;
     top: 5px;
@@ -216,7 +216,7 @@ h1 {
     font-weight: 900;
 }
 
-#btnCerrarModal:hover, #btnCerrarAsignar:hover, #btnConfirmarAsignar:hover{
+#btnCerrarModal:hover, #btnCerrarAsignar:hover, #btnConfirmarAsignar:hover, .btn-eliminar-plan:hover{
     opacity: 0.8;
 }
 
@@ -344,12 +344,14 @@ select:last-of-type {
 }
 
 .receta-plan-card {
+    position: relative;
     display: flex;
     align-items: center;
     gap: var(--espaciado-chico);
     background-color: var(--color-fondo);
     border-radius: var(--radio-borde);
     padding: var(--espaciado-chico);
+    padding-right: var(--espaciado-medio);
     font-size: 0.8rem;
 }
 

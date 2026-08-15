@@ -1,6 +1,6 @@
 import { buscarRecetas, obtenerDetalleReceta} from "./api.js";
 import { renderRecetas, renderDetalleReceta, renderPlanSemanal } from "./ui.js";
-import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta } from "./storage.js";
+import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta } from "./storage.js";
 import { mostrarSeccion } from "./tabs.js";
 
 const btnBuscar = document.querySelector("#btnBuscar");
@@ -15,9 +15,16 @@ const selectDia = document.querySelector("#selectDia");
 const selectFranja = document.querySelector("#selectFranja");
 const btnMenu = document.querySelector("#btnMenu");
 const navPrincipal = document.querySelector("#nav-principal");
+const planificador = document.querySelector("#planificador");
 
 let ultimaBusqueda = [];
 let recetaParaAsignar = null;
+
+async function abrirDetalleReceta(id) {
+    const recetaDetalle = await obtenerDetalleReceta(id);
+    renderDetalleReceta(recetaDetalle);
+    modalReceta.classList.remove("oculto");
+}
 
 resultados.addEventListener("click", async (e) => {
     const botonFavorito = e.target.closest('.btn-favorito');
@@ -33,9 +40,7 @@ resultados.addEventListener("click", async (e) => {
     } else if (botonVer) {
         const tarjeta = botonVer.closest('.receta-card');
         const id = tarjeta.dataset.id;
-        const recetaDetalle = await obtenerDetalleReceta(id);
-        renderDetalleReceta(recetaDetalle);
-        modalReceta.classList.remove("oculto");
+        await abrirDetalleReceta(id);
     } else if (botonAgregar) {
         const tarjeta = botonAgregar.closest('.receta-card');
         const id = tarjeta.dataset.id;
@@ -53,7 +58,13 @@ btnBuscar.addEventListener('click', async () => {
 btnConfirmarAsignar.addEventListener("click", async () => {
     const dia = selectDia.value;
     const franja = selectFranja.value;
-    asignarReceta(recetaParaAsignar, dia, franja)
+    const seAsigno = asignarReceta(recetaParaAsignar, dia, franja)
+
+    if (!seAsigno) {
+        alert("Esa receta ya está asignada a este día y comida.");
+        return
+    }
+
     await renderPlanSemanal(getPlanSemanal());
     modalAsignar.classList.add("oculto");
 })
@@ -75,6 +86,22 @@ navPrincipal.addEventListener("click", (e) => {
     if (boton) {
         const seccion = boton.dataset.seccion;
         mostrarSeccion(seccion);
+    }
+})
+
+planificador.addEventListener("click", async (e) => {
+    const tarjeta = e.target.closest('.receta-plan-card');
+    const botonEliminar = e.target.closest('.btn-eliminar-plan')
+
+    if (botonEliminar) {
+        const id = tarjeta.dataset.id;
+        const dia = botonEliminar.dataset.dia;
+        const franja = botonEliminar.dataset.franja;
+        await eliminarReceta(id, dia, franja);
+        renderPlanSemanal(getPlanSemanal());
+    } else if (tarjeta) {
+        const id = tarjeta.dataset.id;
+        await abrirDetalleReceta(id);
     }
 })
 
