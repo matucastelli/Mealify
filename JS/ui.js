@@ -3,8 +3,8 @@ import { obtenerDetalleReceta } from "./api.js";
 const resultados = document.querySelector("#resultados");
 const modalDetalle = document.querySelector("#modal-detalle");
 
-export function renderRecetas(recetas, favoritos) {
-    resultados.innerHTML = '';
+export function renderRecetas(recetas, favoritos, contenedor) {
+    contenedor.innerHTML = '';
     let html = '';
     recetas.forEach(receta => {
         const esFavorito = favoritos.some(fav => fav.idMeal === receta.idMeal);
@@ -22,7 +22,7 @@ export function renderRecetas(recetas, favoritos) {
             </div>`
         html += tarjetaHTML;
     });
-    resultados.innerHTML = html;
+    contenedor.innerHTML = html;
 }
 
 export function renderDetalleReceta(receta) {

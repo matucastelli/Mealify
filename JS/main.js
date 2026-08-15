@@ -3,6 +3,7 @@ import { renderRecetas, renderDetalleReceta, renderPlanSemanal } from "./ui.js";
 import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta } from "./storage.js";
 import { mostrarSeccion } from "./tabs.js";
 
+
 const btnBuscar = document.querySelector("#btnBuscar");
 const inputBuscador = document.querySelector("#buscador");
 const resultados = document.querySelector("#resultados");
@@ -16,6 +17,7 @@ const selectFranja = document.querySelector("#selectFranja");
 const btnMenu = document.querySelector("#btnMenu");
 const navPrincipal = document.querySelector("#nav-principal");
 const planificador = document.querySelector("#planificador");
+const listaFavoritos = document.querySelector("#listaFavoritos");
 
 let ultimaBusqueda = [];
 let recetaParaAsignar = null;
@@ -36,7 +38,7 @@ resultados.addEventListener("click", async (e) => {
         const idDeLaReceta = tarjeta.dataset.id;
         const recetaEncontrada = ultimaBusqueda.find(receta => receta.idMeal === idDeLaReceta);
         toggleFavorito(recetaEncontrada);
-        renderRecetas(ultimaBusqueda, getFavoritos());
+        renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
     } else if (botonVer) {
         const tarjeta = botonVer.closest('.receta-card');
         const id = tarjeta.dataset.id;
@@ -52,7 +54,7 @@ resultados.addEventListener("click", async (e) => {
 btnBuscar.addEventListener('click', async () => {
     const valor = inputBuscador.value;
     ultimaBusqueda = await buscarRecetas(valor);
-    renderRecetas(ultimaBusqueda, getFavoritos());
+    renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
 })
 
 btnConfirmarAsignar.addEventListener("click", async () => {
@@ -86,6 +88,9 @@ navPrincipal.addEventListener("click", (e) => {
     if (boton) {
         const seccion = boton.dataset.seccion;
         mostrarSeccion(seccion);
+        if ( seccion === 'favoritos') {
+            renderRecetas(getFavoritos(), getFavoritos(), listaFavoritos);
+        }
     }
 })
 
@@ -97,7 +102,7 @@ planificador.addEventListener("click", async (e) => {
         const id = tarjeta.dataset.id;
         const dia = botonEliminar.dataset.dia;
         const franja = botonEliminar.dataset.franja;
-        await eliminarReceta(id, dia, franja);
+        eliminarReceta(id, dia, franja);
         renderPlanSemanal(getPlanSemanal());
     } else if (tarjeta) {
         const id = tarjeta.dataset.id;
