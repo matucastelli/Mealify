@@ -1,3 +1,5 @@
+import { obtenerDetalleReceta } from "./api.js";
+
 const resultados = document.querySelector("#resultados");
 const modalDetalle = document.querySelector("#modal-detalle");
 
@@ -16,6 +18,7 @@ export function renderRecetas(recetas, favoritos) {
                 </div>
                 <button class="btn-favorito ${claseActiva}">★</button>
                 <button class="btn-ver-receta">Ver receta</button>
+                <button class="btn-agregar-plan">Agregar al plan</button>
             </div>`
         html += tarjetaHTML;
     });
@@ -48,4 +51,28 @@ export function renderDetalleReceta(receta) {
         + instruccionesHTML;
 
     modalDetalle.innerHTML = htmlFinal;
+}
+
+export async function renderPlanSemanal(plan) {
+    const dias = Object.keys(plan);
+    for (const dia of dias) {
+        const franjas = Object.keys(plan[dia]);
+        for (const franja of franjas) {
+            const idsRecetas = plan[dia][franja];
+            const contenedor = document.querySelector(`.dia[data-dia="${dia}"] .franja[data-franja="${franja}"] .franja-recetas`);
+            contenedor.innerHTML = '';
+            for (const id of idsRecetas) {
+                const receta = await obtenerDetalleReceta(id);
+                const tarjetaHTML = `
+                <div class="receta-plan-card">
+                    <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
+                    <div>
+                        <p>${receta.strMeal}</p>
+                        <span class="receta-detallada-categoria">${receta.strCategory}</span>
+                    </div>
+                </div>`
+            contenedor.innerHTML += tarjetaHTML;
+            }
+        }
+    }
 }

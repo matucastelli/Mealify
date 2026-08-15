@@ -10,6 +10,7 @@
     <div id="app">
         <header id="header-principal">
             <img src="logo.png" alt="logo" id="logo">
+            <h1>Mealify</h1>
             <button id="btnMenu">
                 <span class="barra"></span>
                 <span class="barra"></span>
@@ -33,14 +34,112 @@
             <div id="listaFavoritos"></div>
         </section>
 
-        <section id="planificador" class="seccion">
-            <div class="dia" data-dia="lunes">Lunes</div>
-            <div class="dia" data-dia="martes">Martes</div>
-            <div class="dia" data-dia="miercoles">Miércoles</div>
-            <div class="dia" data-dia="jueves">Jueves</div>
-            <div class="dia" data-dia="viernes">Viernes</div>
-            <div class="dia" data-dia="sabado">Sábado</div>
-            <div class="dia" data-dia="domingo">Domingo</div>
+        <section id="planificador" class="seccion oculto">
+            <div class="dia" data-dia="lunes">
+                <h3>Lunes</h3>
+                <div class="franja" data-franja="desayuno">
+                    <p class="franja-titulo">Desayuno</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="almuerzo">
+                    <p class="franja-titulo">Almuerzo</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="cena">
+                    <p class="franja-titulo">Cena</p>
+                    <div class="franja-recetas"></div>
+                </div>
+            </div>
+            <div class="dia" data-dia="martes">
+                <h3>Martes</h3>
+                <div class="franja" data-franja="desayuno">
+                    <p class="franja-titulo">Desayuno</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="almuerzo">
+                    <p class="franja-titulo">Almuerzo</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="cena">
+                    <p class="franja-titulo">Cena</p>
+                    <div class="franja-recetas"></div>
+                </div>
+            </div>
+            <div class="dia" data-dia="miercoles">
+                <h3>Miercoles</h3>
+                <div class="franja" data-franja="desayuno">
+                    <p class="franja-titulo">Desayuno</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="almuerzo">
+                    <p class="franja-titulo">Almuerzo</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="cena">
+                    <p class="franja-titulo">Cena</p>
+                    <div class="franja-recetas"></div>
+                </div>
+            </div>
+            <div class="dia" data-dia="jueves">
+                <h3>Jueves</h3>
+                <div class="franja" data-franja="desayuno">
+                    <p class="franja-titulo">Desayuno</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="almuerzo">
+                    <p class="franja-titulo">Almuerzo</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="cena">
+                    <p class="franja-titulo">Cena</p>
+                    <div class="franja-recetas"></div>
+                </div>
+            </div>
+            <div class="dia" data-dia="viernes">
+                <h3>Viernes</h3>
+                <div class="franja" data-franja="desayuno">
+                    <p class="franja-titulo">Desayuno</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="almuerzo">
+                    <p class="franja-titulo">Almuerzo</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="cena">
+                    <p class="franja-titulo">Cena</p>
+                    <div class="franja-recetas"></div>
+                </div>
+            </div>
+            <div class="dia" data-dia="sabado">
+                <h3>Sabado</h3>
+                <div class="franja" data-franja="desayuno">
+                    <p class="franja-titulo">Desayuno</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="almuerzo">
+                    <p class="franja-titulo">Almuerzo</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="cena">
+                    <p class="franja-titulo">Cena</p>
+                    <div class="franja-recetas"></div>
+                </div>
+            </div>
+            <div class="dia" data-dia="domingo">
+                <h3>Domingo</h3>
+                <div class="franja" data-franja="desayuno">
+                    <p class="franja-titulo">Desayuno</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="almuerzo">
+                    <p class="franja-titulo">Almuerzo</p>
+                    <div class="franja-recetas"></div>
+                </div>
+                <div class="franja" data-franja="cena">
+                    <p class="franja-titulo">Cena</p>
+                    <div class="franja-recetas"></div>
+                </div>
+            </div>
         </section>
 
         <section id="compras" class="seccion">
@@ -52,6 +151,29 @@
         <div class="modal-contenido">
             <button id="btnCerrarModal">×</button>
             <div id="modal-detalle"></div>
+        </div>
+    </div>
+    <div id="modal-asignar" class="oculto">
+        <div class="modal-contenido">
+            <button id="btnCerrarAsignar">×</button>
+            <h3>Agregar al plan</h3>
+            <label for="selectDia">Día</label>
+            <select id="selectDia">
+                <option value="lunes">Lunes</option>
+                <option value="martes">Martes</option>
+                <option value="miercoles">Miércoles</option>
+                <option value="jueves">Jueves</option>
+                <option value="viernes">Viernes</option>
+                <option value="sabado">Sábado</option>
+                <option value="domingo">Domingo</option>
+            </select>
+            <label for="selectFranja">Comida</label>
+            <select id="selectFranja">
+                <option value="desayuno">Desayuno</option>
+                <option value="almuerzo">Almuerzo</option>
+                <option value="cena">Cena</option>
+            </select>
+            <button id="btnConfirmarAsignar">Confirmar</button>
         </div>
     </div>
     <script type="module" src="JS/main.js"></script>

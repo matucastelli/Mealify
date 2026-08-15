@@ -20,3 +20,25 @@ export function toggleFavorito(receta) {
 
     localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
 }
+
+export function getPlanSemanal() {
+    const datosGuardados = localStorage.getItem("plan");
+    if (datosGuardados == null){
+    const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
+    const planVacio = {};
+    dias.forEach(dia => {
+        planVacio[dia] = { desayuno: [], almuerzo: [], cena: [] };
+    });
+    return planVacio;
+    } else {
+        return JSON.parse(datosGuardados);
+    }
+}
+
+export function asignarReceta(idReceta, dia, franja) {
+    const planSemanal = getPlanSemanal();
+    const planes = planSemanal[dia][franja];
+    const plan = [...planes, idReceta];
+    planSemanal[dia][franja] = plan;
+    localStorage.setItem("plan", JSON.stringify(planSemanal))
+}
