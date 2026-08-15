@@ -1,6 +1,6 @@
 import { buscarRecetas, obtenerDetalleReceta} from "./api.js";
 import { renderRecetas, renderDetalleReceta, renderPlanSemanal } from "./ui.js";
-import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta } from "./storage.js";
+import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta, moverReceta } from "./storage.js";
 import { mostrarSeccion } from "./tabs.js";
 
 
@@ -21,6 +21,7 @@ const listaFavoritos = document.querySelector("#listaFavoritos");
 
 let ultimaBusqueda = [];
 let recetaParaAsignar = null;
+let recetaArrastrada = null;
 
 async function abrirDetalleReceta(id) {
     const recetaDetalle = await obtenerDetalleReceta(id);
@@ -107,6 +108,41 @@ planificador.addEventListener("click", async (e) => {
     } else if (tarjeta) {
         const id = tarjeta.dataset.id;
         await abrirDetalleReceta(id);
+    }
+})
+
+planificador.addEventListener("dragstart", (e) => {
+    const tarjeta = e.target.closest('.receta-plan-card');
+    if (tarjeta) {
+        recetaArrastrada = {
+            id: tarjeta.dataset.id,
+            diaOrigen: tarjeta.closest('.dia').dataset.dia,
+            franjaOrigen: tarjeta.closest('.franja').dataset.franja
+        };
+    }
+})
+
+planificador.addEventListener("dragover", (e) => {
+    e.preventDefault();
+})
+
+planificador.addEventListener("drop", (e) => {
+    e.preventDefault();
+    const franjaDestino = e.target.closest('.franja-recetas');
+    if (franjaDestino && recetaArrastrada) {
+        const dia = franjaDestino.closest('.dia').dataset.dia;
+        const franja = franjaDestino.closest('.franja').dataset.franja;
+        
+        const tarjetaDestino = e.target.closest('.receta-plan-card');
+        let indiceDestino;
+        if (tarjetaDestino) {
+            indiceDestino = Array.from(franjaDestino.children).indexOf(tarjetaDestino);
+        } else {
+            indiceDestino = franjaDestino.children.length;
+        }
+        
+        moverReceta(recetaArrastrada.id, recetaArrastrada.diaOrigen, recetaArrastrada.franjaOrigen, dia, franja, indiceDestino);
+        renderPlanSemanal(getPlanSemanal());
     }
 })
 

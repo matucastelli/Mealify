@@ -55,3 +55,10 @@ export function eliminarReceta(id, dia, franja) {
     plan[dia][franja] = planEliminarReceta;
     localStorage.setItem("plan", JSON.stringify(plan));
 }
+
+export function moverReceta(id, diaOrigen, franjaOrigen, diaDestino, franjaDestino, indiceDestino) {
+    const plan = getPlanSemanal();
+    plan[diaOrigen][franjaOrigen] = plan[diaOrigen][franjaOrigen].filter(idGuardado => idGuardado !== id);
+    plan[diaDestino][franjaDestino].splice(indiceDestino, 0, id);
+    localStorage.setItem("plan", JSON.stringify(plan));
+}
