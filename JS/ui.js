@@ -2,6 +2,7 @@ import { obtenerDetalleReceta } from "./api.js";
 
 const resultados = document.querySelector("#resultados");
 const modalDetalle = document.querySelector("#modal-detalle");
+const cacheRecetas = new Map();
 
 export function renderRecetas(recetas, favoritos, contenedor) {
     contenedor.innerHTML = '';
@@ -55,29 +56,60 @@ export function renderDetalleReceta(receta) {
 
 export async function renderPlanSemanal(plan) {
     const dias = Object.keys(plan);
+    const idsAcumulados = new Set();
+
+    for (const dia of dias) {
+        const franjas = Object.keys(plan[dia]);
+        for (const franja of franjas) {
+            const idsRecetas = plan[dia][franja];
+            idsRecetas.forEach(id => {
+                idsAcumulados.add(id);
+            });
+        }
+    }
+
+    const idsArray = [...idsAcumulados];
+    const idsFaltantes = idsArray.filter(id => !cacheRecetas.has(id));
+    const promesas = idsFaltantes.map(id => obtenerDetalleReceta(id));
+    const recetasResueltas = await Promise.all(promesas);
+
+    recetasResueltas.forEach((receta, i) => {
+        const id = idsFaltantes[i];
+        cacheRecetas.set(id, receta);
+    });
+
     for (const dia of dias) {
         const franjas = Object.keys(plan[dia]);
         for (const franja of franjas) {
             const idsRecetas = plan[dia][franja];
             const contenedor = document.querySelector(`.dia[data-dia="${dia}"] .franja[data-franja="${franja}"] .franja-recetas`);
-            const promesas = idsRecetas.map(id => obtenerDetalleReceta(id));
-            const recetas = await Promise.all(promesas);
-            
+            const recetas = idsRecetas.map(id => cacheRecetas.get(id));
+
             let htmlAcumulado = '';
             recetas.forEach((receta, i) => {
                 const id = idsRecetas[i];
-                htmlAcumulado += `
-                <div class="receta-plan-card" data-id="${id}" draggable="true">
-                    <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
-                    <div>
-                        <p>${receta.strMeal}</p>
-                        <span class="receta-detallada-categoria">${receta.strCategory}</span>
-                    </div>
-                    <button class="btn-eliminar-plan" data-dia="${dia}" data-franja="${franja}">×</button>
-                </div>`;
+
+                if (receta == null) {
+                    htmlAcumulado += `
+                    <div class="receta-plan-card" data-id="${id}" draggable="true">
+                        <div>
+                            <p>Receta no disponible</p>
+                        </div>
+                        <button class="btn-eliminar-plan" data-dia="${dia}" data-franja="${franja}">×</button>
+                    </div>`;
+                } else {
+                    htmlAcumulado += `
+                    <div class="receta-plan-card" data-id="${id}" draggable="true">
+                        <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
+                        <div>
+                            <p>${receta.strMeal}</p>
+                            <span class="receta-detallada-categoria">${receta.strCategory}</span>
+                        </div>
+                        <button class="btn-eliminar-plan" data-dia="${dia}" data-franja="${franja}">×</button>
+                    </div>`;
+                }
             });
-            
-            contenedor.innerHTML = htmlAcumulado; 
+            contenedor.innerHTML = htmlAcumulado;
         }
     }
 }
