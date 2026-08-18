@@ -18,6 +18,8 @@ const btnMenu = document.querySelector("#btnMenu");
 const navPrincipal = document.querySelector("#nav-principal");
 const planificador = document.querySelector("#planificador");
 const listaFavoritos = document.querySelector("#listaFavoritos");
+const menuBackdrop = document.querySelector("#menu-backdrop");
+const btnCerrarTab = document.querySelector("#btnCerrarTab")
 
 let ultimaBusqueda = [];
 let recetaParaAsignar = null;
@@ -52,12 +54,6 @@ resultados.addEventListener("click", async (e) => {
     }
 })
 
-btnBuscar.addEventListener('click', async () => {
-    const valor = inputBuscador.value;
-    ultimaBusqueda = await buscarRecetas(valor);
-    renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
-})
-
 btnConfirmarAsignar.addEventListener("click", async () => {
     const dia = selectDia.value;
     const franja = selectFranja.value;
@@ -76,13 +72,16 @@ btnCerrarModal.addEventListener("click", () => {
     modalReceta.classList.add("oculto");
 });
 
+btnCerrarTab.addEventListener("click", () => {
+    navPrincipal.classList.add("oculto");
+    navPrincipal.classList.add("oculto");
+    menuBackdrop.classList.add("oculto");
+});
+
 btnCerrarAsignar.addEventListener("click", () => {
     modalAsignar.classList.add("oculto");
 })
 
-btnMenu.addEventListener("click", () => {
-    navPrincipal.classList.toggle("oculto")
-})
 
 navPrincipal.addEventListener("click", (e) => {
     const boton = e.target.closest('.tab');
@@ -145,6 +144,24 @@ planificador.addEventListener("drop", (e) => {
         renderPlanSemanal(getPlanSemanal());
     }
 })
+
+inputBuscador.addEventListener("keydown", async (e) => {
+    if (e.key === "Enter") {
+        await ejecutarBusqueda();
+    }
+})
+
+async function ejecutarBusqueda() {
+    const valor = inputBuscador.value;
+    ultimaBusqueda = await buscarRecetas(valor);
+    renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
+}
+
+btnMenu.addEventListener("click", () => {
+    navPrincipal.classList.toggle("oculto");
+    menuBackdrop.classList.toggle("oculto");
+})
+
 
 mostrarSeccion('buscar');
 renderPlanSemanal(getPlanSemanal());

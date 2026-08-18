@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Planner</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="app">
         <header id="header-principal">
-            <img src="logo.png" alt="logo" id="logo">
-            <h1>Mealify</h1>
+            <div class="marca">
+                <img src="logo.png" alt="logo" id="logo">
+                <h1>Mealify</h1>
+            </div>
             <button id="btnMenu">
                 <span class="barra"></span>
                 <span class="barra"></span>
@@ -18,16 +24,20 @@
             </button>
             
             <nav id="nav-principal" class="oculto ">
+                <button id="btnCerrarTab">×</button>
                 <button class="tab" data-seccion="buscar">Buscar</button>
                 <button class="tab" data-seccion="favoritos">Favoritos</button>
                 <button class="tab" data-seccion="planificador">Planificador</button>
                 <button class="tab" data-seccion="compras">Lista de compras</button>
             </nav>
+            <div id="menu-backdrop" class="oculto"></div>
         </header>
         <section id="buscar" class="seccion">
+            <div class="buscador-wrapper">
+                <i class="fa-solid fa-magnifying-glass icono-buscar"></i>
                 <input type="text" id="buscador" placeholder="Buscar receta...">
-                <button id="btnBuscar">Buscar</button>
-                <div id="resultados"></div>
+            </div>
+            <div id="resultados"></div>
         </section>
 
         <section id="favoritos" class="seccion">

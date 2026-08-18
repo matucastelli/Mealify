@@ -60,10 +60,13 @@ export async function renderPlanSemanal(plan) {
         for (const franja of franjas) {
             const idsRecetas = plan[dia][franja];
             const contenedor = document.querySelector(`.dia[data-dia="${dia}"] .franja[data-franja="${franja}"] .franja-recetas`);
-            contenedor.innerHTML = '';
-            for (const id of idsRecetas) {
-                const receta = await obtenerDetalleReceta(id);
-                const tarjetaHTML = `
+            const promesas = idsRecetas.map(id => obtenerDetalleReceta(id));
+            const recetas = await Promise.all(promesas);
+            
+            let htmlAcumulado = '';
+            recetas.forEach((receta, i) => {
+                const id = idsRecetas[i];
+                htmlAcumulado += `
                 <div class="receta-plan-card" data-id="${id}" draggable="true">
                     <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
                     <div>
@@ -71,9 +74,10 @@ export async function renderPlanSemanal(plan) {
                         <span class="receta-detallada-categoria">${receta.strCategory}</span>
                     </div>
                     <button class="btn-eliminar-plan" data-dia="${dia}" data-franja="${franja}">×</button>
-                </div>`
-            contenedor.innerHTML += tarjetaHTML;
-            }
+                </div>`;
+            });
+            
+            contenedor.innerHTML = htmlAcumulado; 
         }
     }
 }
