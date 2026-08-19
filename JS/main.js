@@ -19,7 +19,12 @@ const navPrincipal = document.querySelector("#nav-principal");
 const planificador = document.querySelector("#planificador");
 const listaFavoritos = document.querySelector("#listaFavoritos");
 const menuBackdrop = document.querySelector("#menu-backdrop");
-const btnCerrarTab = document.querySelector("#btnCerrarTab")
+const btnCerrarTab = document.querySelector("#btnCerrarTab");
+const btnEmpezar = document.querySelector("#btnEmpezar");
+const landing = document.querySelector("#landing");
+const app = document.querySelector("#app");
+const sugerenciasInicio = document.querySelector("#sugerencias-inicio");
+const logoMarca = document.querySelector(".marca");
 
 let ultimaBusqueda = [];
 let recetaParaAsignar = null;
@@ -82,6 +87,11 @@ btnCerrarAsignar.addEventListener("click", () => {
     modalAsignar.classList.add("oculto");
 })
 
+btnEmpezar.addEventListener("click", () => {
+    landing.classList.add("oculto");
+    app.classList.remove("oculto");
+    mostrarSeccion("buscar");
+})
 
 navPrincipal.addEventListener("click", (e) => {
     const boton = e.target.closest('.tab');
@@ -147,9 +157,16 @@ planificador.addEventListener("drop", (e) => {
 
 inputBuscador.addEventListener("keydown", async (e) => {
     if (e.key === "Enter") {
-        await ejecutarBusqueda();
+        const valor = inputBuscador.value;
+    
+        if (sugerenciasInicio) {
+            sugerenciasInicio.classList.add("oculto");
+        }
+
+        ultimaBusqueda = await buscarRecetas(valor);
+        renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
     }
-})
+});
 
 async function ejecutarBusqueda() {
     const valor = inputBuscador.value;
@@ -161,6 +178,29 @@ btnMenu.addEventListener("click", () => {
     navPrincipal.classList.toggle("oculto");
     menuBackdrop.classList.toggle("oculto");
 })
+
+sugerenciasInicio.addEventListener("click", async (e) => {
+
+    if (e.target.classList.contains("btn-filtro")) {
+
+        const terminoBusqueda = e.target.textContent;
+        
+
+        inputBuscador.value = terminoBusqueda;
+        
+
+        sugerenciasInicio.classList.add("oculto");
+        
+        ultimaBusqueda = await buscarRecetas(terminoBusqueda);
+        renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
+    }
+});
+
+logoMarca.addEventListener("click", () => {
+    mostrarSeccion("buscar");
+    navPrincipal.classList.add("oculto");
+    menuBackdrop.classList.add("oculto");
+});
 
 
 mostrarSeccion('buscar');

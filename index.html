@@ -11,7 +11,64 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div id="landing">
+        <section class="hero">
+            <h1>Mealify. Organizá tu semana, un plato a la vez</h1>
+            <p>Buscá recetas, guardá tus favoritas y armá tu planificador semanal de comidas en minutos.</p>
+            <button id="btnEmpezar">Empezar ahora</button>
+        </section>
+        <section class="features">
+            <h2>Todo lo que necesitás para planificar tus comidas</h2>
+            <div class="feature-card">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <h3>Búsqueda de recetas</h3>
+                <p>Encontrá miles de recetas al instante, con ingredientes e instrucciones completas.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-star"></i>
+                <h3>Favoritos</h3>
+                <p>Guardá las recetas que más te gustan para volver a ellas cuando quieras.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-calendar-week"></i>
+                <h3>Planificador semanal</h3>
+                <p>Organizá desayuno, almuerzo y cena de toda tu semana con drag & drop.</p>
+            </div>
+        </section>
+        <section class="proceso">
+            <h2>Así de simple</h2>
+            <div class="paso">
+                <span class="paso-numero">1</span>
+                <h3>Buscá</h3>
+                <p>Explorá recetas por nombre o categoría.</p>
+            </div>
+            <div class="paso">
+                <span class="paso-numero">2</span>
+                <h3>Planificá</h3>
+                <p>Arrastrá tus recetas elegidas a cada día de la semana.</p>
+            </div>
+            <div class="paso">
+                <span class="paso-numero">3</span>
+                <h3>Cociná</h3>
+                <p>Seguí la receta paso a paso cuando llegue el momento.</p>
+            </div>
+        </section>
+        <footer>
+            <p>Mealify — Proyecto de portfolio</p>
+            <div class="footer-links">
+                <a href="https://github.com/matucastelli" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/matias-castelli-68a2342a2" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="mailto:castellimatias5@gmail.com">
+                    <i class="fa-solid fa-envelope"></i> Contacto
+                </a>
+            </div>
+        </footer>
+    </div>
+    <div id="app" class="oculto">
         <header id="header-principal">
             <div class="marca">
                 <img src="logo.png" alt="logo" id="logo">
@@ -37,6 +94,18 @@
                 <i class="fa-solid fa-magnifying-glass icono-buscar"></i>
                 <input type="text" id="buscador" placeholder="Buscar receta...">
             </div>
+
+            <div id="sugerencias-inicio" class="estado-vacio">
+                <p>¿Qué tenés ganas de cocinar hoy?</p>
+                <div class="filtros-rapidos">
+                    <button class="btn-filtro">Chicken</button>
+                    <button class="btn-filtro">Beef</button>
+                    <button class="btn-filtro">Pasta</button>
+                    <button class="btn-filtro">Pork</button>
+                    <button class="btn-filtro">Vegan</button>
+                </div>
+            </div>
+
             <div id="resultados"></div>
         </section>
 
