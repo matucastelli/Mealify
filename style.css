@@ -282,7 +282,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10;
+    z-index: 30;
 }
 
 #modal-receta.oculto, #modal-asignar.oculto {
@@ -313,7 +313,7 @@ h1 {
     font-weight: 800;
 }
 
-#btnCerrarModal:hover, #btnCerrarAsignar:hover, #btnConfirmarAsignar:hover, .btn-eliminar-plan:hover, #btnCerrarTab:hover {
+#btnCerrarModal:hover, #btnCerrarAsignar:hover, #btnConfirmarAsignar:hover, .btn-eliminar-plan:hover, #btnCerrarTab:hover, #btnEmpezar:hover {
     opacity: 0.8;
 }
 

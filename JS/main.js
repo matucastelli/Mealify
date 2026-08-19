@@ -1,4 +1,4 @@
-import { buscarRecetas, obtenerDetalleReceta} from "./api.js";
+import { buscarRecetas, obtenerDetalleReceta, obtenerRecetasRandom} from "./api.js";
 import { renderRecetas, renderDetalleReceta, renderPlanSemanal } from "./ui.js";
 import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta, moverReceta } from "./storage.js";
 import { mostrarSeccion } from "./tabs.js";
@@ -59,6 +59,53 @@ resultados.addEventListener("click", async (e) => {
     }
 })
 
+listaFavoritos.addEventListener("click", async (e) => {
+    if (e.target.id === 'btn-ir-buscar') {
+        mostrarSeccion('buscar');
+        return; 
+    }
+
+    const botonFavorito = e.target.closest('.btn-favorito');
+    const botonVer = e.target.closest('.btn-ver-receta');
+    const botonAgregar = e.target.closest('.btn-agregar-plan');
+
+    if (botonFavorito) {
+        const tarjeta = botonFavorito.closest('.receta-card');
+        const idDeLaReceta = tarjeta.dataset.id;
+        const favoritosGuardados = getFavoritos();
+        const recetaEncontrada = favoritosGuardados.find(receta => receta.idMeal === idDeLaReceta);
+        toggleFavorito(recetaEncontrada);
+        actualizarVistaFavoritos(); 
+        
+    } else if (botonVer) {
+        const tarjeta = botonVer.closest('.receta-card');
+        const id = tarjeta.dataset.id;
+        await abrirDetalleReceta(id);
+        
+    } else if (botonAgregar) {
+        const tarjeta = botonAgregar.closest('.receta-card');
+        const id = tarjeta.dataset.id;
+        recetaParaAsignar = id;
+        modalAsignar.classList.remove("oculto");
+    }
+});
+
+function actualizarVistaFavoritos() {
+    const favoritosGuardados = getFavoritos();
+    
+    if (favoritosGuardados.length === 0) {
+        listaFavoritos.innerHTML = `
+            <div class="estado-vacio">
+                <i class="fa-regular fa-star" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
+                <p>Aún no guardaste ninguna receta.</p>
+                <button class="btn-filtro" id="btn-ir-buscar">Explorar recetas</button>
+            </div>
+        `;
+    } else {
+        renderRecetas(favoritosGuardados, favoritosGuardados, listaFavoritos);
+    }
+}
+
 btnConfirmarAsignar.addEventListener("click", async () => {
     const dia = selectDia.value;
     const franja = selectFranja.value;
@@ -87,10 +134,11 @@ btnCerrarAsignar.addEventListener("click", () => {
     modalAsignar.classList.add("oculto");
 })
 
-btnEmpezar.addEventListener("click", () => {
+btnEmpezar.addEventListener("click", async () => {
     landing.classList.add("oculto");
     app.classList.remove("oculto");
     mostrarSeccion("buscar");
+    await mostrarRecetasIniciales();
 })
 
 navPrincipal.addEventListener("click", (e) => {
@@ -99,7 +147,7 @@ navPrincipal.addEventListener("click", (e) => {
         const seccion = boton.dataset.seccion;
         mostrarSeccion(seccion);
         if ( seccion === 'favoritos') {
-            renderRecetas(getFavoritos(), getFavoritos(), listaFavoritos);
+            actualizarVistaFavoritos();
         }
     }
 })
@@ -168,12 +216,6 @@ inputBuscador.addEventListener("keydown", async (e) => {
     }
 });
 
-async function ejecutarBusqueda() {
-    const valor = inputBuscador.value;
-    ultimaBusqueda = await buscarRecetas(valor);
-    renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
-}
-
 btnMenu.addEventListener("click", () => {
     navPrincipal.classList.toggle("oculto");
     menuBackdrop.classList.toggle("oculto");
@@ -196,12 +238,31 @@ sugerenciasInicio.addEventListener("click", async (e) => {
     }
 });
 
-logoMarca.addEventListener("click", () => {
+logoMarca.addEventListener("click", async () => {
+    inputBuscador.value = "";
+    ultimaBusqueda = []
+    sugerenciasInicio.classList.remove("oculto");
+    await mostrarRecetasIniciales();
     mostrarSeccion("buscar");
     navPrincipal.classList.add("oculto");
     menuBackdrop.classList.add("oculto");
 });
 
+async function mostrarRecetasIniciales() {
+    ultimaBusqueda = await promesaRecetasIniciales;
+    renderRecetas(ultimaBusqueda, getFavoritos(), resultados)
+}
 
-mostrarSeccion('buscar');
+async function cargarRecetasIniciales() {
+    const recetasGuardadas = sessionStorage.getItem("recetasIniciales");
+    if (recetasGuardadas != null) {
+        return JSON.parse(recetasGuardadas);
+    } else {
+        const recetasRandoms = await obtenerRecetasRandom(6);
+        sessionStorage.setItem('recetasIniciales', JSON.stringify(recetasRandoms))
+        return recetasRandoms
+    }
+} 
+
+const promesaRecetasIniciales = cargarRecetasIniciales();mostrarSeccion('buscar');
 renderPlanSemanal(getPlanSemanal());
