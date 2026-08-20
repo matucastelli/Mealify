@@ -258,7 +258,7 @@ async function cargarRecetasIniciales() {
     if (recetasGuardadas != null) {
         return JSON.parse(recetasGuardadas);
     } else {
-        const recetasRandoms = await obtenerRecetasRandom(6);
+        const recetasRandoms = await obtenerRecetasRandom(5);
         sessionStorage.setItem('recetasIniciales', JSON.stringify(recetasRandoms))
         return recetasRandoms
     }

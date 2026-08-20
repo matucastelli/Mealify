@@ -27,6 +27,10 @@ body {
 
 #header-principal {
     display: grid;
+    position: sticky;
+    top: 0;
+    background-color: var(--color-fondo);
+    z-index: 30;
     grid-template-columns: auto 1fr auto;
     align-items: center;
     padding: var(--espaciado-chico-medio);
@@ -288,7 +292,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 30;
+    z-index: 40;
 }
 
 #modal-receta.oculto, #modal-asignar.oculto {
@@ -319,7 +323,11 @@ h1 {
     font-weight: 800;
 }
 
-#btnCerrarModal:hover, #btnCerrarAsignar:hover, #btnConfirmarAsignar:hover, .btn-eliminar-plan:hover, #btnCerrarTab:hover, #btnEmpezar:hover {
+#btnCerrarModal:hover, #btnCerrarAsignar:hover, #btnConfirmarAsignar:hover, .btn-eliminar-plan:hover, #btnCerrarTab:hover {
+    opacity: 0.8;
+}
+
+#btnEmpezar:hover {
     transform: scale(1.03);
     box-shadow: 0 4px 12px rgba(243, 93, 6, 0.4);
 }
@@ -502,6 +510,94 @@ select:last-of-type {
     background: linear-gradient(180deg, #fff3ec 0%, var(--color-fondo) 100%);
 }
 
+.hero-interior {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--espaciado-grande);
+    width: 100%;
+}
+
+.hero-contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-mockup {
+    width: 100%;
+    max-width: 480px;
+    background-color: var(--color-fondo);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--color-terciario);
+}
+
+.marca-landing {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primario);
+    margin-bottom: var(--espaciado-chico);
+    display: block;
+}
+
+.mockup-barra {
+    display: flex;
+    gap: 6px;
+    padding: 10px 14px;
+    background-color: var(--color-secundario);
+    border-bottom: 1px solid var(--color-terciario);
+}
+
+.mockup-barra span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-terciario);
+}
+
+.mockup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 14px;
+}
+
+.mockup-card {
+    background-color: var(--color-secundario);
+    border-radius: var(--radio-borde);
+    padding: 8px;
+    text-align: left;
+}
+
+.mockup-img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.mockup-img-1 { background-color: #f5c99b; }
+.mockup-img-2 { background-color: #f0a868; }
+.mockup-img-3 { background-color: #e8946b; }
+.mockup-img-4 { background-color: #d4c19a; }
+
+.mockup-titulo {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin: 0 0 2px;
+}
+
+.mockup-categoria {
+    font-size: 0.7rem;
+    color: var(--color-texto);
+    opacity: 0.6;
+    margin: 0;
+}
+
 .hero h1 {
     font-size: clamp(2.5rem, 5vw, 4rem); 
     line-height: 1.2;
@@ -524,7 +620,7 @@ select:last-of-type {
     padding: var(--espaciado-grande);
 }
 
-.features, .proceso {
+.features {
     padding: 6rem 2rem; 
     max-width: 1200px; 
     margin: 0 auto;
@@ -574,10 +670,16 @@ select:last-of-type {
 }
 
 .proceso {
+    background-color: var(--color-secundario);
+}
+
+.proceso-contenido {
     display: flex;
     flex-direction: column;
     gap: var(--espaciado-medio);
-    padding: var(--espaciado-grande);
+    padding: 6rem 2rem; 
+    max-width: 1200px; 
+    margin: 0 auto;
 }
 
 .paso {
@@ -630,6 +732,8 @@ footer {
 }
 
 #btnEmpezar {
+    font-family: 'Poppins';
+    font-weight: 600;
     padding: var(--espaciado-medio);
     background-color: var(--color-primario);
     color: var(--color-secundario);
@@ -649,10 +753,24 @@ footer {
         gap: var(--espaciado-chico);
     }
 
-    .proceso {
+    .proceso-contenido {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: var(--espaciado-chico);
+    }
+
+    .hero-interior {
+        flex-direction: row;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .hero-contenido {
+        align-items: flex-start;
+        text-align: left;
+        flex: 1;
+    }
+    .hero-mockup {
+        flex: 1;
     }
 }
 
