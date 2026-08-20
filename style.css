@@ -216,7 +216,13 @@ h1 {
     background-color: var(--color-secundario);
     border-radius: var(--radio-borde);
     margin-left: var(--espaciado-chico);
-    margin-right: var(--espaciado-chico);;
+    margin-right: var(--espaciado-chico);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.receta-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
 .receta-card img {
@@ -314,7 +320,8 @@ h1 {
 }
 
 #btnCerrarModal:hover, #btnCerrarAsignar:hover, #btnConfirmarAsignar:hover, .btn-eliminar-plan:hover, #btnCerrarTab:hover, #btnEmpezar:hover {
-    opacity: 0.8;
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(243, 93, 6, 0.4);
 }
 
 .receta-detallada-wrapper img {
@@ -450,6 +457,12 @@ select:last-of-type {
     padding: var(--espaciado-chico);
     padding-right: var(--espaciado-medio);
     font-size: 0.8rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.receta-plan-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .receta-plan-card img {
@@ -549,6 +562,17 @@ select:last-of-type {
     margin-bottom: var(--espaciado-medio);
 }
 
+.feature-card, .paso {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.feature-card.visible, .paso.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 .proceso {
     display: flex;
     flex-direction: column;
@@ -613,6 +637,7 @@ footer {
     border-radius: var(--radio-borde);
     border: none;
     cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /*--------- QUERIES HERO --------*/
