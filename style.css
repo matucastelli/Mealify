@@ -56,7 +56,6 @@ h1 {
     transform: translateX(100%);
     transition: transform 0.3s ease;
     z-index: 20;
-    
 }
 
 .tab {
@@ -64,7 +63,7 @@ h1 {
     width: 95%;
     background: none;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.8rem;
+    font-size: 1.1rem;
     font-weight: 500;
     color: var(--color-primario);
     padding: var(--espaciado-chico);
@@ -83,8 +82,6 @@ h1 {
 
 .marca {
     display: contents;
-    align-items: center;
-    gap: var(--espaciado-chico);
     cursor: pointer; 
 }
 
@@ -293,10 +290,14 @@ h1 {
     justify-content: center;
     align-items: center;
     z-index: 40;
+    backdrop-filter: blur(4px);
+    transition: opacity 0.25s ease;
+    opacity: 1;
 }
 
 #modal-receta.oculto, #modal-asignar.oculto {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .modal-contenido {
@@ -446,6 +447,9 @@ select:last-of-type {
 .franja-titulo {
     font-weight: 400;
     opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .franja-recetas {
@@ -453,6 +457,13 @@ select:last-of-type {
     flex-direction: column;
     gap: var(--espaciado-chico);
     min-height: 40px;
+    transition: background-color 0.15s ease, outline 0.15s ease;
+}
+
+.franja-recetas.drag-activo {
+    background-color: rgba(217, 108, 44, 0.1);
+    border-radius: var(--radio-borde);
+    outline: 2px dashed var(--color-primario);
 }
 
 .receta-plan-card {
@@ -580,11 +591,6 @@ select:last-of-type {
     display: block;
 }
 
-.mockup-img-1 { background-color: #f5c99b; }
-.mockup-img-2 { background-color: #f0a868; }
-.mockup-img-3 { background-color: #e8946b; }
-.mockup-img-4 { background-color: #d4c19a; }
-
 .mockup-titulo {
     font-size: 0.8rem;
     font-weight: 600;
@@ -618,9 +624,6 @@ select:last-of-type {
     flex-direction: column;
     gap: var(--espaciado-medio);
     padding: var(--espaciado-grande);
-}
-
-.features {
     padding: 6rem 2rem; 
     max-width: 1200px; 
     margin: 0 auto;
@@ -814,3 +817,5 @@ footer {
     color: var(--color-fondo);
     transform: translateY(-2px);
 }
+
+/*-------- Estado Vacio & Filtros ENDS  --------*/

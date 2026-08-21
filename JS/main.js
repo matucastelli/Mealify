@@ -1,10 +1,8 @@
 import { buscarRecetas, obtenerDetalleReceta, obtenerRecetasRandom} from "./api.js";
-import { renderRecetas, renderDetalleReceta, renderPlanSemanal } from "./ui.js";
+import { renderRecetas, renderDetalleReceta, renderPlanSemanal} from "./ui.js";
 import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta, moverReceta } from "./storage.js";
 import { mostrarSeccion } from "./tabs.js";
 
-
-const btnBuscar = document.querySelector("#btnBuscar");
 const inputBuscador = document.querySelector("#buscador");
 const resultados = document.querySelector("#resultados");
 const modalReceta = document.querySelector("#modal-receta");
@@ -194,12 +192,29 @@ planificador.addEventListener("drop", (e) => {
         let indiceDestino;
         if (tarjetaDestino) {
             indiceDestino = Array.from(franjaDestino.children).indexOf(tarjetaDestino);
+            
         } else {
             indiceDestino = franjaDestino.children.length;
         }
-        
+        franjaDestino.classList.remove("drag-activo");
         moverReceta(recetaArrastrada.id, recetaArrastrada.diaOrigen, recetaArrastrada.franjaOrigen, dia, franja, indiceDestino);
         renderPlanSemanal(getPlanSemanal());
+    }
+})
+
+planificador.addEventListener("dragenter", (e) => {
+    e.preventDefault();
+    const franja = e.target.closest('.franja-recetas');
+    if (franja) {
+        franja.classList.add("drag-activo");
+
+    }
+})
+
+planificador.addEventListener("dragleave", (e) => {
+    const franja = e.target.closest('.franja-recetas');
+    if (franja) {
+        franja.classList.remove("drag-activo");
     }
 })
 
