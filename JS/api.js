@@ -4,7 +4,7 @@ export async function buscarRecetas(query) {
         const respuesta = await fetch(url);
         const datos = await respuesta.json();
 
-        if (datos.meals == null) {
+        if (datos.results == null) {
             return [];
         } else {
             return datos.results;

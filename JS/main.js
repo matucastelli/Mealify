@@ -42,7 +42,7 @@ resultados.addEventListener("click", async (e) => {
     if (botonFavorito) {
         const tarjeta = botonFavorito.closest('.receta-card');
         const idDeLaReceta = tarjeta.dataset.id;
-        const recetaEncontrada = ultimaBusqueda.find(receta => receta.id === idDeLaReceta);
+        const recetaEncontrada = ultimaBusqueda.find(receta => receta.id.toString() === idDeLaReceta);
         toggleFavorito(recetaEncontrada);
         renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
     } else if (botonVer) {
@@ -71,7 +71,7 @@ listaFavoritos.addEventListener("click", async (e) => {
         const tarjeta = botonFavorito.closest('.receta-card');
         const idDeLaReceta = tarjeta.dataset.id;
         const favoritosGuardados = getFavoritos();
-        const recetaEncontrada = favoritosGuardados.find(receta => receta.id === idDeLaReceta);
+        const recetaEncontrada = favoritosGuardados.find(receta => receta.id.toString() === idDeLaReceta);
         toggleFavorito(recetaEncontrada);
         actualizarVistaFavoritos(); 
         
