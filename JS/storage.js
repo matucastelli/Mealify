@@ -9,11 +9,11 @@ export function getFavoritos() {
 
 export function toggleFavorito(receta) {
     const favoritos = getFavoritos();
-    const yaEsFavorito = favoritos.some(fav => fav.idMeal === receta.idMeal);
+    const yaEsFavorito = favoritos.some(fav => fav.id === receta.id);
 
     let nuevosFavoritos;
     if (yaEsFavorito) {
-        nuevosFavoritos = favoritos.filter(fav => fav.idMeal !== receta.idMeal);
+        nuevosFavoritos = favoritos.filter(fav => fav.id !== receta.id);
     } else {
         nuevosFavoritos = [...favoritos, receta];
     }

@@ -8,14 +8,14 @@ export function renderRecetas(recetas, favoritos, contenedor) {
     contenedor.innerHTML = '';
     let html = '';
     recetas.forEach(receta => {
-        const esFavorito = favoritos.some(fav => fav.idMeal === receta.idMeal);
+        const esFavorito = favoritos.some(fav => fav.id === receta.id);
         const claseActiva = esFavorito ? 'activo' : '';
         const tarjetaHTML = `
-            <div class="receta-card" data-id="${receta.idMeal}">
-                <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
+            <div class="receta-card" data-id="${receta.id}">
+                <img src="${receta.image}" alt="${receta.title}">
                 <div class="receta-info">
-                    <p>${receta.strMeal}</p>
-                    <p>"${receta.strCategory}"</p>
+                    <p>${receta.title}</p>
+                    <p>"${receta.cuisines?.length ? receta.cuisines.join(", ") : "Sin categoría"}"</p>
                 </div>
                 <button class="btn-favorito ${claseActiva}">★</button>
                 <button class="btn-ver-receta">Ver receta</button>
@@ -29,21 +29,17 @@ export function renderRecetas(recetas, favoritos, contenedor) {
 export function renderDetalleReceta(receta) {
     const infoHTML = `
         <div class="receta-detallada-wrapper">
-            <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
-            <p class="receta-detallada-titulo">${receta.strMeal}</p>
-            <span class="receta-detallada-categoria">${receta.strCategory}</span>
+            <img src="${receta.image}" alt="${receta.title}">
+            <p class="receta-detallada-titulo">${receta.title}</p>
+            <span class="receta-detallada-categoria">${receta.cuisines?.length ? receta.cuisines.join(", ") : "Sin categoría"}</span>
         </div>`;
 
     let ingredientesHTML = '';
-    for (let i = 1; i <= 20; i++) {
-        const ingrediente = receta[`strIngredient${i}`];
-        const medida = receta[`strMeasure${i}`];
-        if (ingrediente && ingrediente.trim() !== "") {
-            ingredientesHTML += `<li>${medida} - ${ingrediente}</li>`;
-        }
-    }
+    receta.extendedIngredients.forEach(ingrediente => {
+        ingredientesHTML += `<li>${ingrediente.original}</li>`;
+    });
 
-    const instruccionesHTML = `<p>${receta.strInstructions}</p>`;
+    const instruccionesHTML = `${receta.instructions}`;
 
     const htmlFinal = infoHTML
         + `<h3 class="modal-subtitulo">Ingredientes</h3>`
@@ -100,10 +96,10 @@ export async function renderPlanSemanal(plan) {
                 } else {
                     htmlAcumulado += `
                     <div class="receta-plan-card" data-id="${id}" draggable="true">
-                        <img src="${receta.strMealThumb}" alt="${receta.strMeal}">
+                        <img src="${receta.image}" alt="${receta.title}">
                         <div>
-                            <p>${receta.strMeal}</p>
-                            <span class="receta-detallada-categoria">${receta.strCategory}</span>
+                            <p>${receta.title}</p>
+                            <span class="receta-detallada-categoria">${receta.cuisines?.length ? receta.cuisines.join(", ") : "Sin categoría"}</span>
                         </div>
                         <button class="btn-eliminar-plan" data-dia="${dia}" data-franja="${franja}">×</button>
                     </div>`;

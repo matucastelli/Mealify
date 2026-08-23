@@ -24,7 +24,7 @@ Aplicación web para buscar recetas, guardar tus favoritas y planificar tus comi
 - **JavaScript (ES Modules)** — vanilla JS, sin librerías ni build tools.
 - **[TheMealDB API](https://www.themealdb.com/api.php)** — fuente de datos de recetas.
 - **Font Awesome** — iconografía.
-- **Google Fonts** — Poppins y Baloo 2.
+- **Google Fonts** — Poppins.
 
 ## 📁 Estructura del proyecto
 
@@ -41,17 +41,6 @@ Mealify/
     ├── tabs.js         # Navegación entre secciones
     └── landing.js       # Animaciones de scroll en la landing page
 ```
-
-## 🚀 Cómo correrlo localmente
-
-Al ser un proyecto sin build tools, no necesitás instalar dependencias. Alcanza con servir los archivos estáticos:
-
-```bash
-git clone https://github.com/matucastelli/Mealify.git
-cd Mealify
-```
-
-Después, abrí `index.html` con un servidor local (por ejemplo, la extensión **Live Server** de VS Code, o `npx serve`), ya que los módulos de JavaScript (`type="module"`) requieren que el proyecto se sirva vía HTTP y no abriendo el archivo directo (`file://`).
 
 ## 👤 Autor
 
