@@ -1,6 +1,6 @@
 export async function buscarRecetas(query) {
     try {
-        const url = `/api/buscar?query=${query}`;
+        const url = `/api/buscar?query=${encodeURIComponent(query)}`;
         const respuesta = await fetch(url);
         const datos = await respuesta.json();
 
@@ -17,7 +17,7 @@ export async function buscarRecetas(query) {
 
 export async function obtenerDetalleReceta(id) {
     try {
-        const url = `/api/detalle?id=${id}`;;
+        const url = `/api/detalle?id=${encodeURIComponent(id)}`;
         const respuesta = await fetch(url);
         const receta = await respuesta.json();
 

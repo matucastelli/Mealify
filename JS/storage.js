@@ -68,15 +68,23 @@ export function getComprasMarcadas() {
     return datosGuardados == null ? [] : JSON.parse(datosGuardados);
 }
 
-export function toggleCompra(nombre) {
+export function toggleCompra(clave) {
     const marcadas = getComprasMarcadas();
-    const nuevasMarcadas = marcadas.includes(nombre)
-        ? marcadas.filter(item => item !== nombre)
-        : [...marcadas, nombre];
-
+    const nuevasMarcadas = marcadas.includes(clave)
+        ? marcadas.filter(item => item !== clave)
+        : [...marcadas, clave];
     localStorage.setItem("comprasMarcadas", JSON.stringify(nuevasMarcadas));
 }
 
-export function limpiarComprasMarcadas() {
+export function getComprasOcultas() {
+    const datosGuardados = localStorage.getItem("comprasOcultas");
+    return datosGuardados == null ? [] : JSON.parse(datosGuardados);
+}
+
+export function ocultarComprasMarcadas() {
+    const marcadas = getComprasMarcadas();
+    const ocultas = getComprasOcultas();
+    const nuevasOcultas = [...new Set([...ocultas, ...marcadas])];
+    localStorage.setItem("comprasOcultas", JSON.stringify(nuevasOcultas));
     localStorage.removeItem("comprasMarcadas");
 }

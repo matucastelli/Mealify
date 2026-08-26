@@ -15,7 +15,7 @@ export function renderRecetas(recetas, favoritos, contenedor) {
                 <img src="${receta.image}" alt="${receta.title}">
                 <div class="receta-info">
                     <p>${receta.title}</p>
-                    <p>"${receta.cuisines?.length ? receta.cuisines.join(", ") : "Sin categoría"}"</p>
+                    <p>"${receta.dishTypes?.length ? receta.dishTypes.join(", ") : "Sin categoría"}"</p>
                 </div>
                 <button class="btn-favorito ${claseActiva}">★</button>
                 <button class="btn-ver-receta">Ver receta</button>
@@ -31,7 +31,7 @@ export function renderDetalleReceta(receta) {
         <div class="receta-detallada-wrapper">
             <img src="${receta.image}" alt="${receta.title}">
             <p class="receta-detallada-titulo">${receta.title}</p>
-            <span class="receta-detallada-categoria">${receta.cuisines?.length ? receta.cuisines.join(", ") : "Sin categoría"}</span>
+            <span class="receta-detallada-categoria">${receta.dishTypes?.length ? receta.dishTypes.join(", ") : "Sin categoría"}</span>
         </div>`;
 
     let ingredientesHTML = '';
@@ -126,14 +126,14 @@ export function renderListaCompras(ingredientes, marcadas, contenedor, cargando 
     }
 
     const itemsHTML = ingredientes.map(ingrediente => {
-        const marcado = marcadas.includes(ingrediente.nombre);
-        return `
-            <label class="item-compra ${marcado ? 'comprado' : ''}">
-                <input type="checkbox" class="check-compra" data-nombre="${ingrediente.nombre}" ${marcado ? 'checked' : ''}>
-                <span>${ingrediente.nombre}</span>
-                <strong>${ingrediente.cantidad}</strong>
-            </label>`;
-    }).join('');
+    const marcado = marcadas.includes(ingrediente.clave);
+    return `
+        <label class="item-compra ${marcado ? 'comprado' : ''}">
+            <input type="checkbox" class="check-compra" data-clave="${ingrediente.clave}" ${marcado ? 'checked' : ''}>
+            <span>${ingrediente.nombre}</span>
+            <strong>${ingrediente.cantidad}</strong>
+        </label>`;
+}).join('');
 
     contenedor.innerHTML = `<div class="lista-compras">${itemsHTML}</div>`;
 }

@@ -1,6 +1,6 @@
 import { buscarRecetas, obtenerDetalleReceta, obtenerRecetasRandom} from "./api.js";
 import { renderRecetas, renderDetalleReceta, renderPlanSemanal, renderListaCompras} from "./ui.js";
-import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta, moverReceta, getComprasMarcadas, toggleCompra, limpiarComprasMarcadas } from "./storage.js";
+import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta, moverReceta, getComprasMarcadas, toggleCompra, getComprasOcultas, ocultarComprasMarcadas } from "./storage.js";
 import { mostrarSeccion } from "./tabs.js";
 
 const inputBuscador = document.querySelector("#buscador");
@@ -55,6 +55,7 @@ async function actualizarListaCompras() {
                 actual.cantidad = `${Number(actual.valor.toFixed(2))} ${unidad}`.trim();
             } else if (!actual) {
                 ingredientes.set(clave, {
+                    clave,
                     nombre: nombre.trim(),
                     valor: cantidad,
                     cantidad: ingrediente.original || `${ingrediente.amount || ''} ${unidad}`.trim()
@@ -62,8 +63,9 @@ async function actualizarListaCompras() {
             }
         });
     });
-
-    renderListaCompras([...ingredientes.values()], getComprasMarcadas(), listaCompras);
+    const ocultas = getComprasOcultas();
+    const ingredientesVisibles = [...ingredientes.values()].filter(i => !ocultas.includes(i.clave));
+    renderListaCompras(ingredientesVisibles, getComprasMarcadas(), listaCompras);
 }
 
 async function abrirDetalleReceta(id) {
@@ -277,12 +279,12 @@ inputBuscador.addEventListener("keydown", async (e) => {
 
 listaCompras.addEventListener("change", (e) => {
     if (!e.target.classList.contains("check-compra")) return;
-    toggleCompra(e.target.dataset.nombre);
+    toggleCompra(e.target.dataset.clave);
     e.target.closest(".item-compra").classList.toggle("comprado", e.target.checked);
 });
 
 btnLimpiarCompras.addEventListener("click", () => {
-    limpiarComprasMarcadas();
+    ocultarComprasMarcadas();
     actualizarListaCompras();
 });
 
@@ -324,12 +326,13 @@ async function mostrarRecetasIniciales() {
 }
 
 async function cargarRecetasIniciales() {
-    const recetasGuardadas = sessionStorage.getItem("recetasIniciales");
+    const claveCache = "recetasIniciales";
+    const recetasGuardadas = sessionStorage.getItem(claveCache);
     if (recetasGuardadas != null) {
         return JSON.parse(recetasGuardadas);
     } else {
         const recetasRandoms = await obtenerRecetasRandom(4);
-        sessionStorage.setItem('recetasIniciales', JSON.stringify(recetasRandoms))
+        sessionStorage.setItem(claveCache, JSON.stringify(recetasRandoms))
         return recetasRandoms
     }
 } 
