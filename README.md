@@ -8,12 +8,13 @@ Aplicación web para buscar recetas, guardar tus favoritas y planificar tus comi
 
 ## Funcionalidades
 
-- **Búsqueda de recetas** — consulta en tiempo real a [TheMealDB API](https://www.themealdb.com/api.php), con manejo de errores y estados de carga.
+- **Búsqueda de recetas** — consulta en tiempo real a [SPOONACULAR API](https://spoonacular.com/food-api), con manejo de errores y estados de carga.
 - **Favoritos** — guardá tus recetas preferidas, persistidas en `localStorage`.
 - **Planificador semanal** — organizá desayuno, almuerzo y cena para los 7 días de la semana, con:
   - Drag & drop para mover recetas entre franjas y días.
   - Validación de duplicados (no podés asignar la misma receta dos veces al mismo día/franja).
   - Resaltado visual de la zona de destino mientras arrastrás.
+- **Lista de compras** — genera automáticamente los ingredientes del plan semanal, agrupa cantidades repetidas y permite marcar productos comprados.
 - **Landing page** — sección de presentación con animaciones de scroll, mockup de la app con imágenes reales, y diseño responsive.
 - **Estado inicial inteligente** — la sección de búsqueda precarga recetas al azar mientras el usuario todavía está en la landing, para que nunca se sienta vacía.
 - **Header sticky** y microinteracciones (hover, transiciones) en toda la interfaz.
@@ -22,7 +23,7 @@ Aplicación web para buscar recetas, guardar tus favoritas y planificar tus comi
 
 - **HTML5 / CSS3** — sin frameworks ni preprocesadores.
 - **JavaScript (ES Modules)** — vanilla JS, sin librerías ni build tools.
-- **[TheMealDB API](https://www.themealdb.com/api.php)** — fuente de datos de recetas.
+- **[SPOPONACULAR API](https://spoonacular.com/food-api)** — fuente de datos de recetas.
 - **Font Awesome** — iconografía.
 - **Google Fonts** — Poppins.
 

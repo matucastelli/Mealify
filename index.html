@@ -121,6 +121,7 @@
                 <button class="tab" data-seccion="buscar">Buscar</button>
                 <button class="tab" data-seccion="favoritos">Favoritos</button>
                 <button class="tab" data-seccion="planificador">Planificador</button>
+                <button class="tab" data-seccion="compras">Lista de compras</button>
             </nav>
             <div id="menu-backdrop" class="oculto"></div>
         </header>
@@ -254,6 +255,17 @@
                     <div class="franja-recetas"></div>
                 </div>
             </div>
+        </section>
+
+        <section id="compras" class="seccion oculto">
+            <div class="compras-cabecera">
+                <div>
+                    <h2>Lista de compras</h2>
+                    <p>Ingredientes de las recetas de tu plan semanal.</p>
+                </div>
+                <button id="btnLimpiarCompras" class="btn-limpiar-compras">Limpiar marcados</button>
+            </div>
+            <div id="listaCompras"></div>
         </section>
     </div>
     <div id="modal-receta" class="oculto">

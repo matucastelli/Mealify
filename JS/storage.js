@@ -62,3 +62,21 @@ export function moverReceta(id, diaOrigen, franjaOrigen, diaDestino, franjaDesti
     plan[diaDestino][franjaDestino].splice(indiceDestino, 0, id);
     localStorage.setItem("plan", JSON.stringify(plan));
 }
+
+export function getComprasMarcadas() {
+    const datosGuardados = localStorage.getItem("comprasMarcadas");
+    return datosGuardados == null ? [] : JSON.parse(datosGuardados);
+}
+
+export function toggleCompra(nombre) {
+    const marcadas = getComprasMarcadas();
+    const nuevasMarcadas = marcadas.includes(nombre)
+        ? marcadas.filter(item => item !== nombre)
+        : [...marcadas, nombre];
+
+    localStorage.setItem("comprasMarcadas", JSON.stringify(nuevasMarcadas));
+}
+
+export function limpiarComprasMarcadas() {
+    localStorage.removeItem("comprasMarcadas");
+}

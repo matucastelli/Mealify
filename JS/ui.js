@@ -109,3 +109,31 @@ export async function renderPlanSemanal(plan) {
         }
     }
 }
+
+export function renderListaCompras(ingredientes, marcadas, contenedor, cargando = false) {
+    if (cargando) {
+        contenedor.innerHTML = '<div class="estado-vacio"><p>Cargando ingredientes...</p></div>';
+        return;
+    }
+
+    if (ingredientes.length === 0) {
+        contenedor.innerHTML = `
+            <div class="estado-vacio">
+                <i class="fa-solid fa-basket-shopping icono-lista-vacia"></i>
+                <p>Agregá recetas al plan para generar tu lista de compras.</p>
+            </div>`;
+        return;
+    }
+
+    const itemsHTML = ingredientes.map(ingrediente => {
+        const marcado = marcadas.includes(ingrediente.nombre);
+        return `
+            <label class="item-compra ${marcado ? 'comprado' : ''}">
+                <input type="checkbox" class="check-compra" data-nombre="${ingrediente.nombre}" ${marcado ? 'checked' : ''}>
+                <span>${ingrediente.nombre}</span>
+                <strong>${ingrediente.cantidad}</strong>
+            </label>`;
+    }).join('');
+
+    contenedor.innerHTML = `<div class="lista-compras">${itemsHTML}</div>`;
+}

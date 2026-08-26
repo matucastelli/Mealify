@@ -1,6 +1,6 @@
 import { buscarRecetas, obtenerDetalleReceta, obtenerRecetasRandom} from "./api.js";
-import { renderRecetas, renderDetalleReceta, renderPlanSemanal} from "./ui.js";
-import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta, moverReceta } from "./storage.js";
+import { renderRecetas, renderDetalleReceta, renderPlanSemanal, renderListaCompras} from "./ui.js";
+import { toggleFavorito, getFavoritos, getPlanSemanal, asignarReceta, eliminarReceta, moverReceta, getComprasMarcadas, toggleCompra, limpiarComprasMarcadas } from "./storage.js";
 import { mostrarSeccion } from "./tabs.js";
 
 const inputBuscador = document.querySelector("#buscador");
@@ -23,10 +23,48 @@ const landing = document.querySelector("#landing");
 const app = document.querySelector("#app");
 const sugerenciasInicio = document.querySelector("#sugerencias-inicio");
 const logoMarca = document.querySelector(".marca");
+const listaCompras = document.querySelector("#listaCompras");
+const btnLimpiarCompras = document.querySelector("#btnLimpiarCompras");
 
 let ultimaBusqueda = [];
 let recetaParaAsignar = null;
 let recetaArrastrada = null;
+
+async function actualizarListaCompras() {
+    renderListaCompras([], [], listaCompras, true);
+    const ids = new Set();
+    const plan = getPlanSemanal();
+
+    Object.values(plan).forEach(dia => {
+        Object.values(dia).forEach(franja => franja.forEach(id => ids.add(id)));
+    });
+
+    const recetas = await Promise.all([...ids].map(id => obtenerDetalleReceta(id)));
+    const ingredientes = new Map();
+
+    recetas.filter(Boolean).forEach(receta => {
+        receta.extendedIngredients?.forEach(ingrediente => {
+            const nombre = ingrediente.name || ingrediente.original;
+            const unidad = ingrediente.unit || '';
+            const clave = `${nombre.trim().toLowerCase()}|${unidad.trim().toLowerCase()}`;
+            const cantidad = Number(ingrediente.amount);
+            const actual = ingredientes.get(clave);
+
+            if (actual && Number.isFinite(cantidad) && Number.isFinite(actual.valor)) {
+                actual.valor += cantidad;
+                actual.cantidad = `${Number(actual.valor.toFixed(2))} ${unidad}`.trim();
+            } else if (!actual) {
+                ingredientes.set(clave, {
+                    nombre: nombre.trim(),
+                    valor: cantidad,
+                    cantidad: ingrediente.original || `${ingrediente.amount || ''} ${unidad}`.trim()
+                });
+            }
+        });
+    });
+
+    renderListaCompras([...ingredientes.values()], getComprasMarcadas(), listaCompras);
+}
 
 async function abrirDetalleReceta(id) {
     const recetaDetalle = await obtenerDetalleReceta(id);
@@ -115,6 +153,7 @@ btnConfirmarAsignar.addEventListener("click", async () => {
     }
 
     await renderPlanSemanal(getPlanSemanal());
+    await actualizarListaCompras();
     modalAsignar.classList.add("oculto");
 })
 
@@ -147,6 +186,9 @@ navPrincipal.addEventListener("click", (e) => {
         if ( seccion === 'favoritos') {
             actualizarVistaFavoritos();
         }
+        if (seccion === 'compras') {
+            actualizarListaCompras();
+        }
     }
 })
 
@@ -160,6 +202,7 @@ planificador.addEventListener("click", async (e) => {
         const franja = botonEliminar.dataset.franja;
         eliminarReceta(id, dia, franja);
         renderPlanSemanal(getPlanSemanal());
+        actualizarListaCompras();
     } else if (tarjeta) {
         const id = tarjeta.dataset.id;
         await abrirDetalleReceta(id);
@@ -199,6 +242,7 @@ planificador.addEventListener("drop", (e) => {
         franjaDestino.classList.remove("drag-activo");
         moverReceta(recetaArrastrada.id, recetaArrastrada.diaOrigen, recetaArrastrada.franjaOrigen, dia, franja, indiceDestino);
         renderPlanSemanal(getPlanSemanal());
+        actualizarListaCompras();
     }
 })
 
@@ -229,6 +273,17 @@ inputBuscador.addEventListener("keydown", async (e) => {
         ultimaBusqueda = await buscarRecetas(valor);
         renderRecetas(ultimaBusqueda, getFavoritos(), resultados);
     }
+});
+
+listaCompras.addEventListener("change", (e) => {
+    if (!e.target.classList.contains("check-compra")) return;
+    toggleCompra(e.target.dataset.nombre);
+    e.target.closest(".item-compra").classList.toggle("comprado", e.target.checked);
+});
+
+btnLimpiarCompras.addEventListener("click", () => {
+    limpiarComprasMarcadas();
+    actualizarListaCompras();
 });
 
 btnMenu.addEventListener("click", () => {
