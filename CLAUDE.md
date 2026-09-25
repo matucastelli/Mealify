@@ -23,7 +23,17 @@ Deploy: Vercel (push a main = deploy automático a producción).
 - Build: npm run build
 - Deploy: push a main
 
+## Dos computadoras
+El proyecto se trabaja en dos computadoras, que tienen que tener siempre la misma versión:
+- Al empezar: `git fetch` y `git status`. Si la rama está atrasada respecto de GitHub, hacer `git pull` antes de tocar nada.
+- Al terminar: no dejar commits sin subir. Hacer push de la rama de trabajo, aunque el trabajo no esté terminado.
+- Commitear los mocks nuevos de `mocks/`, así la otra compu no gasta cuota de Spoonacular pidiendo lo mismo.
+- Después de un `npm install` que cambie dependencias, commitear `package.json` y `package-lock.json`; en la otra compu, correr `npm install` después del pull.
+- `.env` (SPOONACULAR_KEY) y `.claude/settings.local.json` no se suben a git: hay que tenerlos en ambas compus por separado.
+- Si `npm run dev` está corriendo mientras se cambia de rama o se hace pull, reiniciarlo (el plugin de /api puede quedar en mal estado).
+
 ## Reglas
+- Commits y PRs sin atribución a Claude: nada de `Co-Authored-By: Claude` ni "Generated with Claude Code"
 - Nunca exponer la API key en código del cliente ni commitearla
 - El plan guarda IDs como string; no cambiar las claves ni la forma de los datos en localStorage sin migrarlos
 - No usar `vercel dev` (crashea en Windows, bug conocido de la herramienta)
