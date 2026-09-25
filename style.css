@@ -206,6 +206,11 @@ h1 {
     gap: var(--espaciado-chico);
 }
 
+/* Los mensajes (buscando / sin resultados) ocupan todo el ancho de la grilla en escritorio */
+#resultados > .estado-vacio {
+    grid-column: 1 / -1;
+}
+
 .receta-card {
     display: flex;
     margin-top: var(--espaciado-chico);
@@ -848,6 +853,18 @@ footer {
     padding: var(--espaciado-chico);
     cursor: pointer;
     white-space: nowrap;
+}
+
+.compras-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espaciado-chico);
+}
+
+.mensaje-error {
+    color: #c0392b;
+    font-size: 0.85rem;
+    margin: var(--espaciado-chico) 0;
 }
 
 .lista-compras {

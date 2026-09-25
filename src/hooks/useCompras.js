@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { getComprasMarcadas, getComprasOcultas, toggleCompra, ocultarComprasMarcadas } from "../lib/storage.js";
+import { getComprasMarcadas, getComprasOcultas, toggleCompra, ocultarComprasMarcadas, mostrarCompras, restaurarCompras } from "../lib/storage.js";
 
 export function useCompras() {
     const [marcadas, setMarcadas] = useState(getComprasMarcadas);
     const [ocultas, setOcultas] = useState(getComprasOcultas);
+
+    function releer() {
+        setMarcadas(getComprasMarcadas());
+        setOcultas(getComprasOcultas());
+    }
 
     function alternarCompra(clave) {
         toggleCompra(clave);
@@ -12,9 +17,19 @@ export function useCompras() {
 
     function limpiarMarcadas() {
         ocultarComprasMarcadas();
-        setMarcadas(getComprasMarcadas());
-        setOcultas(getComprasOcultas());
+        releer();
     }
 
-    return { marcadas, ocultas, alternarCompra, limpiarMarcadas };
+    // Vuelve a mostrar ingredientes ocultos (por ejemplo, al planificar de nuevo una receta)
+    function mostrar(claves) {
+        mostrarCompras(claves);
+        releer();
+    }
+
+    function restaurar() {
+        restaurarCompras();
+        releer();
+    }
+
+    return { marcadas, ocultas, alternarCompra, limpiarMarcadas, mostrar, restaurar };
 }

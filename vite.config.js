@@ -1,5 +1,6 @@
 import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
+import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
 
@@ -9,14 +10,25 @@ function apiLocal() {
     return {
         name: "api-local",
         configureServer(server) {
-            server.middlewares.use("/api", async (req, res, next) => {
+            // Todo lo que empieza con /api responde siempre JSON desde acá: si se lo dejáramos
+            // pasar a Vite, serviría el código fuente de api/*.js en lugar de los datos.
+            server.middlewares.use("/api", async (req, res) => {
                 const url = new URL(req.url, "http://localhost");
                 const nombre = url.pathname.replace(/^\/+|\/+$/g, "");
+                const archivoLocal = path.resolve("api", `${nombre}.js`);
 
-                if (!/^[a-z]+$/.test(nombre)) return next();
+                function responderError(codigo, mensaje) {
+                    res.statusCode = codigo;
+                    res.setHeader("Content-Type", "application/json");
+                    res.end(JSON.stringify({ error: mensaje }));
+                }
+
+                if (!/^[a-z]+$/.test(nombre) || !fs.existsSync(archivoLocal)) {
+                    return responderError(404, `No existe el endpoint /api/${nombre}`);
+                }
 
                 try {
-                    const archivo = pathToFileURL(path.resolve("api", `${nombre}.js`)).href;
+                    const archivo = pathToFileURL(archivoLocal).href;
                     const { default: handler } = await import(`${archivo}?t=${Date.now()}`);
 
                     req.query = Object.fromEntries(url.searchParams);
@@ -31,10 +43,8 @@ function apiLocal() {
 
                     await handler(req, res);
                 } catch (error) {
-                    if (error.code === "ERR_MODULE_NOT_FOUND") return next();
-                    console.error(error);
-                    res.statusCode = 500;
-                    res.end(JSON.stringify({ error: "Error en la API local" }));
+                    console.error(`[api-local] Error en /api/${nombre}:`, error);
+                    responderError(500, "Error en la API local. Si persiste, reiniciá npm run dev.");
                 }
             });
         },
