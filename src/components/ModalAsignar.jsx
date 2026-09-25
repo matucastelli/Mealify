@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DIAS, FRANJAS } from "../lib/constantes.js";
 
-export default function ModalAsignar({ abierto, onConfirmar, onCerrar }) {
+export default function ModalAsignar({ abierto, error, onConfirmar, onCambiarSeleccion, onCerrar }) {
     const [dia, setDia] = useState("lunes");
     const [franja, setFranja] = useState("desayuno");
 
@@ -11,13 +11,14 @@ export default function ModalAsignar({ abierto, onConfirmar, onCerrar }) {
                 <button id="btnCerrarAsignar" onClick={onCerrar}>×</button>
                 <h3>Agregar al plan</h3>
                 <label htmlFor="selectDia">Día</label>
-                <select id="selectDia" value={dia} onChange={(e) => setDia(e.target.value)}>
+                <select id="selectDia" value={dia} onChange={(e) => { setDia(e.target.value); onCambiarSeleccion(); }}>
                     {DIAS.map(d => <option key={d.valor} value={d.valor}>{d.nombreConTilde}</option>)}
                 </select>
                 <label htmlFor="selectFranja">Comida</label>
-                <select id="selectFranja" value={franja} onChange={(e) => setFranja(e.target.value)}>
+                <select id="selectFranja" value={franja} onChange={(e) => { setFranja(e.target.value); onCambiarSeleccion(); }}>
                     {FRANJAS.map(f => <option key={f.valor} value={f.valor}>{f.nombre}</option>)}
                 </select>
+                {error && <p className="mensaje-error" role="alert">{error}</p>}
                 <button id="btnConfirmarAsignar" onClick={() => onConfirmar(dia, franja)}>Confirmar</button>
             </div>
         </div>

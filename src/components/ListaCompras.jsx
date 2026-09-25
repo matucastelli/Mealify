@@ -1,4 +1,4 @@
-export default function ListaCompras({ oculto, ingredientes, cargando, marcadas, onToggleCompra, onLimpiar }) {
+export default function ListaCompras({ oculto, ingredientes, cargando, marcadas, hayOcultas, onToggleCompra, onLimpiar, onRestaurar }) {
     return (
         <section id="compras" className={`seccion ${oculto ? "oculto" : ""}`}>
             <div className="compras-cabecera">
@@ -6,7 +6,12 @@ export default function ListaCompras({ oculto, ingredientes, cargando, marcadas,
                     <h2>Lista de compras</h2>
                     <p>Ingredientes de las recetas de tu plan semanal.</p>
                 </div>
-                <button id="btnLimpiarCompras" className="btn-limpiar-compras" onClick={onLimpiar}>Limpiar marcados</button>
+                <div className="compras-acciones">
+                    {hayOcultas && (
+                        <button id="btnRestaurarCompras" className="btn-limpiar-compras" onClick={onRestaurar}>Restaurar lista</button>
+                    )}
+                    <button id="btnLimpiarCompras" className="btn-limpiar-compras" onClick={onLimpiar}>Limpiar marcados</button>
+                </div>
             </div>
             <div id="listaCompras">
                 <ContenidoLista ingredientes={ingredientes} cargando={cargando} marcadas={marcadas} onToggleCompra={onToggleCompra} />
