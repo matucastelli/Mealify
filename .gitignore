@@ -3,3 +3,5 @@
 node_modules
 CLAUDE.local.md
 dist
+
+.claude/settings.local.json
