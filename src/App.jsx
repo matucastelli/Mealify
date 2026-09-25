@@ -84,6 +84,7 @@ export default function App() {
 
     async function confirmarAsignacion(dia, franja) {
         const idReceta = recetaParaAsignar;
+        if (idReceta == null) return;
         if (!asignar(idReceta, dia, franja)) {
             setErrorAsignar("Esa receta ya está asignada a este día y comida.");
             return;
