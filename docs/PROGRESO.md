@@ -6,7 +6,8 @@
 Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 y 2 están mergeados. La rama `mejoras-critica` está sincronizada con `main`. Se agregó la skill `progreso-proyecto` para mantener este archivo al día entre las dos compus.
 
 ## Próximo paso
-Commit 3 del plan: feedback de las acciones (aviso al agregar al plan, tab activo, "Ver receta" con carga y error, distinguir error de red de "sin resultados").
+1. Crear y mergear el PR de la skill de progreso (`5e2812d`, rama `mejoras-critica`) con "Create a merge commit". Mientras no se mergee, este archivo solo está en `mejoras-critica`, no en `main`.
+2. Commit 3 del plan: feedback de las acciones (aviso al agregar al plan, tab activo, "Ver receta" con carga y error, distinguir error de red de "sin resultados").
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -35,6 +36,7 @@ Commit 3 del plan: feedback de las acciones (aviso al agregar al plan, tab activ
 
 ## Bitácora
 ### 2026-09-25
+- Fin de la sesión en esta compu: todo subido a `mejoras-critica`; el PR de la skill quedó sin crear/mergear.
 - Se creó la skill `progreso-proyecto` (`.claude/skills/`) y este archivo. Se probó con una evaluación completa: 100 % con la skill contra 89 % sin ella.
 - PR #4 mergeado: commit 2, menú del celular (`23da00e`).
 - PR #3 mergeado: commit 1, modales accesibles (`cf6d70d`).
