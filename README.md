@@ -4,7 +4,7 @@ Aplicación web para buscar recetas, guardar tus favoritas y planificar tus comi
 
 **🔗 Demo en vivo:** [mealify-mtt.vercel.app](https://mealify-mtt.vercel.app/)
 
-![Mealify landing preview](logo.png)
+![Mealify landing preview](public/logo.png)
 
 ## Funcionalidades
 
@@ -21,8 +21,8 @@ Aplicación web para buscar recetas, guardar tus favoritas y planificar tus comi
 
 ## 🛠️ Stack técnico
 
-- **HTML5 / CSS3** — sin frameworks ni preprocesadores.
-- **JavaScript (ES Modules)** — vanilla JS en el cliente, sin librerías ni build tools.
+- **React + Vite** — componentes y hooks propios, sin router ni librerías de estado.
+- **CSS3** — una hoja de estilos global, sin preprocesadores.
 - **Vercel Serverless Functions (Node.js)** — actúan como proxy hacia Spoonacular, manteniendo la API key solo en el servidor.
 - **[Spoonacular API](https://spoonacular.com/food-api)** — fuente de datos de recetas.
 - **Font Awesome** — iconografía.
@@ -33,23 +33,26 @@ Aplicación web para buscar recetas, guardar tus favoritas y planificar tus comi
 
 ```
 Mealify/
-├── index.html
+├── index.html           # Shell de Vite (monta React en #root)
 ├── style.css
-├── logo.png
+├── vite.config.js       # Incluye el plugin que sirve /api en desarrollo
+├── public/logo.png
 ├── api/
 │   ├── buscar.js        # Proxy a Spoonacular complexSearch
 │   ├── detalle.js       # Proxy a Spoonacular recipe information
 │   ├── random.js        # Proxy a Spoonacular recipes/random
 │   └── _lib/
 │       └── mock.js      # Cache de respuestas en desarrollo (ver "Nota técnica" abajo)
-├── mocks/               # Respuestas de Spoonacular cacheadas para 
-└── JS/
-    ├── api.js           # Llamadas fetch a los endpoints propios (/api/buscar, /api/detalle, /api/random)
-    ├── main.js           # Lógica principal, event listeners, estado de la app
-    ├── ui.js             # Renderizado de recetas, planificador y lista de compras
-    ├── storage.js        # Persistencia en localStorage (favoritos, plan, lista de compras)
-    ├── tabs.js           # Navegación entre secciones
-    └── landing.js        # Animaciones de scroll en la landing page
+├── mocks/               # Respuestas de Spoonacular cacheadas para desarrollo
+└── src/
+    ├── main.jsx         # Punto de entrada
+    ├── App.jsx          # Estado de la app y composición de secciones
+    ├── components/      # Landing, Header, Buscar, Favoritos, Planificador, ListaCompras, modales
+    ├── hooks/           # useFavoritos, usePlanSemanal, useCompras, useRecetasDetalle
+    └── lib/
+        ├── api.js       # Llamadas fetch a los endpoints propios (/api/buscar, /api/detalle, /api/random)
+        ├── storage.js   # Persistencia en localStorage (favoritos, plan, lista de compras)
+        └── listaCompras.js # Agrupa los ingredientes del plan semanal
 ```
 
 ## 👤 Autor
@@ -77,9 +80,9 @@ Proyecto realizado con fines de portfolio y aprendizaje.
    ```
    SPOONACULAR_KEY=tu_api_key
    ```
-3. Corré el proyecto con la CLI de Vercel:
+3. Levantá el servidor de desarrollo (sirve la app y también los endpoints de `/api`):
    ```bash
-   vercel dev
+   npm run dev
    ```
 
-**Nota técnica:** en desarrollo, la primera vez que se pide una búsqueda/receta/random se llama a la API real y la respuesta se guarda en `mocks/` (no versionada); las siguientes veces se lee de ahí, para no agotar la cuota diaria del plan free (50 puntos/día). Para forzar una llamada real ignorando el mock guardado: `FORCE_REAL=true vercel dev`.
+**Nota técnica:** en desarrollo, la primera vez que se pide una búsqueda/receta/random se llama a la API real y la respuesta se guarda en `mocks/`; las siguientes veces se lee de ahí, para no agotar la cuota diaria del plan free (50 puntos/día). Para forzar una llamada real ignorando el mock guardado, agregá `FORCE_REAL=true` al `.env`.
