@@ -24,7 +24,8 @@ Deploy: Vercel (push a main = deploy automático a producción).
 - Deploy: push a main
 
 ## Dos computadoras
-El proyecto se trabaja en dos computadoras, que tienen que tener siempre la misma versión:
+El proyecto se trabaja en dos computadoras, que tienen que tener siempre la misma versión.
+El estado del trabajo (qué está hecho, qué sigue, decisiones) vive en `docs/PROGRESO.md` y lo mantiene la skill `progreso-proyecto` (`.claude/skills/`): usala al empezar, después de cada avance y al cerrar.
 - Al empezar: `git fetch` y `git status`. Si la rama está atrasada respecto de GitHub, hacer `git pull` antes de tocar nada.
 - Al terminar: no dejar commits sin subir. Hacer push de la rama de trabajo, aunque el trabajo no esté terminado.
 - Commitear los mocks nuevos de `mocks/`, así la otra compu no gasta cuota de Spoonacular pidiendo lo mismo.
