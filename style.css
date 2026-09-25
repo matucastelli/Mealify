@@ -284,7 +284,8 @@ h1 {
     cursor: pointer;
 }
 
-#modal-receta, #modal-asignar {
+/* Los modales solo existen en el DOM mientras están abiertos (ver Modal.jsx) */
+.modal-fondo {
     position: fixed;
     top: 0;
     left: 0;
@@ -296,13 +297,30 @@ h1 {
     align-items: center;
     z-index: 40;
     backdrop-filter: blur(4px);
-    transition: opacity 0.25s ease;
-    opacity: 1;
+    animation: modal-aparecer 0.2s ease-out;
 }
 
-#modal-receta.oculto, #modal-asignar.oculto {
-    opacity: 0;
-    pointer-events: none;
+.modal-fondo .modal-contenido {
+    animation: modal-contenido-aparecer 0.2s ease-out;
+}
+
+/* El foco llega al contenedor solo como punto de partida al abrir */
+.modal-contenido:focus {
+    outline: none;
+}
+
+@keyframes modal-aparecer {
+    from { opacity: 0; }
+}
+
+@keyframes modal-contenido-aparecer {
+    from { opacity: 0; transform: translateY(8px) scale(0.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal-fondo, .modal-fondo .modal-contenido {
+        animation: none;
+    }
 }
 
 .modal-contenido {
