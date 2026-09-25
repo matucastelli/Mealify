@@ -88,3 +88,15 @@ export function ocultarComprasMarcadas() {
     localStorage.setItem("comprasOcultas", JSON.stringify(nuevasOcultas));
     localStorage.removeItem("comprasMarcadas");
 }
+
+export function mostrarCompras(claves) {
+    const ocultas = getComprasOcultas().filter(clave => !claves.includes(clave));
+    const marcadas = getComprasMarcadas().filter(clave => !claves.includes(clave));
+    localStorage.setItem("comprasOcultas", JSON.stringify(ocultas));
+    localStorage.setItem("comprasMarcadas", JSON.stringify(marcadas));
+}
+
+export function restaurarCompras() {
+    localStorage.removeItem("comprasOcultas");
+    localStorage.removeItem("comprasMarcadas");
+}
