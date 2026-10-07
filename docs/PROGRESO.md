@@ -3,17 +3,17 @@
 > Última actualización: 2026-10-07 · Rama de trabajo: `mejoras-critica` · Último commit en main: `0cdc4b7 Merge pull request #6 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 3 están mergeados (el 3 en el PR #6). La rama `mejoras-critica` está sincronizada con `main` y no hay trabajo a medias.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 3 están mergeados (el 3 en el PR #6). El commit 4 (tarjetas en celular) está hecho y subido en `mejoras-critica`, esperando que se cree y mergee su PR.
 
 ## Próximo paso
-Commit 4 del plan: layout de tarjetas en celular. En las capturas del commit 3 se ve el texto de las tarjetas muy apretado en 390px.
+Crear y mergear el PR del commit 4. Después, `git pull origin main` en `mejoras-critica` y arrancar el commit 5: planificador sin arrastrar.
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
 - [x] 2. Menú del celular: se cierra al navegar, inert, áreas táctiles de 44px (PR #4)
 - [x] 3. Feedback de las acciones: aviso, tab activo, carga y errores (PR #6)
-- [ ] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) ← siguiente
-- [ ] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja)
+- [x] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) (PR pendiente)
+- [ ] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) ← siguiente
 - [ ] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen)
 - [ ] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección)
 - [ ] 8. Detalle de receta (pasos numerados, acciones en el modal, imagen de reemplazo)
@@ -36,6 +36,7 @@ Commit 4 del plan: layout de tarjetas en celular. En las capturas del commit 3 s
 
 ## Bitácora
 ### 2026-10-07
+- Commit 4: tarjetas en celular. Imagen, texto y estrella arriba, y "Ver receta" / "Agregar al plan" en su propia fila. Títulos que cortan palabras largas, categorías en 2 líneas como máximo, estrella y botones de 44px, buscador y selects en 16px, hover solo con mouse. Se verificó con puppeteer en 390px, 320px y escritorio: sin scroll horizontal ni desbordes, y los botones de la tarjeta siguen funcionando.
 - Limpieza: `main` local actualizado; borradas las ramas viejas `migracion-react`, `arreglos-rapidos` (local y GitHub) y `backup/main-antes-de-limpiar` (local).
 - Fin de la sesión en esta compu: todo subido, `mejoras-critica` igual a `main`.
 - PR #6 mergeado: commit 3, feedback de las acciones (`679f71f`). Se probó antes del merge. En Vercel, `SPOONACULAR_KEY` quedó habilitada también para Preview, así se puede probar cada rama en su deploy de preview.
