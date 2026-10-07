@@ -21,7 +21,7 @@ function useEsMovil() {
     return esMovil;
 }
 
-export default function Header({ onCambiarSeccion, onClickMarca }) {
+export default function Header({ seccionActiva, onCambiarSeccion, onClickMarca }) {
     const [menuAbierto, setMenuAbierto] = useState(false);
     const esMovil = useEsMovil();
     const btnMenu = useRef(null);
@@ -73,11 +73,19 @@ export default function Header({ onCambiarSeccion, onClickMarca }) {
             {/* En el celular, con el menú cerrado, inert saca los links del orden de foco */}
             <nav id="nav-principal" className={claseMenu} aria-label="Secciones" inert={esMovil && !menuAbierto}>
                 <button id="btnCerrarTab" ref={btnCerrar} aria-label="Cerrar menú" onClick={cerrarMenu}>×</button>
-                {TABS.map(tab => (
-                    <button key={tab.seccion} className="tab" onClick={() => elegirSeccion(tab.seccion)}>
-                        {tab.texto}
-                    </button>
-                ))}
+                {TABS.map(tab => {
+                    const activo = tab.seccion === seccionActiva;
+                    return (
+                        <button
+                            key={tab.seccion}
+                            className={`tab ${activo ? "activo" : ""}`}
+                            aria-current={activo ? "page" : undefined}
+                            onClick={() => elegirSeccion(tab.seccion)}
+                        >
+                            {tab.texto}
+                        </button>
+                    );
+                })}
             </nav>
             <div id="menu-backdrop" className={claseMenu} onClick={cerrarMenu}></div>
         </header>

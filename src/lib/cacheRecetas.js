@@ -7,6 +7,8 @@ const MAXIMO_GUARDADAS = 50;
 
 const cacheRecetas = new Map(leerGuardadas());
 const pedidosEnCurso = new Map();
+// Ids cuyo último pedido falló (red o servidor); se vuelven a pedir en el próximo intento
+const fallidas = new Set();
 
 function leerGuardadas() {
     try {
@@ -34,17 +36,28 @@ export function leerReceta(id) {
     return cacheRecetas.get(String(id));
 }
 
+export function fallo(id) {
+    return fallidas.has(String(id));
+}
+
 export function obtenerRecetaCacheada(id) {
     const clave = String(id);
     if (cacheRecetas.has(clave)) return Promise.resolve(cacheRecetas.get(clave));
 
     if (!pedidosEnCurso.has(clave)) {
-        pedidosEnCurso.set(clave, obtenerDetalleReceta(clave).then(receta => {
-            cacheRecetas.set(clave, receta);
-            pedidosEnCurso.delete(clave);
-            if (receta != null) guardar();
-            return receta;
-        }));
+        // Si el pedido falla no se guarda en el cache, así el próximo intento vuelve a pedirla
+        fallidas.delete(clave);
+        const pedido = obtenerDetalleReceta(clave)
+            .then(receta => {
+                cacheRecetas.set(clave, receta);
+                if (receta != null) guardar();
+                return receta;
+            }, error => {
+                fallidas.add(clave);
+                throw error;
+            })
+            .finally(() => pedidosEnCurso.delete(clave));
+        pedidosEnCurso.set(clave, pedido);
     }
     return pedidosEnCurso.get(clave);
 }

@@ -3,15 +3,15 @@
 > Última actualización: 2026-10-07 · Rama de trabajo: `mejoras-critica` · Último commit en main: `4e7ecb9 Merge pull request #5 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 y 2 están mergeados, y también la skill `progreso-proyecto` (PR #5). La rama `mejoras-critica` está sincronizada con `main`. Se está haciendo el commit 3.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 y 2 están mergeados, y también la skill `progreso-proyecto` (PR #5). La rama `mejoras-critica` está sincronizada con `main`. El commit 3 (feedback de las acciones) está pusheado en `mejoras-critica`, esperando el PR.
 
 ## Próximo paso
-Commit 3 del plan: feedback de las acciones (aviso al agregar al plan, tab activo, "Ver receta" con carga y error, distinguir error de red de "sin resultados").
+Crear y mergear el PR del commit 3 ("Create a merge commit"). Después, `git pull origin main` en `mejoras-critica` y seguir con el commit 4: layout de tarjetas en celular.
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
 - [x] 2. Menú del celular: se cierra al navegar, inert, áreas táctiles de 44px (PR #4)
-- [ ] 3. Feedback de las acciones ← siguiente
+- [ ] 3. Feedback de las acciones ← PR pendiente
 - [ ] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px)
 - [ ] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja)
 - [ ] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen)
@@ -35,6 +35,7 @@ Commit 3 del plan: feedback de las acciones (aviso al agregar al plan, tab activ
 
 ## Bitácora
 ### 2026-10-07
+- Commit 3: feedback de las acciones. Aviso al agregar al plan (con "Ver plan"), tab activo, "Ver receta" con "Cargando…" y aviso de error, y búsqueda con estado de error y "Reintentar". `api.js` ahora lanza error si falla la red o el servidor, y el cache de recetas ya no guarda los errores. Se verificó con 25 chequeos de puppeteer en escritorio y en celular.
 - PR #5 mergeado: skill `progreso-proyecto` y este archivo (`4e7ecb9`). Arranca el commit 3.
 
 ### 2026-09-25

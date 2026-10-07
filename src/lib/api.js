@@ -1,50 +1,24 @@
-export async function buscarRecetas(query) {
-    try {
-        const url = `/api/buscar?query=${encodeURIComponent(query)}`;
-        const respuesta = await fetch(url);
-        const datos = await respuesta.json();
-
-        if (datos.results == null) {
-            return [];
-        } else {
-            return datos.results;
-        }
-    } catch(error) {
-        console.error("Hubo un error cargando las recetas", error);
-        return [];
+// Si falla la red o el servidor, las funciones lanzan un error; así quien llama puede
+// distinguir "no hubo respuesta" de "la respuesta vino vacía".
+async function pedirJson(url) {
+    const respuesta = await fetch(url);
+    if (!respuesta.ok) {
+        throw new Error(`Error ${respuesta.status} al pedir ${url}`);
     }
+    return respuesta.json();
+}
+
+export async function buscarRecetas(query) {
+    const datos = await pedirJson(`/api/buscar?query=${encodeURIComponent(query)}`);
+    return datos.results ?? [];
 }
 
 export async function obtenerDetalleReceta(id) {
-    try {
-        const url = `/api/detalle?id=${encodeURIComponent(id)}`;
-        const respuesta = await fetch(url);
-        const receta = await respuesta.json();
-
-        if (receta.id == null) {
-            return null
-        } else {
-            return receta
-        }
-    } catch (error) {
-        console.error("Hubo un error cargando el detalle de la receta", error);
-        return null;
-    }
+    const receta = await pedirJson(`/api/detalle?id=${encodeURIComponent(id)}`);
+    return receta.id == null ? null : receta;
 }
 
 export async function obtenerRecetasRandom(cantidad) {
-    try {
-        const url = `/api/random?cantidad=${cantidad}`;
-        const respuesta = await fetch(url);
-        const datos = await respuesta.json();
-
-        if (datos.recipes == null) {
-            return [];
-        } else {
-            return datos.recipes;
-        }
-    } catch (error) {
-        console.error("Hubo un error cargando las recetas", error);
-        return [];
-    }
+    const datos = await pedirJson(`/api/random?cantidad=${cantidad}`);
+    return datos.recipes ?? [];
 }
