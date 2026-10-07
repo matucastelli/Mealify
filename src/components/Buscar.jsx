@@ -2,7 +2,7 @@ import RecetaCard from "./RecetaCard.jsx";
 
 const FILTROS_RAPIDOS = ["Chicken", "Beef", "Rice", "Pork", "Vegan"];
 
-export default function Buscar({ oculto, texto, onCambiarTexto, onBuscar, mostrarSugerencias, recetas, estadoBusqueda, terminoBuscado, favoritos, accionesReceta }) {
+export default function Buscar({ oculto, texto, onCambiarTexto, onBuscar, mostrarSugerencias, recetas, estadoBusqueda, terminoBuscado, onReintentar, favoritos, idCargandoDetalle, accionesReceta }) {
     function buscarConFiltro(termino) {
         onCambiarTexto(termino);
         onBuscar(termino);
@@ -36,6 +36,12 @@ export default function Buscar({ oculto, texto, onCambiarTexto, onBuscar, mostra
                     <div className="estado-vacio">
                         <p>Buscando recetas...</p>
                     </div>
+                ) : estadoBusqueda === "error" ? (
+                    <div className="estado-vacio">
+                        <i className="fa-solid fa-wifi icono-lista-vacia"></i>
+                        <p>No pudimos conectarnos. Revisá tu conexión y probá de nuevo.</p>
+                        <button className="btn-filtro" onClick={onReintentar}>Reintentar</button>
+                    </div>
                 ) : estadoBusqueda === "listo" && recetas.length === 0 ? (
                     <div className="estado-vacio">
                         <i className="fa-solid fa-magnifying-glass icono-lista-vacia"></i>
@@ -47,6 +53,7 @@ export default function Buscar({ oculto, texto, onCambiarTexto, onBuscar, mostra
                             key={receta.id}
                             receta={receta}
                             esFavorito={favoritos.some(fav => fav.id === receta.id)}
+                            cargandoDetalle={idCargandoDetalle === receta.id}
                             {...accionesReceta}
                         />
                     ))

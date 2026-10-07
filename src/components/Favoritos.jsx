@@ -1,6 +1,6 @@
 import RecetaCard from "./RecetaCard.jsx";
 
-export default function Favoritos({ oculto, favoritos, accionesReceta, onIrABuscar }) {
+export default function Favoritos({ oculto, favoritos, idCargandoDetalle, accionesReceta, onIrABuscar }) {
     return (
         <section id="favoritos" className={`seccion ${oculto ? "oculto" : ""}`}>
             <div id="listaFavoritos">
@@ -12,7 +12,7 @@ export default function Favoritos({ oculto, favoritos, accionesReceta, onIrABusc
                     </div>
                 ) : (
                     favoritos.map(receta => (
-                        <RecetaCard key={receta.id} receta={receta} esFavorito {...accionesReceta} />
+                        <RecetaCard key={receta.id} receta={receta} esFavorito cargandoDetalle={idCargandoDetalle === receta.id} {...accionesReceta} />
                     ))
                 )}
             </div>
