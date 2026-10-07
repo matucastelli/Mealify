@@ -28,13 +28,15 @@ Commit 4 del plan: layout de tarjetas en celular. En las capturas del commit 3 s
 - 2026-09-25: sin atribución a Claude en commits ni PRs. Se reescribió la historia de `main` para sacar la que había.
 
 ## Pendientes para la otra compu
-- **Tiene la historia vieja de git** (la de antes de sacar la atribución a Claude). No hacer `git pull` en `main`. Primero revisar que no haya trabajo sin subir (`git status` y `git log origin/main..main`), y después: `git fetch origin`, `git switch main`, `git reset --hard origin/main`. Borrar las ramas viejas `migracion-react` y `arreglos-rapidos` si existen.
+- El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
+- **Tiene la historia vieja de git** (la de antes de sacar la atribución a Claude). No hacer `git pull` en `main`. Primero revisar que no haya trabajo sin subir (`git status` y `git log origin/main..main`), y después: `git fetch --prune origin`, `git switch main`, `git reset --hard origin/main`. Borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (en GitHub ya no están).
 - Correr `npm install`: el proyecto pasó a React + Vite.
 - Tener el `.env` con `SPOONACULAR_KEY` (no viaja por git).
 - Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
 
 ## Bitácora
 ### 2026-10-07
+- Limpieza: `main` local actualizado; borradas las ramas viejas `migracion-react`, `arreglos-rapidos` (local y GitHub) y `backup/main-antes-de-limpiar` (local).
 - Fin de la sesión en esta compu: todo subido, `mejoras-critica` igual a `main`.
 - PR #6 mergeado: commit 3, feedback de las acciones (`679f71f`). Se probó antes del merge. En Vercel, `SPOONACULAR_KEY` quedó habilitada también para Preview, así se puede probar cada rama en su deploy de preview.
 - Commit 3: feedback de las acciones. Aviso al agregar al plan (con "Ver plan"), tab activo, "Ver receta" con "Cargando…" y aviso de error, y búsqueda con estado de error y "Reintentar". `api.js` ahora lanza error si falla la red o el servidor, y el cache de recetas ya no guarda los errores. Se verificó con 25 chequeos de puppeteer en escritorio y en celular.
