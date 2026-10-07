@@ -1,18 +1,18 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-07 · Rama de trabajo: `mejoras-critica` · Último commit en main: `4e7ecb9 Merge pull request #5 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-07 · Rama de trabajo: `mejoras-critica` · Último commit en main: `0cdc4b7 Merge pull request #6 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 y 2 están mergeados, y también la skill `progreso-proyecto` (PR #5). La rama `mejoras-critica` está sincronizada con `main`. El commit 3 (feedback de las acciones) está pusheado en `mejoras-critica`, esperando el PR.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 3 están mergeados (el 3 en el PR #6). La rama `mejoras-critica` está sincronizada con `main` y no hay trabajo a medias.
 
 ## Próximo paso
-Crear y mergear el PR del commit 3 ("Create a merge commit"). Después, `git pull origin main` en `mejoras-critica` y seguir con el commit 4: layout de tarjetas en celular.
+Commit 4 del plan: layout de tarjetas en celular. En las capturas del commit 3 se ve el texto de las tarjetas muy apretado en 390px.
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
 - [x] 2. Menú del celular: se cierra al navegar, inert, áreas táctiles de 44px (PR #4)
-- [ ] 3. Feedback de las acciones ← PR pendiente
-- [ ] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px)
+- [x] 3. Feedback de las acciones: aviso, tab activo, carga y errores (PR #6)
+- [ ] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) ← siguiente
 - [ ] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja)
 - [ ] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen)
 - [ ] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección)
@@ -35,6 +35,8 @@ Crear y mergear el PR del commit 3 ("Create a merge commit"). Después, `git pul
 
 ## Bitácora
 ### 2026-10-07
+- Fin de la sesión en esta compu: todo subido, `mejoras-critica` igual a `main`.
+- PR #6 mergeado: commit 3, feedback de las acciones (`679f71f`). Se probó antes del merge. En Vercel, `SPOONACULAR_KEY` quedó habilitada también para Preview, así se puede probar cada rama en su deploy de preview.
 - Commit 3: feedback de las acciones. Aviso al agregar al plan (con "Ver plan"), tab activo, "Ver receta" con "Cargando…" y aviso de error, y búsqueda con estado de error y "Reintentar". `api.js` ahora lanza error si falla la red o el servidor, y el cache de recetas ya no guarda los errores. Se verificó con 25 chequeos de puppeteer en escritorio y en celular.
 - PR #5 mergeado: skill `progreso-proyecto` y este archivo (`4e7ecb9`). Arranca el commit 3.
 
