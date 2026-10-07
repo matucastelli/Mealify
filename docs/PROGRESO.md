@@ -1,13 +1,12 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-09-25 · Rama de trabajo: `mejoras-critica` · Último commit en main: `ecea097 Merge pull request #4 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-07 · Rama de trabajo: `mejoras-critica` · Último commit en main: `4e7ecb9 Merge pull request #5 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 y 2 están mergeados. La rama `mejoras-critica` está sincronizada con `main`. Se agregó la skill `progreso-proyecto` para mantener este archivo al día entre las dos compus.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 y 2 están mergeados, y también la skill `progreso-proyecto` (PR #5). La rama `mejoras-critica` está sincronizada con `main`. Se está haciendo el commit 3.
 
 ## Próximo paso
-1. Crear y mergear el PR de la skill de progreso (`5e2812d`, rama `mejoras-critica`) con "Create a merge commit". Mientras no se mergee, este archivo solo está en `mejoras-critica`, no en `main`.
-2. Commit 3 del plan: feedback de las acciones (aviso al agregar al plan, tab activo, "Ver receta" con carga y error, distinguir error de red de "sin resultados").
+Commit 3 del plan: feedback de las acciones (aviso al agregar al plan, tab activo, "Ver receta" con carga y error, distinguir error de red de "sin resultados").
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -35,6 +34,9 @@ Se está ejecutando el plan de mejoras que salió de la crítica de diseño de I
 - Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
 
 ## Bitácora
+### 2026-10-07
+- PR #5 mergeado: skill `progreso-proyecto` y este archivo (`4e7ecb9`). Arranca el commit 3.
+
 ### 2026-09-25
 - Fin de la sesión en esta compu: todo subido a `mejoras-critica`; el PR de la skill quedó sin crear/mergear.
 - Se creó la skill `progreso-proyecto` (`.claude/skills/`) y este archivo. Se probó con una evaluación completa: 100 % con la skill contra 89 % sin ella.
