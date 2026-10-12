@@ -1,18 +1,18 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-07 · Rama de trabajo: `mejoras-critica` · Último commit en main: `0cdc4b7 Merge pull request #6 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-12 · Rama de trabajo: `mejoras-critica` · Último commit en main: `902ec6b Merge pull request #7 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 3 están mergeados (el 3 en el PR #6). El commit 4 (tarjetas en celular) está hecho y subido en `mejoras-critica`, esperando que se cree y mergee su PR.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 4 están mergeados (el 4 en el PR #7). `mejoras-critica` está igual a `main`, lista para el commit 5.
 
 ## Próximo paso
-Crear y mergear el PR del commit 4. Después, `git pull origin main` en `mejoras-critica` y arrancar el commit 5: planificador sin arrastrar.
+Commit 5 del plan: planificador sin arrastrar ("Mover a…" y "+ Agregar" por franja).
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
 - [x] 2. Menú del celular: se cierra al navegar, inert, áreas táctiles de 44px (PR #4)
 - [x] 3. Feedback de las acciones: aviso, tab activo, carga y errores (PR #6)
-- [x] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) (PR pendiente)
+- [x] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) (PR #7)
 - [ ] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) ← siguiente
 - [ ] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen)
 - [ ] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección)
@@ -32,9 +32,13 @@ Crear y mergear el PR del commit 4. Después, `git pull origin main` en `mejoras
 - **Tiene la historia vieja de git** (la de antes de sacar la atribución a Claude). No hacer `git pull` en `main`. Primero revisar que no haya trabajo sin subir (`git status` y `git log origin/main..main`), y después: `git fetch --prune origin`, `git switch main`, `git reset --hard origin/main`. Borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (en GitHub ya no están).
 - Correr `npm install`: el proyecto pasó a React + Vite.
 - Tener el `.env` con `SPOONACULAR_KEY` (no viaja por git).
+- Opcional: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs; en esta compu todavía no está.
 - Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
 
 ## Bitácora
+### 2026-10-12
+- PR #7 mergeado: commit 4, tarjetas en celular (`80ccbe6`). `mejoras-critica` actualizada con `main`.
+
 ### 2026-10-07
 - Commit 4: tarjetas en celular. Imagen, texto y estrella arriba, y "Ver receta" / "Agregar al plan" en su propia fila. Títulos que cortan palabras largas, categorías en 2 líneas como máximo, estrella y botones de 44px, buscador y selects en 16px, hover solo con mouse. Se verificó con puppeteer en 390px, 320px y escritorio: sin scroll horizontal ni desbordes, y los botones de la tarjeta siguen funcionando.
 - Limpieza: `main` local actualizado; borradas las ramas viejas `migracion-react`, `arreglos-rapidos` (local y GitHub) y `backup/main-antes-de-limpiar` (local).
