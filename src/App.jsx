@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { buscarRecetas, obtenerRecetasRandom } from "./lib/api.js";
 import { obtenerRecetaCacheada } from "./lib/cacheRecetas.js";
 import { armarListaCompras, idsDelPlan } from "./lib/listaCompras.js";
-import { DIAS, FRANJAS } from "./lib/constantes.js";
+import { describirFranja } from "./lib/constantes.js";
 import { useFavoritos } from "./hooks/useFavoritos.js";
 import { usePlanSemanal } from "./hooks/usePlanSemanal.js";
 import { useCompras } from "./hooks/useCompras.js";
@@ -15,6 +15,7 @@ import Planificador from "./components/Planificador.jsx";
 import ListaCompras from "./components/ListaCompras.jsx";
 import ModalReceta from "./components/ModalReceta.jsx";
 import ModalAsignar from "./components/ModalAsignar.jsx";
+import ModalElegirReceta from "./components/ModalElegirReceta.jsx";
 import Aviso from "./components/Aviso.jsx";
 
 async function cargarRecetasIniciales() {
@@ -56,6 +57,13 @@ export default function App() {
     const [recetaDetalle, setRecetaDetalle] = useState(null);
     const [modalRecetaAbierto, setModalRecetaAbierto] = useState(false);
     const [recetaParaAsignar, setRecetaParaAsignar] = useState(null);
+    // Día y comida de "Agregar al plan": se recuerdan entre aperturas
+    const [seleccionAsignar, setSeleccionAsignar] = useState({ dia: "lunes", franja: "desayuno" });
+    // { id, origen: { dia, franja }, destino: { dia, franja } } mientras está abierto "Mover receta"
+    const [movimiento, setMovimiento] = useState(null);
+    // { dia, franja } mientras está abierto "+ Agregar" de una franja
+    const [franjaParaAgregar, setFranjaParaAgregar] = useState(null);
+    // Error del modal de día y comida (solo hay uno abierto a la vez)
     const [errorAsignar, setErrorAsignar] = useState("");
     const [idCargandoDetalle, setIdCargandoDetalle] = useState(null);
     const ultimoDetalle = useRef(0);
@@ -130,30 +138,82 @@ export default function App() {
         }
     }
 
-    async function confirmarAsignacion(dia, franja) {
-        const idReceta = recetaParaAsignar;
-        if (idReceta == null) return;
-        if (!asignar(idReceta, dia, franja)) {
+    // Devuelve false si la receta ya estaba en ese día y comida
+    function agregarAlPlan(idReceta, dia, franja) {
+        if (!asignar(idReceta, dia, franja)) return false;
+
+        setAviso({
+            texto: `Agregada al plan: ${describirFranja(dia, franja)}`,
+            // Desde el planificador no hace falta ofrecer ir al plan
+            accion: seccionActiva === "planificador"
+                ? undefined
+                : { texto: "Ver plan", onClick: () => setSeccionActiva("planificador") },
+        });
+        volverAMostrarIngredientes(idReceta);
+        return true;
+    }
+
+    // Si sus ingredientes se habían limpiado de la lista de compras, vuelven a aparecer
+    async function volverAMostrarIngredientes(idReceta) {
+        const receta = await obtenerRecetaCacheada(idReceta).catch(() => null);
+        if (receta) mostrar(armarListaCompras([receta], []).map(ingrediente => ingrediente.clave));
+    }
+
+    function confirmarAsignacion() {
+        if (recetaParaAsignar == null) return;
+        if (!agregarAlPlan(recetaParaAsignar, seleccionAsignar.dia, seleccionAsignar.franja)) {
             setErrorAsignar("Esa receta ya está asignada a este día y comida.");
             return;
         }
         cerrarModalAsignar();
-
-        const nombreDia = DIAS.find(d => d.valor === dia).nombreConTilde;
-        const nombreFranja = FRANJAS.find(f => f.valor === franja).nombre;
-        setAviso({
-            texto: `Agregada al plan: ${nombreDia} · ${nombreFranja}`,
-            accion: { texto: "Ver plan", onClick: () => setSeccionActiva("planificador") },
-        });
-
-        // Si sus ingredientes se habían limpiado de la lista de compras, vuelven a aparecer
-        const receta = await obtenerRecetaCacheada(idReceta).catch(() => null);
-        if (receta) mostrar(armarListaCompras([receta], []).map(ingrediente => ingrediente.clave));
     }
 
     function cerrarModalAsignar() {
         setRecetaParaAsignar(null);
         setErrorAsignar("");
+    }
+
+    function abrirMover(id, dia, franja) {
+        setMovimiento({ id, origen: { dia, franja }, destino: { dia, franja } });
+    }
+
+    function confirmarMovimiento() {
+        const { id, origen, destino } = movimiento;
+        if (origen.dia === destino.dia && origen.franja === destino.franja) {
+            cerrarModalMover();
+            return;
+        }
+        if (!mover(id, origen.dia, origen.franja, destino.dia, destino.franja)) {
+            setErrorAsignar("Esa receta ya está en ese día y comida.");
+            return;
+        }
+        cerrarModalMover();
+        setAviso({ texto: `Movida a ${describirFranja(destino.dia, destino.franja)}` });
+    }
+
+    function cerrarModalMover() {
+        setMovimiento(null);
+        setErrorAsignar("");
+    }
+
+    function soltarEnPlan(id, diaOrigen, franjaOrigen, diaDestino, franjaDestino, indiceDestino) {
+        if (!mover(id, diaOrigen, franjaOrigen, diaDestino, franjaDestino, indiceDestino)) {
+            setAviso({ texto: "Esa receta ya está en ese día y comida." });
+        }
+    }
+
+    function elegirRecetaParaFranja(idReceta) {
+        agregarAlPlan(idReceta, franjaParaAgregar.dia, franjaParaAgregar.franja);
+        setFranjaParaAgregar(null);
+    }
+
+    // Deja la franja preelegida en "Agregar al plan" y lleva a buscar
+    function buscarParaFranja() {
+        const { dia, franja } = franjaParaAgregar;
+        setSeleccionAsignar({ dia, franja });
+        setFranjaParaAgregar(null);
+        setSeccionActiva("buscar");
+        setAviso({ texto: `Elegí una receta para ${describirFranja(dia, franja)}` });
     }
 
     function empezar() {
@@ -208,7 +268,9 @@ export default function App() {
                     recetas={recetasPlan}
                     onVerReceta={abrirDetalleReceta}
                     onEliminar={eliminar}
-                    onMover={mover}
+                    onSoltar={soltarEnPlan}
+                    onAbrirMover={abrirMover}
+                    onAbrirAgregar={(dia, franja) => setFranjaParaAgregar({ dia, franja })}
                 />
                 <ListaCompras
                     oculto={seccionActiva !== "compras"}
@@ -225,10 +287,31 @@ export default function App() {
             <ModalReceta abierto={modalRecetaAbierto} receta={recetaDetalle} onCerrar={() => setModalRecetaAbierto(false)} />
             <ModalAsignar
                 abierto={recetaParaAsignar != null}
+                titulo="Agregar al plan"
+                seleccion={seleccionAsignar}
                 error={errorAsignar}
+                onCambiarSeleccion={(seleccion) => { setSeleccionAsignar(seleccion); setErrorAsignar(""); }}
                 onConfirmar={confirmarAsignacion}
-                onCambiarSeleccion={() => setErrorAsignar("")}
                 onCerrar={cerrarModalAsignar}
+            />
+            {movimiento && (
+                <ModalAsignar
+                    abierto
+                    titulo="Mover receta"
+                    seleccion={movimiento.destino}
+                    error={errorAsignar}
+                    onCambiarSeleccion={(destino) => { setMovimiento({ ...movimiento, destino }); setErrorAsignar(""); }}
+                    onConfirmar={confirmarMovimiento}
+                    onCerrar={cerrarModalMover}
+                />
+            )}
+            <ModalElegirReceta
+                destino={franjaParaAgregar}
+                favoritos={favoritos}
+                idsEnFranja={franjaParaAgregar ? plan[franjaParaAgregar.dia][franjaParaAgregar.franja] : []}
+                onElegir={elegirRecetaParaFranja}
+                onBuscar={buscarParaFranja}
+                onCerrar={() => setFranjaParaAgregar(null)}
             />
             <Aviso aviso={aviso} onCerrar={() => setAviso(null)} />
         </>

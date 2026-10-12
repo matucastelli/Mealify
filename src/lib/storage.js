@@ -56,11 +56,17 @@ export function eliminarReceta(id, dia, franja) {
     localStorage.setItem("plan", JSON.stringify(plan));
 }
 
-export function moverReceta(id, diaOrigen, franjaOrigen, diaDestino, franjaDestino, indiceDestino) {
+// Sin índice de destino, la receta va al final de la franja
+export function moverReceta(id, diaOrigen, franjaOrigen, diaDestino, franjaDestino, indiceDestino = Infinity) {
     const plan = getPlanSemanal();
+    const mismaFranja = diaOrigen === diaDestino && franjaOrigen === franjaDestino;
+    if (!mismaFranja && plan[diaDestino][franjaDestino].includes(id)) {
+        return false;
+    }
     plan[diaOrigen][franjaOrigen] = plan[diaOrigen][franjaOrigen].filter(idGuardado => idGuardado !== id);
     plan[diaDestino][franjaDestino].splice(indiceDestino, 0, id);
     localStorage.setItem("plan", JSON.stringify(plan));
+    return true;
 }
 
 export function getComprasMarcadas() {
