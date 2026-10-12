@@ -7,15 +7,17 @@ export default function RecetaCard({ receta, esFavorito, cargandoDetalle, onTogg
                 <p>"{receta.dishTypes?.length ? receta.dishTypes.join(", ") : "Sin categoría"}"</p>
             </div>
             <button className={`btn-favorito ${esFavorito ? "activo" : ""}`} onClick={() => onToggleFavorito(receta)}>★</button>
-            <button
-                className="btn-ver-receta"
-                disabled={cargandoDetalle}
-                aria-busy={cargandoDetalle}
-                onClick={() => onVerReceta(receta.id)}
-            >
-                {cargandoDetalle ? "Cargando…" : "Ver receta"}
-            </button>
-            <button className="btn-agregar-plan" onClick={() => onAgregarPlan(receta.id)}>Agregar al plan</button>
+            <div className="receta-acciones">
+                <button
+                    className="btn-ver-receta"
+                    disabled={cargandoDetalle}
+                    aria-busy={cargandoDetalle}
+                    onClick={() => onVerReceta(receta.id)}
+                >
+                    {cargandoDetalle ? "Cargando…" : "Ver receta"}
+                </button>
+                <button className="btn-agregar-plan" onClick={() => onAgregarPlan(receta.id)}>Agregar al plan</button>
+            </div>
         </div>
     );
 }
