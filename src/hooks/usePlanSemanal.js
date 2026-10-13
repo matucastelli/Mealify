@@ -17,8 +17,9 @@ export function usePlanSemanal() {
     }
 
     function mover(id, diaOrigen, franjaOrigen, diaDestino, franjaDestino, indiceDestino) {
-        moverReceta(id, diaOrigen, franjaOrigen, diaDestino, franjaDestino, indiceDestino);
+        const seMovio = moverReceta(id, diaOrigen, franjaOrigen, diaDestino, franjaDestino, indiceDestino);
         setPlan(getPlanSemanal());
+        return seMovio;
     }
 
     return { plan, asignar, eliminar, mover };

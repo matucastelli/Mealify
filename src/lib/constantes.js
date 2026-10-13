@@ -13,3 +13,10 @@ export const FRANJAS = [
     { valor: "almuerzo", nombre: "Almuerzo", icono: "fa-utensils" },
     { valor: "cena", nombre: "Cena", icono: "fa-moon" },
 ];
+
+// "Lunes · Almuerzo", para títulos y avisos
+export function describirFranja(dia, franja) {
+    const nombreDia = DIAS.find(d => d.valor === dia).nombreConTilde;
+    const nombreFranja = FRANJAS.find(f => f.valor === franja).nombre;
+    return `${nombreDia} · ${nombreFranja}`;
+}
