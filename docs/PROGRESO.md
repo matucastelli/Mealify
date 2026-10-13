@@ -1,19 +1,19 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-12 · Rama de trabajo: `mejoras-critica` · Último commit en main: `902ec6b Merge pull request #7 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-13 · Rama de trabajo: `mejoras-critica` · Último commit en main: `dd76937 Merge pull request #8 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 4 están mergeados (el 4 en el PR #7). El commit 5 (planificador sin arrastrar) está hecho y subido en `mejoras-critica`, esperando que se cree y mergee su PR.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 5 están mergeados (el 5 en el PR #8). `mejoras-critica` está igual a `main`, lista para el commit 6. No hay nada a medias.
 
 ## Próximo paso
-Crear y mergear el PR del commit 5. Después, `git pull origin main` en `mejoras-critica` y arrancar el commit 6: lista de compras por pasillo.
+Commit 6 del plan: lista de compras por pasillo (cantidades limpias, contador, receta de origen).
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
 - [x] 2. Menú del celular: se cierra al navegar, inert, áreas táctiles de 44px (PR #4)
 - [x] 3. Feedback de las acciones: aviso, tab activo, carga y errores (PR #6)
 - [x] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) (PR #7)
-- [x] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) (PR pendiente)
+- [x] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) (PR #8)
 - [ ] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) ← siguiente
 - [ ] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección)
 - [ ] 8. Detalle de receta (pasos numerados, acciones en el modal, imagen de reemplazo)
@@ -39,6 +39,10 @@ Crear y mergear el PR del commit 5. Después, `git pull origin main` en `mejoras
 - Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
 
 ## Bitácora
+### 2026-10-13
+- PR #8 mergeado: commit 5, planificador sin arrastrar (`4f34952`) y el mock `detalle_716429`. `mejoras-critica` actualizada con `main`.
+- Fin de la sesión en esta compu: todo subido, `mejoras-critica` igual a `main`.
+
 ### 2026-10-12
 - Commit 5: planificador sin arrastrar. Cada receta del plan tiene "Mover" (elegir día y comida, con error si ya está en el destino) y "Quitar", y se abre con el teclado. Cada franja tiene "+ Agregar": elegir entre los favoritos o ir a Buscar con ese día y comida preelegidos. Arrastrar sigue en escritorio, pero ya no duplica recetas. Grilla del planificador en 3, 4 o 7 columnas según el ancho, sin scroll horizontal. Se verificó con 57 chequeos de puppeteer, de 320px a 1920px.
 - PR #7 mergeado: commit 4, tarjetas en celular (`80ccbe6`). `mejoras-critica` actualizada con `main`.
