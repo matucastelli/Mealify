@@ -1,12 +1,12 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-15 · Rama de trabajo: `mejoras-critica` · Último commit en main: `dd76937 Merge pull request #8 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-15 · Rama de trabajo: `mejoras-critica` · Último commit en main: `7ecf187 Merge pull request #9 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 5 están mergeados. El commit 6 (lista de compras por pasillo) está hecho y pusheado en `mejoras-critica`, con el PR pendiente de crear y mergear.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 6 están mergeados (el 6 en el PR #9). `mejoras-critica` está igual a `main`, lista para el commit 7. No hay nada a medias.
 
 ## Próximo paso
-Crear y mergear el PR del commit 6; después, `git pull origin main` en `mejoras-critica` y seguir con el commit 7 (textos en español).
+Commit 7 del plan: textos en español (diccionario de pasillos, unidades y categorías; días con tilde; h2 por sección). Tener en cuenta la decisión del 2026-10-15 sobre las medidas de compra.
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -14,7 +14,7 @@ Crear y mergear el PR del commit 6; después, `git pull origin main` en `mejoras
 - [x] 3. Feedback de las acciones: aviso, tab activo, carga y errores (PR #6)
 - [x] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) (PR #7)
 - [x] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) (PR #8)
-- [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR pendiente)
+- [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR #9)
 - [ ] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) ← siguiente
 - [ ] 8. Detalle de receta (pasos numerados, acciones en el modal, imagen de reemplazo)
 - [ ] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing)
@@ -41,6 +41,7 @@ Crear y mergear el PR del commit 6; después, `git pull origin main` en `mejoras
 
 ## Bitácora
 ### 2026-10-15
+- PR #9 mergeado: commit 6, lista de compras por pasillo (`790dd9d`). `mejoras-critica` actualizada con `main`.
 - Commit 6: lista de compras por pasillo. Una fila por ingrediente con el paquete a comprar, "Necesitás ~X" y las recetas de origen; grupos por pasillo con contador, y "X de Y comprados" en la cabecera. Los marcados y ocultos guardados con la clave vieja se migran solos. Se verificó con todos los mocks de detalle y con puppeteer en 1440px, 390px y 320px (migración, contador, limpiar, restaurar, sin scroll horizontal).
 
 ### 2026-10-13
