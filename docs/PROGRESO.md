@@ -3,10 +3,10 @@
 > Última actualización: 2026-10-15 · Rama de trabajo: `mejoras-critica` · Último commit en main: `7ecf187 Merge pull request #9 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 6 están mergeados (el 6 en el PR #9). `mejoras-critica` está igual a `main`, lista para el commit 7. No hay nada a medias.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 6 están mergeados (el 6 en el PR #9). El commit 7 (textos en español) está hecho y probado, pero **sin commitear, solo en la compu LAPTOP-2UJ4PI2A**. Se va a commitear cuando esté la `DEEPL_KEY` y se pruebe la búsqueda con DeepL (hubo problemas para crear la cuenta). Sin la key, la búsqueda traduce solo con el diccionario.
 
 ## Próximo paso
-Commit 7 del plan: textos en español (diccionario de pasillos, unidades y categorías; días con tilde; h2 por sección). Tener en cuenta la decisión del 2026-10-15 sobre las medidas de compra.
+Resolver la cuenta de DeepL, cargar `DEEPL_KEY` en el `.env`, probar la búsqueda en español (por ejemplo "milanesa de pollo al horno") y medir la demora. Después, commitear el commit 7 desde LAPTOP-2UJ4PI2A y crear el PR.
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -15,7 +15,7 @@ Commit 7 del plan: textos en español (diccionario de pasillos, unidades y categ
 - [x] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) (PR #7)
 - [x] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) (PR #8)
 - [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR #9)
-- [ ] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) ← siguiente
+- [ ] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) ← en curso, sin commitear en LAPTOP-2UJ4PI2A
 - [ ] 8. Detalle de receta (pasos numerados, acciones en el modal, imagen de reemplazo)
 - [ ] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing)
 
@@ -28,10 +28,13 @@ Commit 7 del plan: textos en español (diccionario de pasillos, unidades y categ
 - 2026-09-25: sin atribución a Claude en commits ni PRs. Se reescribió la historia de `main` para sacar la que había.
 
 - 2026-10-12: el planificador muestra los 7 días en una fila recién desde 1440px; entre 1024 y 1439px van 4 por fila y entre 768 y 1023px, 3. Con columnas más angostas los títulos se cortaban a mitad de palabra.
+- 2026-10-15: el buscador acepta español. `api/_lib/traducir.js` traduce primero con un diccionario de palabras comunes (sin demora) y solo lo que no conoce va a DeepL API Free (`DEEPL_KEY`, timeout 2 s; si falla, se busca con lo que tradujo el diccionario). Medido en producción: una búsqueda tarda ~0,6 s en caliente y 2,15 s en frío; DeepL sumaría ~0,2–0,4 s (estimado, falta medirlo con la key).
 - 2026-10-15: la lista de compras tiene una fila por ingrediente (la clave guardada pasó de `nombre|unidad` a `nombre`, con migración automática en `storage.js`). Todo se suma en g, ml o unidades y se muestra el paquete a comprar (aproximado: tabla chica de ingredientes comunes en `src/lib/paquetes.js` y tamaños genéricos para el resto; especias, "1 paquete"). En chico va "Necesitás ~X" y las recetas de origen. Al pasar a español (commit 7), nada de cucharadas ni cucharaditas como medida de compra.
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
+- **Trabajo sin subir en LAPTOP-2UJ4PI2A** (commit 7): `CLAUDE.md`, `api/buscar.js`, `api/_lib/traducir.js` (nuevo), `src/lib/traducciones.js` (nuevo), `src/lib/constantes.js`, `src/lib/listaCompras.js`, `src/lib/paquetes.js`, `src/components/` (Buscar, Favoritos, Landing, ListaCompras, ModalAsignar, ModalReceta, Planificador, RecetaCard) y `style.css`. No empezar el commit 7 en la otra compu: se termina en esa.
+- Crear la cuenta de DeepL API Free y agregar `DEEPL_KEY` al `.env` de las dos compus y a Vercel (Production y Preview). Después, medir cuánto suma a la búsqueda.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
 - **Tiene la historia vieja de git** (la de antes de sacar la atribución a Claude). No hacer `git pull` en `main`. Primero revisar que no haya trabajo sin subir (`git status` y `git log origin/main..main`), y después: `git fetch --prune origin`, `git switch main`, `git reset --hard origin/main`. Borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (en GitHub ya no están).
 - Correr `npm install`: el proyecto pasó a React + Vite.
@@ -41,6 +44,8 @@ Commit 7 del plan: textos en español (diccionario de pasillos, unidades y categ
 
 ## Bitácora
 ### 2026-10-15
+- Fin de la sesión en LAPTOP-2UJ4PI2A: el commit 7 quedó sin commitear (a pedido del usuario, hasta probar con DeepL). Solo se subió este archivo.
+- Commit 7 (sin commitear): textos en español. Pasillos y categorías traducidos con diccionario (`src/lib/traducciones.js`), días con tilde, títulos en cada sección ("Buscar recetas" / "Miles de recetas para tu semana", "Mis favoritos" / "Tus recetas guardadas, listas para planificar", "Plan semanal" / "Organizá desayuno, almuerzo y cena de cada día"), filtros rápidos en español y búsqueda en español (diccionario + DeepL). Se verificó con puppeteer en 1440px, 390px y 320px, sin DeepL.
 - Fin de la sesión en esta compu: todo subido, `mejoras-critica` igual a `main` (más los commits de docs).
 - PR #9 mergeado: commit 6, lista de compras por pasillo (`790dd9d`). `mejoras-critica` actualizada con `main`.
 - Commit 6: lista de compras por pasillo. Una fila por ingrediente con el paquete a comprar, "Necesitás ~X" y las recetas de origen; grupos por pasillo con contador, y "X de Y comprados" en la cabecera. Los marcados y ocultos guardados con la clave vieja se migran solos. Se verificó con todos los mocks de detalle y con puppeteer en 1440px, 390px y 320px (migración, contador, limpiar, restaurar, sin scroll horizontal).
