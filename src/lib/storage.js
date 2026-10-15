@@ -69,9 +69,20 @@ export function moverReceta(id, diaOrigen, franjaOrigen, diaDestino, franjaDesti
     return true;
 }
 
+// Antes la clave era "nombre|unidad"; ahora hay una fila por ingrediente y la clave es solo el nombre
+function leerClavesCompras(nombreItem) {
+    const datosGuardados = localStorage.getItem(nombreItem);
+    if (datosGuardados == null) return [];
+    const claves = JSON.parse(datosGuardados);
+    const migradas = [...new Set(claves.map(clave => clave.includes("|") ? clave.slice(0, clave.lastIndexOf("|")) : clave))];
+    if (migradas.length !== claves.length || migradas.some((clave, i) => clave !== claves[i])) {
+        localStorage.setItem(nombreItem, JSON.stringify(migradas));
+    }
+    return migradas;
+}
+
 export function getComprasMarcadas() {
-    const datosGuardados = localStorage.getItem("comprasMarcadas");
-    return datosGuardados == null ? [] : JSON.parse(datosGuardados);
+    return leerClavesCompras("comprasMarcadas");
 }
 
 export function toggleCompra(clave) {
@@ -83,8 +94,7 @@ export function toggleCompra(clave) {
 }
 
 export function getComprasOcultas() {
-    const datosGuardados = localStorage.getItem("comprasOcultas");
-    return datosGuardados == null ? [] : JSON.parse(datosGuardados);
+    return leerClavesCompras("comprasOcultas");
 }
 
 export function ocultarComprasMarcadas() {
