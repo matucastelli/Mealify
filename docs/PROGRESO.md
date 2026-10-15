@@ -41,6 +41,7 @@ Commit 7 del plan: textos en español (diccionario de pasillos, unidades y categ
 
 ## Bitácora
 ### 2026-10-15
+- Fin de la sesión en esta compu: todo subido, `mejoras-critica` igual a `main` (más los commits de docs).
 - PR #9 mergeado: commit 6, lista de compras por pasillo (`790dd9d`). `mejoras-critica` actualizada con `main`.
 - Commit 6: lista de compras por pasillo. Una fila por ingrediente con el paquete a comprar, "Necesitás ~X" y las recetas de origen; grupos por pasillo con contador, y "X de Y comprados" en la cabecera. Los marcados y ocultos guardados con la clave vieja se migran solos. Se verificó con todos los mocks de detalle y con puppeteer en 1440px, 390px y 320px (migración, contador, limpiar, restaurar, sin scroll horizontal).
 
