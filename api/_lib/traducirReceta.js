@@ -2,19 +2,44 @@ import { traducirAlEspanol } from "./traducir.js";
 
 // Traduce lo que se muestra de una receta. Los nombres de los ingredientes quedan en inglés
 // en `name` (son la clave de la lista de compras) y la traducción va en `nombreEs`.
+// Los pasos se toman de `analyzedInstructions`; `instructions` (HTML) solo se traduce
+// si la receta no trae los pasos separados.
 export async function traducirReceta(receta) {
     const ingredientes = receta.extendedIngredients ?? [];
     const nombres = [...new Set(ingredientes.map(i => i.name).filter(Boolean))];
-    const textos = [receta.title, ...ingredientes.map(i => i.original || i.name || ""), ...nombres];
+    const bloques = receta.analyzedInstructions ?? [];
+    const pasos = bloques.flatMap(bloque => bloque.steps ?? []);
+    const nombresBloques = bloques.map(bloque => bloque.name).filter(Boolean);
+    const traducirHtml = pasos.length === 0 && Boolean(receta.instructions);
 
+    const textos = [
+        receta.title,
+        ...ingredientes.map(i => i.original || i.name || ""),
+        ...nombres,
+        ...pasos.map(paso => paso.step),
+        ...nombresBloques,
+    ];
     const [traducidos, [instrucciones] = []] = await Promise.all([
         traducirAlEspanol(textos),
-        receta.instructions ? traducirAlEspanol([receta.instructions], { html: true }) : Promise.resolve([]),
+        traducirHtml ? traducirAlEspanol([receta.instructions], { html: true }) : Promise.resolve([]),
     ]);
 
-    const [titulo, ...resto] = traducidos;
-    const originales = resto.slice(0, ingredientes.length);
-    const nombresEs = new Map(nombres.map((nombre, i) => [nombre, resto[ingredientes.length + i]]));
+    // Se toman las traducciones en el mismo orden en que se mandaron
+    let posicion = 0;
+    const tomar = cantidad => traducidos.slice(posicion, (posicion += cantidad));
+    const [titulo] = tomar(1);
+    const originales = tomar(ingredientes.length);
+    const nombresEs = new Map(nombres.map((nombre, i) => [nombre, tomar(1)[0] ?? nombre]));
+    const pasosEs = tomar(pasos.length);
+    const nombresBloquesEs = tomar(nombresBloques.length);
+
+    let indicePaso = 0;
+    let indiceBloque = 0;
+    const bloquesEs = bloques.map(bloque => ({
+        ...bloque,
+        name: bloque.name ? nombresBloquesEs[indiceBloque++] : bloque.name,
+        steps: (bloque.steps ?? []).map(paso => ({ ...paso, step: pasosEs[indicePaso++] })),
+    }));
 
     return {
         ...receta,
@@ -24,7 +49,8 @@ export async function traducirReceta(receta) {
             original: originales[i],
             nombreEs: nombresEs.get(ingrediente.name),
         })),
-        instructions: instrucciones ?? receta.instructions,
+        analyzedInstructions: bloquesEs,
+        instructions: traducirHtml ? instrucciones : receta.instructions,
         idioma: "es",
     };
 }

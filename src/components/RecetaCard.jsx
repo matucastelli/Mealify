@@ -1,9 +1,10 @@
 import { traducirCategorias } from "../lib/traducciones.js";
+import ImagenReceta from "./ImagenReceta.jsx";
 
 export default function RecetaCard({ receta, esFavorito, cargandoDetalle, onToggleFavorito, onVerReceta, onAgregarPlan }) {
     return (
         <div className="receta-card">
-            <img src={receta.image} alt={receta.title} />
+            <ImagenReceta src={receta.image} alt={receta.title} />
             <div className="receta-info">
                 <p>{receta.title}</p>
                 <p>"{traducirCategorias(receta.dishTypes)}"</p>

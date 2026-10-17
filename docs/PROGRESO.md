@@ -3,10 +3,10 @@
 > Última actualización: 2026-10-17 · Rama de trabajo: `mejoras-critica` · Último commit en main: `9dbc84c Merge pull request #10 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). `mejoras-critica` está igual a `main`; se arranca el commit 8.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). El commit 8 (detalle de receta) está pusheado en `mejoras-critica`, con el PR pendiente.
 
 ## Próximo paso
-Commit 8 del plan: detalle de receta (pasos numerados, tiempo y porciones, link a la receta original, imagen de reemplazo en todas las fotos).
+Crear y mergear el PR del commit 8; después, `git pull origin main` en `mejoras-critica` y seguir con el commit 9 (pulido visual), el último del plan.
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -16,8 +16,8 @@ Commit 8 del plan: detalle de receta (pasos numerados, tiempo y porciones, link 
 - [x] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) (PR #8)
 - [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR #9)
 - [x] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) y recetas traducidas con DeepL (PR #10)
-- [ ] 8. Detalle de receta (pasos numerados, acciones en el modal, imagen de reemplazo) ← siguiente
-- [ ] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing)
+- [x] 8. Detalle de receta (pasos numerados, tiempo y porciones, link a la receta original, imagen de reemplazo) (PR pendiente)
+- [ ] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) ← siguiente
 
 ## Decisiones
 - 2026-09-25: un PR por commit, todos desde la rama `mejoras-critica`. Mergear cada PR con "Create a merge commit" antes de empezar el siguiente; después, `git pull origin main` en la rama.
@@ -44,6 +44,7 @@ Commit 8 del plan: detalle de receta (pasos numerados, tiempo y porciones, link 
 
 ## Bitácora
 ### 2026-10-17
+- Commit 8: detalle de receta. Pasos numerados desde `analyzedInstructions` (traducidos con DeepL; `instructions` en HTML solo como respaldo), "45 min · 2 porciones" debajo del título, link "Ver receta original" y mensaje para las recetas sin pasos. `ImagenReceta` muestra un recuadro con cubiertos si la foto no carga (tarjetas, plan, selector y modal). Se regeneraron los mocks `detalle_es_*` (~7.400 caracteres) y el cache del navegador pasó a `cacheRecetasEs2`. Las acciones dentro del modal (favorito, agregar al plan) quedaron afuera por decisión del usuario. Verificado con puppeteer en 1440px, 390px y 320px.
 - PR #10 mergeado: commit 7, textos y recetas en español (`fb55c2b`, `0742454`). `mejoras-critica` actualizada con `main`.
 
 ### 2026-10-16

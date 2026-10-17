@@ -1,4 +1,5 @@
 import { describirFranja } from "../lib/constantes.js";
+import ImagenReceta from "./ImagenReceta.jsx";
 import Modal from "./Modal.jsx";
 
 // "+ Agregar" de una franja del plan: elegir entre los favoritos o ir a buscar una receta
@@ -19,7 +20,7 @@ export default function ModalElegirReceta({ destino, favoritos, idsEnFranja, onE
                             return (
                                 <li key={receta.id}>
                                     <button className="opcion-receta" disabled={yaEsta} onClick={() => onElegir(receta.id)}>
-                                        <img src={receta.image} alt="" />
+                                        <ImagenReceta src={receta.image} />
                                         <span className="opcion-receta-titulo">{receta.title}</span>
                                         {yaEsta && <span className="opcion-receta-estado">Ya está</span>}
                                     </button>

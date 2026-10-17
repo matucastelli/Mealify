@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { DIAS, FRANJAS, describirFranja } from "../lib/constantes.js";
 import { traducirCategorias } from "../lib/traducciones.js";
+import ImagenReceta from "./ImagenReceta.jsx";
 
 // En escritorio las recetas se pueden arrastrar entre franjas; en cualquier pantalla
 // (y con teclado) se usan los botones "Mover" y "+ Agregar".
@@ -96,7 +97,7 @@ function RecetaPlanCard({ receta, onDragStart, onDragEnd, onVer, onMover, onElim
                 </span>
             ) : (
                 <button className="receta-plan-ver" onClick={onVer}>
-                    <img src={receta.image} alt="" />
+                    <ImagenReceta src={receta.image} />
                     <span>
                         <span className="receta-plan-titulo">{receta.title}</span>
                         <span className="receta-detallada-categoria">
