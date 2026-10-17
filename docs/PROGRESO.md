@@ -3,10 +3,10 @@
 > Última actualización: 2026-10-17 · Rama de trabajo: `mejoras-critica` · Último commit en main: `fdff463 Merge pull request #12 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). Los commits 1 a 8 están mergeados (el 8 en el PR #11). Los 9 commits están mergeados (el 9 en el PR #12): el plan de mejoras de la crítica está terminado. `mejoras-critica` está igual a `main`.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). Los commits 1 a 8 están mergeados (el 8 en el PR #11). Los 9 commits están mergeados (el 9 en el PR #12): el plan de mejoras de la crítica está terminado. Se hizo una crítica nueva con Impeccable: **25/40, "Aceptable"** (antes 17/40, "Pobre"). No hay código a medias.
 
 ## Próximo paso
-Hacer una nueva crítica con Impeccable para comparar con el 17/40 inicial y decidir el próximo plan.
+Retomar la crítica de Impeccable del 2026-10-17 (25/40, guardada en `.impeccable/critique/`) y decidir el próximo plan. Quedaron por responder: por cuál P1 arrancar (lista de compras o contraste del naranja), si se suman la ★ y "Agregar al plan" al detalle de la receta (en el commit 8 quedaron afuera) y cuánto abarcar (los 2 P1, los 5 problemas o todo).
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -44,6 +44,9 @@ Hacer una nueva crítica con Impeccable para comparar con el 17/40 inicial y dec
 
 ## Bitácora
 ### 2026-10-17
+- Crítica de Impeccable (dos agentes independientes: revisión de diseño y detector): 25/40. Problemas prioritarios: [P1] contenido de la lista de compras (traducciones como "Petróleo" por *oil*, casi duplicados, 46 ítems para 6 recetas); [P1] contraste del naranja #D96C2C (3,1–3,4:1); [P2] planificador denso y largo en celular; [P2] detalle sin acciones y modales sin nombre de receta, "Quitar" sin deshacer; [P2] resultados de búsqueda con "Sin categoría" y filtros que desaparecen. Guardada en `.impeccable/critique/2026-10-17T03-53-07Z__index-html.md`.
+- Doc de referencia en Claude Docs con las skills útiles para este y otros proyectos: https://claude.ai/code/artifact/df02f153-6d0e-45cf-a65f-1ffc82db1e1a
+- Fin de la sesión en LAPTOP-2UJ4PI2A: todo subido, sin código a medias.
 - PR #12 mergeado: commit 9, pulido visual (`c726597`). Plan de mejoras de la crítica terminado.
 - Commit 9: pulido visual. Botones, inputs y selects heredan Poppins (solo la familia, sin cambiar tamaños); se dejó de descargar Baloo 2, que no se usaba. Favoritos en grilla como Buscar, con el estado vacío centrado. Categorías sin comillas. El mockup de la landing pasó a ser un mini planificador (3 días, 2 debajo de 400px) con recetas reales en español; textos de la landing sin "drag & drop". Los links del footer bajan de línea en 320px. Verificado con puppeteer en 1440, 768, 390 y 320px, más las pruebas de los commits 6 a 8.
 - PR #11 mergeado: commit 8, detalle de receta (`c1bc9da`). En producción los pasos llegan en español y la CDN responde HIT. `mejoras-critica` actualizada con `main`.
