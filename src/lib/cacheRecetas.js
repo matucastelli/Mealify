@@ -2,8 +2,15 @@ import { obtenerDetalleReceta } from "./api.js";
 
 // Cache de detalles de recetas compartido por toda la app y guardado en localStorage,
 // para no volver a pedir (y gastar cuota de Spoonacular) cada vez que se recarga la página.
-const CLAVE_STORAGE = "cacheRecetas";
+// La clave cambió cuando las recetas pasaron a venir traducidas: el cache viejo (en inglés) se descarta
+const CLAVE_STORAGE = "cacheRecetasEs";
 const MAXIMO_GUARDADAS = 50;
+
+try {
+    localStorage.removeItem("cacheRecetas");
+} catch {
+    // localStorage no disponible
+}
 
 const cacheRecetas = new Map(leerGuardadas());
 const pedidosEnCurso = new Map();
@@ -20,7 +27,8 @@ function leerGuardadas() {
 }
 
 function guardar() {
-    const recetasValidas = [...cacheRecetas].filter(([, receta]) => receta != null).slice(-MAXIMO_GUARDADAS);
+    // Las que quedaron en inglés (DeepL falló) no se guardan, así se vuelven a pedir en la próxima carga
+    const recetasValidas = [...cacheRecetas].filter(([, receta]) => receta?.idioma === "es").slice(-MAXIMO_GUARDADAS);
     try {
         localStorage.setItem(CLAVE_STORAGE, JSON.stringify(recetasValidas));
     } catch {

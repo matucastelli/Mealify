@@ -83,7 +83,7 @@ function paqueteGenerico(tipo, total) {
 }
 
 // totales: { g, ml, u } sumados de todas las recetas. Devuelve { comprar, necesitas } (strings o "")
-export function calcularCompra({ nombre, pasillo, totales }) {
+export function calcularCompra({ nombre, esEspecia, totales }) {
     const fila = TABLA_PAQUETES.find(f => f.regex.test(nombre.toLowerCase()));
     // Si viene en g y en ml se suman igual (densidad 1): alcanza como aproximación
     const peso = totales.g + totales.ml;
@@ -104,7 +104,7 @@ export function calcularCompra({ nombre, pasillo, totales }) {
     // Sin cantidad ("oil for cooking"): si se conoce el paquete, se compra uno
     if (!comprar && fila) comprar = paqueteDeTabla(fila, 1);
     // Las especias se compran por paquete, sin importar cuánto pida la receta
-    if (pasillo.startsWith("Spices")) comprar = "1 paquete";
+    if (esEspecia) comprar = "1 paquete";
 
     const necesitas = partesNecesitas.join(" + ");
     return { comprar, necesitas: necesitas === comprar ? "" : necesitas };

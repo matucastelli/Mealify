@@ -591,15 +591,11 @@ select:last-of-type {
 
 /*-------- Seccion Planificador --------*/
 
-#planificador {
+.plan-dias {
     display: flex;
     flex-direction: column;
     gap: var(--espaciado-medio);
     margin: var(--espaciado-chico);
-}
-
-#planificador.oculto {
-    display: none;
 }
 
 .dia {
@@ -831,7 +827,7 @@ button.receta-plan-ver {
 /* Columnas de al menos ~180px, así los títulos no se cortan: 3 por fila en tablet,
    4 en notebook y los 7 días en una sola fila recién desde 1440px */
 @media (min-width: 768px) {
-    #planificador {
+    .plan-dias {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         margin: var(--espaciado-medio);
@@ -839,13 +835,13 @@ button.receta-plan-ver {
 }
 
 @media (min-width: 1024px) {
-    #planificador {
+    .plan-dias {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 }
 
 @media (min-width: 1440px) {
-    #planificador {
+    .plan-dias {
         grid-template-columns: repeat(7, minmax(0, 1fr));
     }
 }
@@ -1164,22 +1160,32 @@ footer {
 
 /*-------- Estado Vacio & Filtros ENDS  --------*/
 
-/*-------- Lista de compras --------*/
-.compras-cabecera {
+/*-------- Lista de compras (y cabecera de todas las secciones) --------*/
+.seccion-cabecera {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: var(--espaciado-medio);
     padding: var(--espaciado-medio);
+}
+
+/* Mismo lugar en todas las secciones: centrada, hasta 900px */
+.seccion-cabecera {
     margin: 0 auto;
     max-width: 900px;
 }
 
-.compras-cabecera h2 {
+/* El buscador está centrado: el título también */
+#buscar .seccion-cabecera {
+    justify-content: center;
+    text-align: center;
+}
+
+.seccion-cabecera h2 {
     color: var(--color-primario);
 }
 
-.compras-cabecera p {
+.seccion-cabecera p {
     opacity: 0.7;
     font-size: 0.9rem;
 }
@@ -1230,7 +1236,7 @@ footer {
     flex-shrink: 0;
 }
 
-.compras-cabecera .compras-contador {
+.seccion-cabecera .compras-contador {
     margin-top: 4px;
     opacity: 1;
     font-weight: 500;
@@ -1264,8 +1270,12 @@ footer {
 }
 
 .item-compra-nombre {
-    text-transform: capitalize;
     overflow-wrap: anywhere;
+}
+
+/* En español solo va mayúscula la primera letra ("Aceite de oliva") */
+.item-compra-nombre::first-letter {
+    text-transform: uppercase;
 }
 
 .item-compra small {
@@ -1293,7 +1303,7 @@ footer {
 }
 
 @media (max-width: 500px) {
-    .compras-cabecera {
+    .seccion-cabecera {
         align-items: flex-start;
         flex-direction: column;
     }

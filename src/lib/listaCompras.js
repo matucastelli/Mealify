@@ -1,4 +1,5 @@
 import { aBase, calcularCompra } from "./paquetes.js";
+import { PASILLOS, traducir } from "./traducciones.js";
 
 const SIN_PASILLO = "Otros";
 
@@ -9,6 +10,7 @@ export function armarListaCompras(recetas, ocultas) {
 
     recetas.filter(Boolean).forEach(receta => {
         receta.extendedIngredients?.forEach(ingrediente => {
+            // La clave sale del nombre en inglés (así se guardan marcados y ocultos); se muestra en español
             const nombre = (ingrediente.name || ingrediente.original || "").trim();
             if (!nombre) return;
             const clave = nombre.toLowerCase();
@@ -17,8 +19,9 @@ export function armarListaCompras(recetas, ocultas) {
                 const pasillo = (ingrediente.aisle || "").split(";")[0].trim();
                 ingredientes.set(clave, {
                     clave,
-                    nombre,
-                    pasillo: !pasillo || pasillo === "?" ? SIN_PASILLO : pasillo,
+                    nombre: ingrediente.nombreEs || nombre,
+                    pasillo: !pasillo || pasillo === "?" ? SIN_PASILLO : traducir(PASILLOS, pasillo),
+                    esEspecia: pasillo === "Spices and Seasonings",
                     totales: { g: 0, ml: 0, u: 0 },
                     recetas: new Set(),
                 });
@@ -33,15 +36,16 @@ export function armarListaCompras(recetas, ocultas) {
 
     return [...ingredientes.values()]
         .filter(i => !ocultas.includes(i.clave))
-        .map(i => ({ ...i, recetas: [...i.recetas], ...calcularCompra(i) }))
-        .sort((a, b) => compararPasillos(a.pasillo, b.pasillo) || a.clave.localeCompare(b.clave));
+        // La tabla de paquetes busca palabras en inglés: se le pasa la clave, no el nombre traducido
+        .map(i => ({ ...i, recetas: [...i.recetas], ...calcularCompra({ ...i, nombre: i.clave }) }))
+        .sort((a, b) => compararPasillos(a.pasillo, b.pasillo) || a.nombre.localeCompare(b.nombre, "es"));
 }
 
 function compararPasillos(a, b) {
     if (a === b) return 0;
     if (a === SIN_PASILLO) return 1;
     if (b === SIN_PASILLO) return -1;
-    return a.localeCompare(b);
+    return a.localeCompare(b, "es");
 }
 
 // La lista ya viene ordenada por pasillo: [{ pasillo, ingredientes }]

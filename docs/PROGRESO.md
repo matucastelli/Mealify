@@ -1,12 +1,12 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-15 · Rama de trabajo: `mejoras-critica` · Último commit en main: `dd76937 Merge pull request #8 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-16 · Rama de trabajo: `mejoras-critica` · Último commit en main: `7ecf187 Merge pull request #9 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 5 están mergeados. El commit 6 (lista de compras por pasillo) está hecho y pusheado en `mejoras-critica`, con el PR pendiente de crear y mergear.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 6 están mergeados (el 6 en el PR #9). El commit 7 está pusheado en `mejoras-critica` en dos partes, con el PR pendiente: la interfaz en español con búsqueda en español (diccionario + DeepL) y las recetas traducidas con DeepL (títulos, ingredientes y pasos).
 
 ## Próximo paso
-Crear y mergear el PR del commit 6; después, `git pull origin main` en `mejoras-critica` y seguir con el commit 7 (textos en español).
+Crear y mergear el PR del commit 7 (probar antes en el preview de Vercel una búsqueda que no esté en `mocks/`, por ejemplo "lentejas con chorizo"); después, `git pull origin main` en `mejoras-critica` y seguir con el commit 8 (detalle de receta).
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -14,24 +14,27 @@ Crear y mergear el PR del commit 6; después, `git pull origin main` en `mejoras
 - [x] 3. Feedback de las acciones: aviso, tab activo, carga y errores (PR #6)
 - [x] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) (PR #7)
 - [x] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) (PR #8)
-- [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR pendiente)
-- [ ] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) ← siguiente
-- [ ] 8. Detalle de receta (pasos numerados, acciones en el modal, imagen de reemplazo)
+- [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR #9)
+- [x] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) (PR pendiente)
+- [ ] 8. Detalle de receta (pasos numerados, acciones en el modal, imagen de reemplazo) ← siguiente
 - [ ] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing)
 
 ## Decisiones
 - 2026-09-25: un PR por commit, todos desde la rama `mejoras-critica`. Mergear cada PR con "Create a merge commit" antes de empezar el siguiente; después, `git pull origin main` en la rama.
 - 2026-09-25: no tocar los colores (el contraste del naranja queda fuera del plan).
-- 2026-09-25: la interfaz queda toda en español, con un diccionario para el vocabulario fijo. El contenido de las recetas sigue en inglés porque Spoonacular solo ofrece inglés y alemán.
+- 2026-09-25: la interfaz queda toda en español, con un diccionario para el vocabulario fijo.
+- 2026-10-16: (reemplaza lo del 2026-09-25 sobre el contenido) las recetas también van en español, para un público hispanohablante: DeepL traduce al español latinoamericano (`ES-419`). Para cuidar la cuota gratis (1.000.000 de caracteres por mes) se traduce solo lo que se ve (títulos en los listados; la receta completa al abrirla) y una sola vez: mocks `*_es_*` en desarrollo, CDN de Vercel 30 días (`Cache-Control: s-maxage`) en producción y localStorage (`cacheRecetasEs`) en el navegador. Si DeepL falla, se muestra en inglés y se reintenta después. Los nombres de ingredientes en inglés (`name`) siguen siendo la clave de la lista de compras.
 - 2026-09-25: antes de sumar una librería, se consulta explicando qué hace y por qué.
 - 2026-09-25: la skill de progreso, al retomar, corrige y sube este archivo sola; al cerrar, pregunta antes de subir código a medias.
 - 2026-09-25: sin atribución a Claude en commits ni PRs. Se reescribió la historia de `main` para sacar la que había.
 
 - 2026-10-12: el planificador muestra los 7 días en una fila recién desde 1440px; entre 1024 y 1439px van 4 por fila y entre 768 y 1023px, 3. Con columnas más angostas los títulos se cortaban a mitad de palabra.
+- 2026-10-15: el buscador acepta español. `api/_lib/traducir.js` traduce primero con un diccionario de palabras comunes (sin demora) y solo lo que no conoce va a DeepL API Free (`DEEPL_KEY`, timeout 2 s; si falla, se busca con lo que tradujo el diccionario). Medido en producción: una búsqueda tarda ~0,6 s en caliente y 2,15 s en frío; DeepL tardó ~0,95 s por pedido desde la compu (conexión nueva cada vez); falta medirlo desde Vercel.
 - 2026-10-15: la lista de compras tiene una fila por ingrediente (la clave guardada pasó de `nombre|unidad` a `nombre`, con migración automática en `storage.js`). Todo se suma en g, ml o unidades y se muestra el paquete a comprar (aproximado: tabla chica de ingredientes comunes en `src/lib/paquetes.js` y tamaños genéricos para el resto; especias, "1 paquete"). En chico va "Necesitás ~X" y las recetas de origen. Al pasar a español (commit 7), nada de cucharadas ni cucharaditas como medida de compra.
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
+- Agregar `DEEPL_KEY` al `.env` de la otra compu (en LAPTOP-2UJ4PI2A y en Vercel, Production y Preview, ya está) y reiniciar `npm run dev` a mano.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
 - **Tiene la historia vieja de git** (la de antes de sacar la atribución a Claude). No hacer `git pull` en `main`. Primero revisar que no haya trabajo sin subir (`git status` y `git log origin/main..main`), y después: `git fetch --prune origin`, `git switch main`, `git reset --hard origin/main`. Borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (en GitHub ya no están).
 - Correr `npm install`: el proyecto pasó a React + Vite.
@@ -40,7 +43,15 @@ Crear y mergear el PR del commit 6; después, `git pull origin main` en `mejoras
 - Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
 
 ## Bitácora
+### 2026-10-16
+- Commit 7, segunda parte: recetas en español. `api/_lib/traducirReceta.js` y `traducirRespuesta.js`; `/api/detalle`, `/api/buscar` y `/api/random` devuelven todo traducido. Una receta nueva tarda 0,4–1,1 s la primera vez (desde la compu) y 1 ms después. La prueba gastó ~7.700 caracteres. La lista de compras muestra los nombres en español (solo la primera letra en mayúscula) y sigue calculando paquetes y claves con el inglés. Verificado con puppeteer en 1440px y 390px. En el preview de Vercel se confirmó que la CDN guarda las respuestas traducidas (`x-vercel-cache: HIT` en el segundo pedido).
+- Commit 7: textos en español, ya con DeepL andando. La primera key cargada tenía un carácter de más (403 de DeepL); se corrigió en el `.env` y en Vercel. El reinicio automático de Vite conservaba la key vieja: hay que reiniciar `npm run dev` a mano (anotado en `CLAUDE.md`). Se borraron los mocks vacíos que se guardaron mientras DeepL fallaba y se suben los nuevos (`traduccion_*`, `buscar_meatballs`, `buscar_chicken_cutlet`, `buscar_chicken_curry`, `buscar_eggplant`).
+
 ### 2026-10-15
+- Fin de la sesión en LAPTOP-2UJ4PI2A: el commit 7 quedó sin commitear (a pedido del usuario, hasta probar con DeepL). Solo se subió este archivo.
+- Commit 7 (sin commitear): textos en español. Pasillos y categorías traducidos con diccionario (`src/lib/traducciones.js`), días con tilde, títulos en cada sección ("Buscar recetas" / "Miles de recetas para tu semana", "Mis favoritos" / "Tus recetas guardadas, listas para planificar", "Plan semanal" / "Organizá desayuno, almuerzo y cena de cada día"), filtros rápidos en español y búsqueda en español (diccionario + DeepL). Se verificó con puppeteer en 1440px, 390px y 320px, sin DeepL.
+- Fin de la sesión en esta compu: todo subido, `mejoras-critica` igual a `main` (más los commits de docs).
+- PR #9 mergeado: commit 6, lista de compras por pasillo (`790dd9d`). `mejoras-critica` actualizada con `main`.
 - Commit 6: lista de compras por pasillo. Una fila por ingrediente con el paquete a comprar, "Necesitás ~X" y las recetas de origen; grupos por pasillo con contador, y "X de Y comprados" en la cabecera. Los marcados y ocultos guardados con la clave vieja se migran solos. Se verificó con todos los mocks de detalle y con puppeteer en 1440px, 390px y 320px (migración, contador, limpiar, restaurar, sin scroll horizontal).
 
 ### 2026-10-13

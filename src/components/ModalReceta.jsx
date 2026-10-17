@@ -1,4 +1,5 @@
 import Modal from "./Modal.jsx";
+import { traducirCategorias } from "../lib/traducciones.js";
 
 export default function ModalReceta({ abierto, receta, onCerrar }) {
     return (
@@ -8,7 +9,7 @@ export default function ModalReceta({ abierto, receta, onCerrar }) {
                     <img src={receta?.image} alt={receta?.title} />
                     <p id="titulo-modal-receta" className="receta-detallada-titulo">{receta?.title}</p>
                     <span className="receta-detallada-categoria">
-                        {receta?.dishTypes?.length ? receta.dishTypes.join(", ") : "Sin categoría"}
+                        {traducirCategorias(receta?.dishTypes)}
                     </span>
                 </div>
                 <h3 className="modal-subtitulo">Ingredientes</h3>

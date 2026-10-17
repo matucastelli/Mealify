@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { DIAS, FRANJAS, describirFranja } from "../lib/constantes.js";
+import { traducirCategorias } from "../lib/traducciones.js";
 
 // En escritorio las recetas se pueden arrastrar entre franjas; en cualquier pantalla
 // (y con teclado) se usan los botones "Mover" y "+ Agregar".
@@ -25,53 +26,61 @@ export default function Planificador({ oculto, plan, recetas, onVerReceta, onEli
 
     return (
         <section id="planificador" className={`seccion ${oculto ? "oculto" : ""}`} onDragOver={(e) => e.preventDefault()}>
-            {DIAS.map(dia => (
-                <div className="dia" key={dia.valor}>
-                    <h3>{dia.nombre}</h3>
-                    {FRANJAS.map(franja => {
-                        const claveFranja = `${dia.valor}|${franja.valor}`;
-                        const ids = plan[dia.valor][franja.valor].filter(id => recetas.has(id));
-
-                        return (
-                            <div
-                                className={`franja ${franjaActiva === claveFranja ? "drag-activo" : ""}`}
-                                key={franja.valor}
-                                onDragEnter={(e) => { e.preventDefault(); setFranjaActiva(claveFranja); }}
-                                onDragLeave={(e) => {
-                                    if (!e.currentTarget.contains(e.relatedTarget)) {
-                                        setFranjaActiva(activa => activa === claveFranja ? null : activa);
-                                    }
-                                }}
-                                onDrop={(e) => soltar(e, dia.valor, franja.valor)}
-                            >
-                                <p className="franja-titulo"><i className={`fa-solid ${franja.icono}`}></i> {franja.nombre}</p>
-                                <div className="franja-recetas">
-                                    {ids.map((id, i) => (
-                                        <RecetaPlanCard
-                                            key={`${id}-${i}`}
-                                            receta={recetas.get(id)}
-                                            onDragStart={() => {
-                                                recetaArrastrada.current = { id, diaOrigen: dia.valor, franjaOrigen: franja.valor };
-                                            }}
-                                            onDragEnd={() => setFranjaActiva(null)}
-                                            onVer={() => onVerReceta(id)}
-                                            onMover={() => onAbrirMover(id, dia.valor, franja.valor)}
-                                            onEliminar={() => onEliminar(id, dia.valor, franja.valor)}
-                                        />
-                                    ))}
-                                </div>
-                                <button
-                                    className="btn-agregar-franja"
-                                    aria-label={`Agregar receta a ${describirFranja(dia.valor, franja.valor)}`}
-                                    onClick={() => onAbrirAgregar(dia.valor, franja.valor)}
-                                >
-                                    <i className="fa-solid fa-plus"></i> Agregar
-                                </button>
-                            </div>
-                        );
-                    })}
+            <div className="seccion-cabecera">
+                <div>
+                    <h2>Plan semanal</h2>
+                    <p>Organizá desayuno, almuerzo y cena de cada día.</p>
                 </div>
-            ))}
+            </div>
+            <div className="plan-dias">
+                {DIAS.map(dia => (
+                    <div className="dia" key={dia.valor}>
+                        <h3>{dia.nombre}</h3>
+                        {FRANJAS.map(franja => {
+                            const claveFranja = `${dia.valor}|${franja.valor}`;
+                            const ids = plan[dia.valor][franja.valor].filter(id => recetas.has(id));
+
+                            return (
+                                <div
+                                    className={`franja ${franjaActiva === claveFranja ? "drag-activo" : ""}`}
+                                    key={franja.valor}
+                                    onDragEnter={(e) => { e.preventDefault(); setFranjaActiva(claveFranja); }}
+                                    onDragLeave={(e) => {
+                                        if (!e.currentTarget.contains(e.relatedTarget)) {
+                                            setFranjaActiva(activa => activa === claveFranja ? null : activa);
+                                        }
+                                    }}
+                                    onDrop={(e) => soltar(e, dia.valor, franja.valor)}
+                                >
+                                    <p className="franja-titulo"><i className={`fa-solid ${franja.icono}`}></i> {franja.nombre}</p>
+                                    <div className="franja-recetas">
+                                        {ids.map((id, i) => (
+                                            <RecetaPlanCard
+                                                key={`${id}-${i}`}
+                                                receta={recetas.get(id)}
+                                                onDragStart={() => {
+                                                    recetaArrastrada.current = { id, diaOrigen: dia.valor, franjaOrigen: franja.valor };
+                                                }}
+                                                onDragEnd={() => setFranjaActiva(null)}
+                                                onVer={() => onVerReceta(id)}
+                                                onMover={() => onAbrirMover(id, dia.valor, franja.valor)}
+                                                onEliminar={() => onEliminar(id, dia.valor, franja.valor)}
+                                            />
+                                        ))}
+                                    </div>
+                                    <button
+                                        className="btn-agregar-franja"
+                                        aria-label={`Agregar receta a ${describirFranja(dia.valor, franja.valor)}`}
+                                        onClick={() => onAbrirAgregar(dia.valor, franja.valor)}
+                                    >
+                                        <i className="fa-solid fa-plus"></i> Agregar
+                                    </button>
+                                </div>
+                            );
+                        })}
+                    </div>
+                ))}
+            </div>
         </section>
     );
 }
@@ -91,7 +100,7 @@ function RecetaPlanCard({ receta, onDragStart, onDragEnd, onVer, onMover, onElim
                     <span>
                         <span className="receta-plan-titulo">{receta.title}</span>
                         <span className="receta-detallada-categoria">
-                            {receta.cuisines?.length ? receta.cuisines.join(", ") : "Sin categoría"}
+                            {traducirCategorias(receta.cuisines)}
                         </span>
                     </span>
                 </button>

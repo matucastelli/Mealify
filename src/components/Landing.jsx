@@ -54,7 +54,7 @@ export default function Landing({ oculto, onEmpezar }) {
                                 <div className="mockup-card" key={receta.titulo}>
                                     <img src={receta.imagen} alt={receta.titulo} className="mockup-img" />
                                     <p className="mockup-titulo">{receta.titulo}</p>
-                                    <p className="mockup-categoria">Chicken</p>
+                                    <p className="mockup-categoria">Pollo</p>
                                 </div>
                             ))}
                         </div>

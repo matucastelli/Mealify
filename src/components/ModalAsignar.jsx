@@ -9,7 +9,7 @@ export default function ModalAsignar({ abierto, titulo, seleccion, error, onCamb
             <h3 id="titulo-modal-asignar">{titulo}</h3>
             <label htmlFor="selectDia">Día</label>
             <select id="selectDia" value={seleccion.dia} onChange={(e) => onCambiarSeleccion({ ...seleccion, dia: e.target.value })}>
-                {DIAS.map(d => <option key={d.valor} value={d.valor}>{d.nombreConTilde}</option>)}
+                {DIAS.map(d => <option key={d.valor} value={d.valor}>{d.nombre}</option>)}
             </select>
             <label htmlFor="selectFranja">Comida</label>
             <select id="selectFranja" value={seleccion.franja} onChange={(e) => onCambiarSeleccion({ ...seleccion, franja: e.target.value })}>
