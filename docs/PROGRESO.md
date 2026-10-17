@@ -1,12 +1,12 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-16 · Rama de trabajo: `mejoras-critica` · Último commit en main: `7ecf187 Merge pull request #9 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-17 · Rama de trabajo: `mejoras-critica` · Último commit en main: `9dbc84c Merge pull request #10 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 6 están mergeados (el 6 en el PR #9). El commit 7 está pusheado en `mejoras-critica` en dos partes, con el PR pendiente: la interfaz en español con búsqueda en español (diccionario + DeepL) y las recetas traducidas con DeepL (títulos, ingredientes y pasos).
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). `mejoras-critica` está igual a `main`; se arranca el commit 8.
 
 ## Próximo paso
-Crear y mergear el PR del commit 7 (probar antes en el preview de Vercel una búsqueda que no esté en `mocks/`, por ejemplo "lentejas con chorizo"); después, `git pull origin main` en `mejoras-critica` y seguir con el commit 8 (detalle de receta).
+Commit 8 del plan: detalle de receta (pasos numerados, tiempo y porciones, link a la receta original, imagen de reemplazo en todas las fotos).
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -15,7 +15,7 @@ Crear y mergear el PR del commit 7 (probar antes en el preview de Vercel una bú
 - [x] 4. Layout de tarjetas en celular (sin desborde, acciones en su fila, input de 16px) (PR #7)
 - [x] 5. Planificador sin arrastrar ("Mover a…", "+ Agregar" por franja) (PR #8)
 - [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR #9)
-- [x] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) (PR pendiente)
+- [x] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) y recetas traducidas con DeepL (PR #10)
 - [ ] 8. Detalle de receta (pasos numerados, acciones en el modal, imagen de reemplazo) ← siguiente
 - [ ] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing)
 
@@ -43,6 +43,9 @@ Crear y mergear el PR del commit 7 (probar antes en el preview de Vercel una bú
 - Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
 
 ## Bitácora
+### 2026-10-17
+- PR #10 mergeado: commit 7, textos y recetas en español (`fb55c2b`, `0742454`). `mejoras-critica` actualizada con `main`.
+
 ### 2026-10-16
 - Commit 7, segunda parte: recetas en español. `api/_lib/traducirReceta.js` y `traducirRespuesta.js`; `/api/detalle`, `/api/buscar` y `/api/random` devuelven todo traducido. Una receta nueva tarda 0,4–1,1 s la primera vez (desde la compu) y 1 ms después. La prueba gastó ~7.700 caracteres. La lista de compras muestra los nombres en español (solo la primera letra en mayúscula) y sigue calculando paquetes y claves con el inglés. Verificado con puppeteer en 1440px y 390px. En el preview de Vercel se confirmó que la CDN guarda las respuestas traducidas (`x-vercel-cache: HIT` en el segundo pedido).
 - Commit 7: textos en español, ya con DeepL andando. La primera key cargada tenía un carácter de más (403 de DeepL); se corrigió en el `.env` y en Vercel. El reinicio automático de Vite conservaba la key vieja: hay que reiniciar `npm run dev` a mano (anotado en `CLAUDE.md`). Se borraron los mocks vacíos que se guardaron mientras DeepL fallaba y se suben los nuevos (`traduccion_*`, `buscar_meatballs`, `buscar_chicken_cutlet`, `buscar_chicken_curry`, `buscar_eggplant`).
