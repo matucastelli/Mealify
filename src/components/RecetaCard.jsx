@@ -7,7 +7,7 @@ export default function RecetaCard({ receta, esFavorito, cargandoDetalle, onTogg
             <ImagenReceta src={receta.image} alt={receta.title} />
             <div className="receta-info">
                 <p>{receta.title}</p>
-                <p>"{traducirCategorias(receta.dishTypes)}"</p>
+                <p>{traducirCategorias(receta.dishTypes)}</p>
             </div>
             <button className={`btn-favorito ${esFavorito ? "activo" : ""}`} onClick={() => onToggleFavorito(receta)}>★</button>
             <div className="receta-acciones">

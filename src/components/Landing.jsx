@@ -1,22 +1,32 @@
 import { useEffect, useRef } from "react";
+import { FRANJAS } from "../lib/constantes.js";
 
-const MOCKUP_RECETAS = [
-    { titulo: "Teriyaki Chicken Casserole", imagen: "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg/small" },
-    { titulo: "Chicken Handi", imagen: "https://www.themealdb.com/images/media/meals/1529446137.jpg/small" },
-    { titulo: "Chicken Congee", imagen: "https://www.themealdb.com/images/media/meals/wuxrtu1483564410.jpg/small" },
-    { titulo: "Kung Pao Chicken", imagen: "https://www.themealdb.com/images/media/meals/1525872624.jpg/small" },
+// Recetas reales de Spoonacular (las de los mocks), para que el mockup se vea como la app
+const RECETAS_MOCKUP = {
+    manzana: { titulo: "Gajos de manzana al horno con canela", id: 633548 },
+    arroz: { titulo: "Arroz con calabacín", id: 665781 },
+    empanadillas: { titulo: "Empanadillas chinas", id: 638693 },
+    pollo: { titulo: "Pollo Turbo", id: 663971 },
+    pasta: { titulo: "Pasta con ajo, cebollines y coliflor", id: 716429 },
+};
+
+// Un plan de ejemplo: qué receta va en cada franja (null = vacía)
+const MOCKUP_PLAN = [
+    { dia: "Lunes", desayuno: "manzana", almuerzo: "arroz", cena: null },
+    { dia: "Martes", desayuno: null, almuerzo: "empanadillas", cena: "pollo" },
+    { dia: "Miércoles", desayuno: "manzana", almuerzo: null, cena: "pasta" },
 ];
 
 const FEATURES = [
-    { icono: "fa-magnifying-glass", titulo: "Búsqueda de recetas", texto: "Encontrá miles de recetas al instante, con ingredientes e instrucciones completas." },
+    { icono: "fa-magnifying-glass", titulo: "Búsqueda de recetas", texto: "Encontrá miles de recetas en español, con ingredientes y pasos detallados." },
     { icono: "fa-star", titulo: "Favoritos", texto: "Guardá las recetas que más te gustan para volver a ellas cuando quieras." },
-    { icono: "fa-calendar-week", titulo: "Planificador semanal", texto: "Organizá desayuno, almuerzo y cena de toda tu semana con drag & drop." },
+    { icono: "fa-calendar-week", titulo: "Planificador semanal", texto: "Organizá desayuno, almuerzo y cena de toda la semana y obtené la lista de compras armada." },
 ];
 
 const PASOS = [
-    { titulo: "Buscá", texto: "Explorá recetas por nombre o categoría." },
-    { titulo: "Planificá", texto: "Arrastrá tus recetas elegidas a cada día de la semana." },
-    { titulo: "Cociná", texto: "Seguí la receta paso a paso cuando llegue el momento." },
+    { titulo: "Buscá", texto: "Escribí un plato o un ingrediente, en español." },
+    { titulo: "Planificá", texto: "Agregá cada receta al día y la comida que quieras." },
+    { titulo: "Cociná", texto: "Seguí la receta paso a paso y comprá solo lo que necesitás." },
 ];
 
 export default function Landing({ oculto, onEmpezar }) {
@@ -45,16 +55,31 @@ export default function Landing({ oculto, onEmpezar }) {
                         <p>Buscá recetas, guardá tus favoritas y armá tu planificador semanal de comidas en minutos.</p>
                         <button id="btnEmpezar" onClick={onEmpezar}>Empezar ahora</button>
                     </div>
-                    <div className="hero-mockup">
+                    {/* Decorativo: un plan de ejemplo con el mismo aspecto que el planificador */}
+                    <div className="hero-mockup" aria-hidden="true">
                         <div className="mockup-barra">
                             <span></span><span></span><span></span>
                         </div>
-                        <div className="mockup-grid">
-                            {MOCKUP_RECETAS.map(receta => (
-                                <div className="mockup-card" key={receta.titulo}>
-                                    <img src={receta.imagen} alt={receta.titulo} className="mockup-img" />
-                                    <p className="mockup-titulo">{receta.titulo}</p>
-                                    <p className="mockup-categoria">Pollo</p>
+                        <div className="mockup-plan">
+                            {MOCKUP_PLAN.map(dia => (
+                                <div className="mockup-dia" key={dia.dia}>
+                                    <div className="mockup-dia-nombre">{dia.dia}</div>
+                                    {FRANJAS.map(franja => {
+                                        const receta = RECETAS_MOCKUP[dia[franja.valor]];
+                                        return (
+                                            <div className="mockup-franja" key={franja.valor}>
+                                                <div className="mockup-franja-titulo"><i className={`fa-solid ${franja.icono}`}></i> {franja.nombre}</div>
+                                                {receta ? (
+                                                    <div className="mockup-receta">
+                                                        <img src={`https://img.spoonacular.com/recipes/${receta.id}-90x90.jpg`} alt="" />
+                                                        <span>{receta.titulo}</span>
+                                                    </div>
+                                                ) : (
+                                                    <div className="mockup-vacia">—</div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             ))}
                         </div>

@@ -3,10 +3,10 @@
 > Última actualización: 2026-10-17 · Rama de trabajo: `mejoras-critica` · Último commit en main: `281cb81 Merge pull request #11 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). Los commits 1 a 8 están mergeados (el 8 en el PR #11). `mejoras-critica` está igual a `main`; se arranca el commit 9, el último del plan.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). Los commits 1 a 8 están mergeados (el 8 en el PR #11). El commit 9 (pulido visual), el último del plan, está pusheado en `mejoras-critica`, con el PR pendiente. Con ese merge el plan queda terminado.
 
 ## Próximo paso
-Commit 9 del plan: pulido visual (tipografía en los controles, grilla de favoritos, mockup de la landing como mini planificador, textos de la landing, sin comillas en las categorías, sin Baloo 2).
+Crear y mergear el PR del commit 9. Con eso termina el plan de mejoras de la crítica; después se puede pedir una nueva crítica con Impeccable para comparar con el 17/40 inicial.
 
 ## Plan en curso: mejoras de la crítica
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -17,7 +17,7 @@ Commit 9 del plan: pulido visual (tipografía en los controles, grilla de favori
 - [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR #9)
 - [x] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) y recetas traducidas con DeepL (PR #10)
 - [x] 8. Detalle de receta (pasos numerados, tiempo y porciones, link a la receta original, imagen de reemplazo) (PR #11)
-- [ ] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) ← siguiente
+- [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR pendiente)
 
 ## Decisiones
 - 2026-09-25: un PR por commit, todos desde la rama `mejoras-critica`. Mergear cada PR con "Create a merge commit" antes de empezar el siguiente; después, `git pull origin main` en la rama.
@@ -44,6 +44,7 @@ Commit 9 del plan: pulido visual (tipografía en los controles, grilla de favori
 
 ## Bitácora
 ### 2026-10-17
+- Commit 9: pulido visual. Botones, inputs y selects heredan Poppins (solo la familia, sin cambiar tamaños); se dejó de descargar Baloo 2, que no se usaba. Favoritos en grilla como Buscar, con el estado vacío centrado. Categorías sin comillas. El mockup de la landing pasó a ser un mini planificador (3 días, 2 debajo de 400px) con recetas reales en español; textos de la landing sin "drag & drop". Los links del footer bajan de línea en 320px. Verificado con puppeteer en 1440, 768, 390 y 320px, más las pruebas de los commits 6 a 8.
 - PR #11 mergeado: commit 8, detalle de receta (`c1bc9da`). En producción los pasos llegan en español y la CDN responde HIT. `mejoras-critica` actualizada con `main`.
 - Commit 8: detalle de receta. Pasos numerados desde `analyzedInstructions` (traducidos con DeepL; `instructions` en HTML solo como respaldo), "45 min · 2 porciones" debajo del título, link "Ver receta original" y mensaje para las recetas sin pasos. `ImagenReceta` muestra un recuadro con cubiertos si la foto no carga (tarjetas, plan, selector y modal). Se regeneraron los mocks `detalle_es_*` (~7.400 caracteres) y el cache del navegador pasó a `cacheRecetasEs2`. Las acciones dentro del modal (favorito, agregar al plan) quedaron afuera por decisión del usuario. Verificado con puppeteer en 1440px, 390px y 320px.
 - PR #10 mergeado: commit 7, textos y recetas en español (`fb55c2b`, `0742454`). `mejoras-critica` actualizada con `main`.
