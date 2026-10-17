@@ -15,11 +15,11 @@ Deploy: Vercel (push a main = deploy automático a producción).
 - src/components/: Landing, Header, Buscar, RecetaCard, Favoritos, Planificador (drag & drop nativo), ListaCompras, modales
 - src/hooks/: useFavoritos, usePlanSemanal, useCompras (envuelven storage.js), useRecetasDetalle (cache compartido de detalles)
 - src/lib/: api.js (llamadas a /api/*), storage.js (localStorage), listaCompras.js (agrupa ingredientes), paquetes.js (cantidad → paquete a comprar), traducciones.js (pasillos y categorías en español), constantes.js (días/franjas)
-- api/buscar.js, api/detalle.js, api/random.js: funciones serverless (proxy a Spoonacular); api/_lib/mock.js cachea respuestas en mocks/ fuera de producción; api/_lib/traducir.js pasa la búsqueda a inglés (diccionario y, si hace falta, DeepL)
+- api/buscar.js, api/detalle.js, api/random.js: funciones serverless (proxy a Spoonacular); api/_lib/mock.js cachea respuestas en mocks/ fuera de producción; api/_lib/traducir.js pasa la búsqueda a inglés (diccionario y, si hace falta, DeepL); api/_lib/traducirReceta.js traduce las recetas al español con DeepL (título, ingredientes y pasos; `name` queda en inglés y la traducción va en `nombreEs`), así /api devuelve todo en español
 - vite.config.js: plugin `api-local` que monta los handlers de /api en el dev server (mismo código que producción)
 
 ## Comandos
-- Local: npm run dev (necesita SPOONACULAR_KEY en .env; DEEPL_KEY es opcional: sin ella la búsqueda solo traduce con el diccionario)
+- Local: npm run dev (necesita SPOONACULAR_KEY en .env; DEEPL_KEY es opcional: sin ella la búsqueda solo traduce con el diccionario y las recetas quedan en inglés)
 - Build: npm run build
 - Deploy: push a main
 

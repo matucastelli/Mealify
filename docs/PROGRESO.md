@@ -3,7 +3,7 @@
 > Última actualización: 2026-10-16 · Rama de trabajo: `mejoras-critica` · Último commit en main: `7ecf187 Merge pull request #9 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 6 están mergeados (el 6 en el PR #9). El commit 7 (textos en español, con búsqueda en español vía diccionario + DeepL) está hecho, probado con DeepL y pusheado en `mejoras-critica`, con el PR pendiente.
+Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 6 están mergeados (el 6 en el PR #9). El commit 7 está pusheado en `mejoras-critica` en dos partes, con el PR pendiente: la interfaz en español con búsqueda en español (diccionario + DeepL) y las recetas traducidas con DeepL (títulos, ingredientes y pasos).
 
 ## Próximo paso
 Crear y mergear el PR del commit 7 (probar antes en el preview de Vercel una búsqueda que no esté en `mocks/`, por ejemplo "lentejas con chorizo"); después, `git pull origin main` en `mejoras-critica` y seguir con el commit 8 (detalle de receta).
@@ -22,7 +22,8 @@ Crear y mergear el PR del commit 7 (probar antes en el preview de Vercel una bú
 ## Decisiones
 - 2026-09-25: un PR por commit, todos desde la rama `mejoras-critica`. Mergear cada PR con "Create a merge commit" antes de empezar el siguiente; después, `git pull origin main` en la rama.
 - 2026-09-25: no tocar los colores (el contraste del naranja queda fuera del plan).
-- 2026-09-25: la interfaz queda toda en español, con un diccionario para el vocabulario fijo. El contenido de las recetas sigue en inglés porque Spoonacular solo ofrece inglés y alemán.
+- 2026-09-25: la interfaz queda toda en español, con un diccionario para el vocabulario fijo.
+- 2026-10-16: (reemplaza lo del 2026-09-25 sobre el contenido) las recetas también van en español, para un público hispanohablante: DeepL traduce al español latinoamericano (`ES-419`). Para cuidar la cuota gratis (1.000.000 de caracteres por mes) se traduce solo lo que se ve (títulos en los listados; la receta completa al abrirla) y una sola vez: mocks `*_es_*` en desarrollo, CDN de Vercel 30 días (`Cache-Control: s-maxage`) en producción y localStorage (`cacheRecetasEs`) en el navegador. Si DeepL falla, se muestra en inglés y se reintenta después. Los nombres de ingredientes en inglés (`name`) siguen siendo la clave de la lista de compras.
 - 2026-09-25: antes de sumar una librería, se consulta explicando qué hace y por qué.
 - 2026-09-25: la skill de progreso, al retomar, corrige y sube este archivo sola; al cerrar, pregunta antes de subir código a medias.
 - 2026-09-25: sin atribución a Claude en commits ni PRs. Se reescribió la historia de `main` para sacar la que había.
@@ -43,6 +44,7 @@ Crear y mergear el PR del commit 7 (probar antes en el preview de Vercel una bú
 
 ## Bitácora
 ### 2026-10-16
+- Commit 7, segunda parte: recetas en español. `api/_lib/traducirReceta.js` y `traducirRespuesta.js`; `/api/detalle`, `/api/buscar` y `/api/random` devuelven todo traducido. Una receta nueva tarda 0,4–1,1 s la primera vez (desde la compu) y 1 ms después. La prueba gastó ~7.700 caracteres. La lista de compras muestra los nombres en español (solo la primera letra en mayúscula) y sigue calculando paquetes y claves con el inglés. Verificado con puppeteer en 1440px y 390px. Falta confirmar en el preview de Vercel que la CDN guarda las respuestas (`x-vercel-cache: HIT`).
 - Commit 7: textos en español, ya con DeepL andando. La primera key cargada tenía un carácter de más (403 de DeepL); se corrigió en el `.env` y en Vercel. El reinicio automático de Vite conservaba la key vieja: hay que reiniciar `npm run dev` a mano (anotado en `CLAUDE.md`). Se borraron los mocks vacíos que se guardaron mientras DeepL fallaba y se suben los nuevos (`traduccion_*`, `buscar_meatballs`, `buscar_chicken_cutlet`, `buscar_chicken_curry`, `buscar_eggplant`).
 
 ### 2026-10-15

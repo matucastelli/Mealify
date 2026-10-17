@@ -1270,8 +1270,12 @@ footer {
 }
 
 .item-compra-nombre {
-    text-transform: capitalize;
     overflow-wrap: anywhere;
+}
+
+/* En español solo va mayúscula la primera letra ("Aceite de oliva") */
+.item-compra-nombre::first-letter {
+    text-transform: uppercase;
 }
 
 .item-compra small {

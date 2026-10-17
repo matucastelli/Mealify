@@ -66,18 +66,41 @@ function traducirConDiccionario(texto) {
     return { texto: palabras.join(" "), completo };
 }
 
-async function traducirConDeepL(texto) {
-    const key = process.env.DEEPL_KEY;
-    const host = key.endsWith(":fx") ? "api-free.deepl.com" : "api.deepl.com";
-    const clave = `traduccion_${normalizar(texto).replace(/[^a-z0-9]/g, "_")}`;
+const MAXIMO_TEXTOS_POR_PEDIDO = 50;
 
+// Traduce varios textos con DeepL en un solo pedido (en tandas de 50). Lanza un error si falla.
+async function traducirConDeepL(textos, { origen, destino, html = false, timeout = 2000 }) {
+    const key = process.env.DEEPL_KEY;
+    if (!key) throw new Error("Falta DEEPL_KEY");
+    const host = key.endsWith(":fx") ? "api-free.deepl.com" : "api.deepl.com";
+
+    const tandas = [];
+    for (let i = 0; i < textos.length; i += MAXIMO_TEXTOS_POR_PEDIDO) {
+        tandas.push(textos.slice(i, i + MAXIMO_TEXTOS_POR_PEDIDO));
+    }
+    const respuestas = await Promise.all(tandas.map(tanda => axios.post(
+        `https://${host}/v2/translate`,
+        {
+            text: tanda,
+            target_lang: destino,
+            ...(origen && { source_lang: origen }),
+            ...(html && { tag_handling: "html" }),
+        },
+        { headers: { Authorization: `DeepL-Auth-Key ${key}` }, timeout }
+    )));
+    return respuestas.flatMap(respuesta => respuesta.data.translations.map(t => t.text));
+}
+
+// Recetas de Spoonacular al español latinoamericano
+export function traducirAlEspanol(textos, { html = false } = {}) {
+    return traducirConDeepL(textos, { origen: "EN", destino: "ES-419", html, timeout: 5000 });
+}
+
+async function traducirBusquedaConDeepL(texto) {
+    const clave = `traduccion_${normalizar(texto).replace(/[^a-z0-9]/g, "_")}`;
     const datos = await withMock(clave, async () => {
-        const respuesta = await axios.post(
-            `https://${host}/v2/translate`,
-            { text: [texto], target_lang: "EN-US" },
-            { headers: { Authorization: `DeepL-Auth-Key ${key}` }, timeout: 2000 }
-        );
-        return { texto: respuesta.data.translations[0].text };
+        const [traducido] = await traducirConDeepL([texto], { destino: "EN-US" });
+        return { texto: traducido };
     });
     return datos.texto;
 }
@@ -88,7 +111,7 @@ export async function traducirAIngles(texto) {
 
     if (cache.has(texto)) return cache.get(texto);
     try {
-        const traducido = await traducirConDeepL(texto);
+        const traducido = await traducirBusquedaConDeepL(texto);
         cache.set(texto, traducido);
         return traducido;
     } catch (error) {
