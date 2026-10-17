@@ -23,6 +23,11 @@ body {
     background-color: var(--color-fondo);
 }
 
+/* El navegador les pone su propia fuente a los controles: así usan Poppins (el tamaño lo define cada uno) */
+button, input, select, textarea {
+    font-family: inherit;
+}
+
 /*-------- Seccion Header --------*/
 
 #header-principal {
@@ -62,7 +67,6 @@ h1 {
     border: none;
     width: 95%;
     background: none;
-    font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
     font-weight: 500;
     color: var(--color-primario);
@@ -180,7 +184,6 @@ h1 {
     border: 1px solid #ccc;
     padding: 6px 10px;
     padding-left: var(--espaciado-grande);
-    font-family: inherit;
     font-size: 1rem;
 }
 
@@ -230,14 +233,17 @@ h1 {
 
 /*-------- Seccion Tarjetas --------*/
 
-#resultados {
+/* Buscar y Favoritos muestran las tarjetas igual: columna en celular, grilla desde 768px */
+#resultados,
+#listaFavoritos {
     display: flex;
     flex-direction: column;
     gap: var(--espaciado-chico);
 }
 
 /* Los mensajes (buscando / sin resultados) ocupan todo el ancho de la grilla en escritorio */
-#resultados > .estado-vacio {
+#resultados > .estado-vacio,
+#listaFavoritos > .estado-vacio {
     grid-column: 1 / -1;
 }
 
@@ -428,7 +434,6 @@ h1 {
     background: none;
     border: none;
     color: var(--color-fondo);
-    font-family: inherit;
     font-weight: 600;
     text-decoration: underline;
     cursor: pointer;
@@ -622,7 +627,6 @@ select {
     width: 100%;
     padding: var(--espaciado-chico-medio);
     border-radius: var(--radio-borde);
-    font-family: inherit;
     font-size: 1rem;
 }
 
@@ -633,7 +637,8 @@ select:last-of-type {
 
 /*-------- Queries Tarjetas --------*/
 @media (min-width: 768px) {
-    #resultados {
+    #resultados,
+    #listaFavoritos {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: var(--espaciado-chico);
@@ -812,7 +817,6 @@ button.receta-plan-ver {
     border: 1.5px dashed var(--color-terciario);
     border-radius: var(--radio-borde);
     color: var(--color-primario);
-    font-family: inherit;
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
@@ -986,40 +990,92 @@ button.receta-plan-ver {
     background-color: var(--color-terciario);
 }
 
-.mockup-grid {
+/* Mini planificador de la landing: el mismo aspecto que .dia y .franja, en chico */
+.mockup-plan {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 14px;
-}
-
-.mockup-card {
-    background-color: var(--color-secundario);
-    border-radius: var(--radio-borde);
-    padding: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding: 12px;
     text-align: left;
 }
 
-.mockup-img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
+.mockup-dia {
+    background-color: var(--color-secundario);
+    border-radius: var(--radio-borde);
+    padding: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.mockup-dia-nombre {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.mockup-franja {
+    border-top: 1px solid var(--color-terciario);
+    padding-top: 4px;
+    margin-top: 4px;
+}
+
+.mockup-franja-titulo {
+    font-size: 0.65rem;
+    opacity: 0.7;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mockup-receta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: var(--color-fondo);
     border-radius: 6px;
-    margin-bottom: 6px;
-    display: block;
+    padding: 4px;
+    min-height: 44px;
 }
 
-.mockup-titulo {
-    font-size: 0.8rem;
+.mockup-receta img {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+/* El título se corta en 2 líneas como máximo */
+.mockup-receta span {
+    font-size: 0.65rem;
     font-weight: 600;
-    margin: 0 0 2px;
+    line-height: 1.25;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-width: 0;
 }
 
-.mockup-categoria {
-    font-size: 0.7rem;
-    color: var(--color-texto);
-    opacity: 0.6;
-    margin: 0;
+.mockup-vacia {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed var(--color-terciario);
+    border-radius: 6px;
+    color: var(--color-terciario);
+    font-size: 0.75rem;
+}
+
+/* En pantallas muy angostas, 2 días: con 3 las columnas quedan demasiado finas */
+@media (max-width: 400px) {
+    .mockup-plan {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .mockup-dia:nth-child(3) {
+        display: none;
+    }
 }
 
 .hero h1 {
@@ -1143,7 +1199,8 @@ footer {
     text-decoration: none;
     justify-content: center;
     align-items: center;
-    gap: var(--espaciado-grande);
+    flex-wrap: wrap;
+    gap: var(--espaciado-medio) var(--espaciado-grande);
     padding: var(--espaciado-grande);
 }
 
@@ -1153,7 +1210,6 @@ footer {
 }
 
 #btnEmpezar {
-    font-family: 'Poppins';
     font-weight: 600;
     padding: var(--espaciado-medio);
     background-color: var(--color-primario);

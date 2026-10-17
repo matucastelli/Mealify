@@ -6,7 +6,7 @@ Deploy: Vercel (push a main = deploy automático a producción).
 ## Stack
 - React 19 + Vite, en JavaScript (sin TypeScript). Estado con hooks propios, sin router ni librería de estado
 - API: Spoonacular, siempre a través de funciones serverless en /api (la key nunca va al cliente)
-- Íconos: Font Awesome (CDN). Tipografías: Poppins (general), Baloo 2 (solo #btnEmpezar)
+- Íconos: Font Awesome (CDN). Tipografía: Poppins en toda la app (los controles la heredan con `font-family: inherit`)
 - Estilos: style.css global (se importa en src/main.jsx); los componentes usan las mismas clases/IDs que la versión vanilla
 - Persistencia: localStorage (favoritos, plan, comprasMarcadas, comprasOcultas), sessionStorage (cache recetas iniciales)
 

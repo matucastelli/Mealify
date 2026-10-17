@@ -12,7 +12,7 @@ export default function Favoritos({ oculto, favoritos, idCargandoDetalle, accion
             <div id="listaFavoritos">
                 {favoritos.length === 0 ? (
                     <div className="estado-vacio">
-                        <i className="fa-regular fa-star" style={{ fontSize: "3rem", color: "#ccc", marginBottom: "1rem" }}></i>
+                        <i className="fa-regular fa-star icono-lista-vacia"></i>
                         <p>Aún no guardaste ninguna receta.</p>
                         <button className="btn-filtro" id="btn-ir-buscar" onClick={onIrABuscar}>Explorar recetas</button>
                     </div>
