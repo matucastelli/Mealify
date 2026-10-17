@@ -44,7 +44,7 @@ Crear y mergear el PR del commit 7 (probar antes en el preview de Vercel una bú
 
 ## Bitácora
 ### 2026-10-16
-- Commit 7, segunda parte: recetas en español. `api/_lib/traducirReceta.js` y `traducirRespuesta.js`; `/api/detalle`, `/api/buscar` y `/api/random` devuelven todo traducido. Una receta nueva tarda 0,4–1,1 s la primera vez (desde la compu) y 1 ms después. La prueba gastó ~7.700 caracteres. La lista de compras muestra los nombres en español (solo la primera letra en mayúscula) y sigue calculando paquetes y claves con el inglés. Verificado con puppeteer en 1440px y 390px. Falta confirmar en el preview de Vercel que la CDN guarda las respuestas (`x-vercel-cache: HIT`).
+- Commit 7, segunda parte: recetas en español. `api/_lib/traducirReceta.js` y `traducirRespuesta.js`; `/api/detalle`, `/api/buscar` y `/api/random` devuelven todo traducido. Una receta nueva tarda 0,4–1,1 s la primera vez (desde la compu) y 1 ms después. La prueba gastó ~7.700 caracteres. La lista de compras muestra los nombres en español (solo la primera letra en mayúscula) y sigue calculando paquetes y claves con el inglés. Verificado con puppeteer en 1440px y 390px. En el preview de Vercel se confirmó que la CDN guarda las respuestas traducidas (`x-vercel-cache: HIT` en el segundo pedido).
 - Commit 7: textos en español, ya con DeepL andando. La primera key cargada tenía un carácter de más (403 de DeepL); se corrigió en el `.env` y en Vercel. El reinicio automático de Vite conservaba la key vieja: hay que reiniciar `npm run dev` a mano (anotado en `CLAUDE.md`). Se borraron los mocks vacíos que se guardaron mientras DeepL fallaba y se suben los nuevos (`traduccion_*`, `buscar_meatballs`, `buscar_chicken_cutlet`, `buscar_chicken_curry`, `buscar_eggplant`).
 
 ### 2026-10-15
