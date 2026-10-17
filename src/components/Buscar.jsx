@@ -1,6 +1,7 @@
 import RecetaCard from "./RecetaCard.jsx";
 
-const FILTROS_RAPIDOS = ["Chicken", "Beef", "Rice", "Pork", "Vegan"];
+// Están en el diccionario de búsqueda, así que se traducen al instante (api/_lib/traducir.js)
+const FILTROS_RAPIDOS = ["Pollo", "Carne", "Arroz", "Cerdo", "Vegano"];
 
 export default function Buscar({ oculto, texto, onCambiarTexto, onBuscar, mostrarSugerencias, recetas, estadoBusqueda, terminoBuscado, onReintentar, favoritos, idCargandoDetalle, accionesReceta }) {
     function buscarConFiltro(termino) {
@@ -10,6 +11,12 @@ export default function Buscar({ oculto, texto, onCambiarTexto, onBuscar, mostra
 
     return (
         <section id="buscar" className={`seccion ${oculto ? "oculto" : ""}`}>
+            <div className="seccion-cabecera">
+                <div>
+                    <h2>Buscar recetas</h2>
+                    <p>Miles de recetas para tu semana.</p>
+                </div>
+            </div>
             <div className="buscador-wrapper">
                 <i className="fa-solid fa-magnifying-glass icono-buscar"></i>
                 <input
@@ -45,7 +52,7 @@ export default function Buscar({ oculto, texto, onCambiarTexto, onBuscar, mostra
                 ) : estadoBusqueda === "listo" && recetas.length === 0 ? (
                     <div className="estado-vacio">
                         <i className="fa-solid fa-magnifying-glass icono-lista-vacia"></i>
-                        <p>No encontramos recetas para “{terminoBuscado}”. Probá con otra palabra (en inglés).</p>
+                        <p>No encontramos recetas para “{terminoBuscado}”. Probá con otra palabra.</p>
                     </div>
                 ) : (
                     recetas.map(receta => (

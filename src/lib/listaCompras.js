@@ -1,4 +1,5 @@
 import { aBase, calcularCompra } from "./paquetes.js";
+import { PASILLOS, traducir } from "./traducciones.js";
 
 const SIN_PASILLO = "Otros";
 
@@ -18,7 +19,8 @@ export function armarListaCompras(recetas, ocultas) {
                 ingredientes.set(clave, {
                     clave,
                     nombre,
-                    pasillo: !pasillo || pasillo === "?" ? SIN_PASILLO : pasillo,
+                    pasillo: !pasillo || pasillo === "?" ? SIN_PASILLO : traducir(PASILLOS, pasillo),
+                    esEspecia: pasillo === "Spices and Seasonings",
                     totales: { g: 0, ml: 0, u: 0 },
                     recetas: new Set(),
                 });
@@ -41,7 +43,7 @@ function compararPasillos(a, b) {
     if (a === b) return 0;
     if (a === SIN_PASILLO) return 1;
     if (b === SIN_PASILLO) return -1;
-    return a.localeCompare(b);
+    return a.localeCompare(b, "es");
 }
 
 // La lista ya viene ordenada por pasillo: [{ pasillo, ingredientes }]

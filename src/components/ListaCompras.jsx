@@ -5,7 +5,7 @@ export default function ListaCompras({ oculto, ingredientes, cargando, marcadas,
 
     return (
         <section id="compras" className={`seccion ${oculto ? "oculto" : ""}`}>
-            <div className="compras-cabecera">
+            <div className="seccion-cabecera">
                 <div>
                     <h2>Lista de compras</h2>
                     <p>Ingredientes de las recetas de tu plan semanal.</p>

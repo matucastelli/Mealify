@@ -1,11 +1,11 @@
 export const DIAS = [
-    { valor: "lunes", nombre: "Lunes", nombreConTilde: "Lunes" },
-    { valor: "martes", nombre: "Martes", nombreConTilde: "Martes" },
-    { valor: "miercoles", nombre: "Miercoles", nombreConTilde: "Miércoles" },
-    { valor: "jueves", nombre: "Jueves", nombreConTilde: "Jueves" },
-    { valor: "viernes", nombre: "Viernes", nombreConTilde: "Viernes" },
-    { valor: "sabado", nombre: "Sabado", nombreConTilde: "Sábado" },
-    { valor: "domingo", nombre: "Domingo", nombreConTilde: "Domingo" },
+    { valor: "lunes", nombre: "Lunes" },
+    { valor: "martes", nombre: "Martes" },
+    { valor: "miercoles", nombre: "Miércoles" },
+    { valor: "jueves", nombre: "Jueves" },
+    { valor: "viernes", nombre: "Viernes" },
+    { valor: "sabado", nombre: "Sábado" },
+    { valor: "domingo", nombre: "Domingo" },
 ];
 
 export const FRANJAS = [
@@ -16,7 +16,7 @@ export const FRANJAS = [
 
 // "Lunes · Almuerzo", para títulos y avisos
 export function describirFranja(dia, franja) {
-    const nombreDia = DIAS.find(d => d.valor === dia).nombreConTilde;
+    const nombreDia = DIAS.find(d => d.valor === dia).nombre;
     const nombreFranja = FRANJAS.find(f => f.valor === franja).nombre;
     return `${nombreDia} · ${nombreFranja}`;
 }

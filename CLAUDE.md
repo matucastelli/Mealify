@@ -14,12 +14,12 @@ Deploy: Vercel (push a main = deploy automático a producción).
 - src/App.jsx: estado de la app (sección activa, búsqueda, modales) y conexión entre componentes
 - src/components/: Landing, Header, Buscar, RecetaCard, Favoritos, Planificador (drag & drop nativo), ListaCompras, modales
 - src/hooks/: useFavoritos, usePlanSemanal, useCompras (envuelven storage.js), useRecetasDetalle (cache compartido de detalles)
-- src/lib/: api.js (llamadas a /api/*), storage.js (localStorage), listaCompras.js (agrupa ingredientes), constantes.js (días/franjas)
-- api/buscar.js, api/detalle.js, api/random.js: funciones serverless (proxy a Spoonacular); api/_lib/mock.js cachea respuestas en mocks/ fuera de producción
+- src/lib/: api.js (llamadas a /api/*), storage.js (localStorage), listaCompras.js (agrupa ingredientes), paquetes.js (cantidad → paquete a comprar), traducciones.js (pasillos y categorías en español), constantes.js (días/franjas)
+- api/buscar.js, api/detalle.js, api/random.js: funciones serverless (proxy a Spoonacular); api/_lib/mock.js cachea respuestas en mocks/ fuera de producción; api/_lib/traducir.js pasa la búsqueda a inglés (diccionario y, si hace falta, DeepL)
 - vite.config.js: plugin `api-local` que monta los handlers de /api en el dev server (mismo código que producción)
 
 ## Comandos
-- Local: npm run dev (necesita SPOONACULAR_KEY en .env)
+- Local: npm run dev (necesita SPOONACULAR_KEY en .env; DEEPL_KEY es opcional: sin ella la búsqueda solo traduce con el diccionario)
 - Build: npm run build
 - Deploy: push a main
 
@@ -30,8 +30,9 @@ El estado del trabajo (qué está hecho, qué sigue, decisiones) vive en `docs/P
 - Al terminar: no dejar commits sin subir. Hacer push de la rama de trabajo, aunque el trabajo no esté terminado.
 - Commitear los mocks nuevos de `mocks/`, así la otra compu no gasta cuota de Spoonacular pidiendo lo mismo.
 - Después de un `npm install` que cambie dependencias, commitear `package.json` y `package-lock.json`; en la otra compu, correr `npm install` después del pull.
-- `.env` (SPOONACULAR_KEY) y `.claude/settings.local.json` no se suben a git: hay que tenerlos en ambas compus por separado.
+- `.env` (SPOONACULAR_KEY, DEEPL_KEY) y `.claude/settings.local.json` no se suben a git: hay que tenerlos en ambas compus por separado.
 - Si `npm run dev` está corriendo mientras se cambia de rama o se hace pull, reiniciarlo (el plugin de /api puede quedar en mal estado).
+- Después de cambiar un valor del `.env`, reiniciar `npm run dev` a mano (Ctrl+C): el reinicio automático de Vite conserva el valor viejo.
 
 ## Reglas
 - Commits y PRs sin atribución a Claude: nada de `Co-Authored-By: Claude` ni "Generated with Claude Code"
