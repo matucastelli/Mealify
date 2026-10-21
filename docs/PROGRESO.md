@@ -3,16 +3,22 @@
 > Última actualización: 2026-10-21 · Rama de trabajo: `mejoras-critica` · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). No hay código a medias.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) ya tiene el diseño aprobado en `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`. Todavía no se programó nada, así que no hay código a medias.
 
 ## Próximo paso
-Diseño de la etapa 2 (macros + objetivo): fórmula del objetivo, pantalla de perfil y cómo se ve el plan. Se escribe en `docs/superpowers/specs/` antes de programar.
+Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (skill superpowers:writing-plans) y arrancar por el commit 1: nutrición en el detalle de la receta.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
-- [ ] 2. ← siguiente. Macros + objetivo, junto con la lista de compras por porción (P1), el planificador (P2) y el detalle con ★ y "Agregar al plan" (P2). Antes de programar se diseña: fórmula del objetivo, pantalla de perfil y cómo se ve el plan.
-- [ ] 3. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran, cómo se guardan).
-- [ ] 4. Resultados de búsqueda (P2 de la crítica): "Sin categoría", filtros que desaparecen y ★ flotando.
+- [ ] 2. ← siguiente. Macros, objetivo y peso (diseño aprobado: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`). Son 5 commits/PRs:
+  - [ ] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal)
+  - [ ] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida)
+  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días)
+  - [ ] 2.4 Macros en el planificador
+  - [ ] 2.5 Lista de compras por porción y personas
+- [ ] 3. Cuentas de usuario + base de datos, para usar la app desde varios dispositivos (se migra lo guardado en el navegador). Candidato: Supabase; antes de sumarlo se consulta y se revisan los límites del plan gratis.
+- [ ] 4. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`, guardadas ya en la base de datos. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran).
+- [ ] 5. Resultados de búsqueda (P2 de la crítica): "Sin categoría", filtros que desaparecen y ★ flotando.
 
 ## Plan anterior: mejoras de la crítica (terminado)
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -26,6 +32,8 @@ Diseño de la etapa 2 (macros + objetivo): fórmula del objetivo, pantalla de pe
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-21: diseño de la etapa 2 aprobado (ver la spec). Resumen: objetivo con Mifflin-St Jeor × actividad × meta (bajar 0,8 / subir 1,1), con mínimo de 1.200 kcal (mujer) o 1.500 (hombre); reparto recomendado de proteína 1,8 g/kg, grasas 25 % y carbohidratos el resto, editable con el aviso de que el recomendado es el sugerido; un día está "en objetivo" dentro de ±10 % (rojo si se pasa, ámbar si le falta); el peso se carga cuando el usuario quiere (semanal o mensual) y solo se guarda fecha y kg; la primera vez se piden los datos, con opción de saltearlo; sección nueva "Mi progreso".
+- 2026-10-21: cuentas de usuario + base de datos van como etapa propia (la 3), antes de las recetas propias, para que esas recetas ya se guarden en la base. Hasta entonces todo va en localStorage, detrás de `storage.js` y los hooks.
 - 2026-10-21: plan **Mealify fitness**. Las funcionalidades nuevas se mezclan con lo pendiente de la crítica, porque tocan el mismo código. Orden: contraste, macros + objetivo, recetas propias, resultados de búsqueda. Cada etapa tiene su propio diseño antes de programar.
 - 2026-10-21: (reemplaza lo del 2026-09-25 sobre los colores) se tocan los colores para arreglar el contraste del naranja.
 - 2026-10-21: cada receta del plan cuenta como 1 porción para 1 persona; los macros se comparan con un objetivo diario que calcula la app (peso, altura, edad, sexo, actividad y meta), guardado en localStorage.
@@ -45,6 +53,8 @@ Diseño de la etapa 2 (macros + objetivo): fórmula del objetivo, pantalla de pe
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
+- Al retomar: `git fetch`, `git switch mejoras-critica`, `git pull --ff-only`. No cambiaron dependencias, así que no hace falta `npm install`.
+- En esta compu quedó sin subir `.claude/launch.json` (config para levantar la app en el navegador integrado de Claude, con `npm run dev` en el puerto 5173). Decidir si se sube; en la otra compu, Claude lo puede volver a crear si hace falta.
 - Agregar `DEEPL_KEY` al `.env` de la otra compu (en LAPTOP-2UJ4PI2A y en Vercel, Production y Preview, ya está) y reiniciar `npm run dev` a mano.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
 - **Tiene la historia vieja de git** (la de antes de sacar la atribución a Claude). No hacer `git pull` en `main`. Primero revisar que no haya trabajo sin subir (`git status` y `git log origin/main..main`), y después: `git fetch --prune origin`, `git switch main`, `git reset --hard origin/main`. Borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (en GitHub ya no están).
@@ -55,6 +65,8 @@ Diseño de la etapa 2 (macros + objetivo): fórmula del objetivo, pantalla de pe
 
 ## Bitácora
 ### 2026-10-21
+- Brainstorming y diseño de la etapa 2 (macros, objetivo y peso), con bocetos del plan con macros y de "Mi progreso" aprobados en el chat. Un revisor leyó el diseño y sus preguntas quedaron resueltas (mínimo de kcal, margen de ±10 %, sincronización del peso, cómo se acomodan los bocetos). Spec: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`.
+- Fin de la sesión en esta compu: todo subido a `mejoras-critica`, sin código a medias.
 - PR #13 mergeado: etapa 1, contraste del naranja (`6e8c015`). `mejoras-critica` actualizada con `main`.
 - Etapa 1: contraste del naranja. `--color-primario` pasa a `#B0501A` (5,2:1 sobre blanco, 4,8:1 sobre `#f4f4f4`); el naranja original queda como `--color-primario-claro`, solo para lo decorativo (barras del menú, contorno al arrastrar, íconos de la landing). ★ inactiva `#8A8A8A`; contador de la lista con `opacity` 0,7 (estaba en 4,27:1). Los botones de la tarjeta, "Confirmar" y "Limpiar marcados" pasan de 13,3px a 14px: con más, "Agregar al plan" se parte en dos líneas a 1024 y 320px. Verificado con un script de contraste en el navegador integrado, en landing, Buscar, Favoritos, Plan, Lista y los dos modales, a 1440 y 390px: sin textos bajo AA ni scroll horizontal.
 - La animación de aparición de la landing (`IntersectionObserver`) no se dispara si el navegador está en segundo plano; no se tocó.
