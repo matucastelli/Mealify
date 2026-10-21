@@ -5,7 +5,9 @@
 }
 
 :root {
-    --color-primario: #D96C2C;
+    /* Oscuro para que texto y botones pasen AA (5,2:1 sobre blanco); el claro, solo para lo decorativo */
+    --color-primario: #B0501A;
+    --color-primario-claro: #D96C2C;
     --color-secundario: #f4f4f4;
     --color-terciario: #ccc;
     --color-texto: #222;
@@ -146,7 +148,7 @@ h1 {
 .barra {
     width: 25px;
     height: 4px;
-    background-color: var(--color-primario);
+    background-color: var(--color-primario-claro);
     border-radius: var(--radio-borde);
 }
 
@@ -316,7 +318,7 @@ h1 {
     background: none;
     cursor: pointer;
     font-size: 24px;
-    color: #ccc; 
+    color: #8A8A8A;
 }
 
 .btn-favorito.activo {
@@ -334,8 +336,10 @@ h1 {
     min-height: 44px;
 }
 
+/* 14px: con más, "Agregar al plan" se parte en dos líneas a 1024px y a 320px */
 .btn-ver-receta, #btnConfirmarAsignar {
     padding: var(--espaciado-chico);
+    font-size: 0.875rem;
     background-color: var(--color-primario);
     color: var(--color-secundario);
     border-radius: var(--radio-borde);
@@ -355,6 +359,7 @@ h1 {
 
 .btn-agregar-plan {
     padding: var(--espaciado-chico);
+    font-size: 0.875rem;
     background-color: transparent;
     color: var(--color-primario);
     border: 1px solid var(--color-primario);
@@ -700,7 +705,7 @@ select:last-of-type {
 /* Toda la franja (título, recetas y "+ Agregar") recibe la receta que se arrastra */
 .franja.drag-activo {
     background-color: rgba(217, 108, 44, 0.1);
-    outline: 2px dashed var(--color-primario);
+    outline: 2px dashed var(--color-primario-claro);
 }
 
 .franja-titulo {
@@ -1131,7 +1136,7 @@ button.receta-plan-ver {
 
 .feature-card i { 
     font-size: 2.5rem; 
-    color: var(--color-primario);
+    color: var(--color-primario-claro);
     margin-bottom: var(--espaciado-medio);
 }
 
@@ -1325,6 +1330,7 @@ footer {
 }
 
 .btn-limpiar-compras {
+    font-size: 0.875rem;
     border: 1px solid var(--color-primario);
     color: var(--color-primario);
     background: transparent;
@@ -1392,7 +1398,7 @@ footer {
 .grupo-compras-contador {
     font-size: 0.8rem;
     font-weight: 400;
-    opacity: 0.6;
+    opacity: 0.7;
 }
 
 .item-compra-texto {
