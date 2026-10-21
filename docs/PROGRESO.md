@@ -1,14 +1,20 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-17 · Rama de trabajo: `mejoras-critica` · Último commit en main: `fdff463 Merge pull request #12 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-21 · Rama de trabajo: `mejoras-critica` · Último commit en main: `fdff463 Merge pull request #12 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). Los commits 1 a 8 están mergeados (el 8 en el PR #11). Los 9 commits están mergeados (el 9 en el PR #12): el plan de mejoras de la crítica está terminado. Se hizo una crítica nueva con Impeccable: **25/40, "Aceptable"** (antes 17/40, "Pobre"). No hay código a medias.
+El plan de mejoras de la crítica (9 commits) está terminado y la crítica nueva dio 25/40. El 2026-10-21 se armó un plan nuevo, **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. No hay código a medias.
 
 ## Próximo paso
-Retomar la crítica de Impeccable del 2026-10-17 (25/40, guardada en `.impeccable/critique/`) y decidir el próximo plan. Quedaron por responder: por cuál P1 arrancar (lista de compras o contraste del naranja), si se suman la ★ y "Agregar al plan" al detalle de la receta (en el commit 8 quedaron afuera) y cuánto abarcar (los 2 P1, los 5 problemas o todo).
+Etapa 1 del plan: contraste del naranja (`style.css`). Se oscurece `--color-primario`, el naranja original queda solo para lo decorativo, se corrigen los grises que no llegan al contraste mínimo y los botones de acción pasan a 0,95rem.
 
-## Plan en curso: mejoras de la crítica
+## Plan en curso: Mealify fitness
+- [ ] 1. Contraste del naranja (P1 de la crítica) ← siguiente
+- [ ] 2. Macros + objetivo, junto con la lista de compras por porción (P1), el planificador (P2) y el detalle con ★ y "Agregar al plan" (P2). Antes de programar se diseña: fórmula del objetivo, pantalla de perfil y cómo se ve el plan.
+- [ ] 3. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran, cómo se guardan).
+- [ ] 4. Resultados de búsqueda (P2 de la crítica): "Sin categoría", filtros que desaparecen y ★ flotando.
+
+## Plan anterior: mejoras de la crítica (terminado)
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
 - [x] 2. Menú del celular: se cierra al navegar, inert, áreas táctiles de 44px (PR #4)
 - [x] 3. Feedback de las acciones: aviso, tab activo, carga y errores (PR #6)
@@ -20,6 +26,11 @@ Retomar la crítica de Impeccable del 2026-10-17 (25/40, guardada en `.impeccabl
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-21: plan **Mealify fitness**. Las funcionalidades nuevas se mezclan con lo pendiente de la crítica, porque tocan el mismo código. Orden: contraste, macros + objetivo, recetas propias, resultados de búsqueda. Cada etapa tiene su propio diseño antes de programar.
+- 2026-10-21: (reemplaza lo del 2026-09-25 sobre los colores) se tocan los colores para arreglar el contraste del naranja.
+- 2026-10-21: cada receta del plan cuenta como 1 porción para 1 persona; los macros se comparan con un objetivo diario que calcula la app (peso, altura, edad, sexo, actividad y meta), guardado en localStorage.
+- 2026-10-21: la lista de compras va a calcular por porción: (cantidad ÷ porciones que rinde) × veces en el plan × personas, con un ajuste general de "cocino para N personas" que no cambia los macros. Se evita guardar porciones por receta en el plan, para no cambiar la forma de los datos.
+- 2026-10-21: los datos de nutrición salen de Spoonacular (`includeNutrition` en el detalle, +0,1 punto; `/recipes/analyze` para las recetas propias, 1,5 puntos; autocompletado de ingredientes, 0,1 punto). El plan gratis da 50 puntos por día. Plan B si no alcanza: USDA FoodData Central.
 - 2026-09-25: un PR por commit, todos desde la rama `mejoras-critica`. Mergear cada PR con "Create a merge commit" antes de empezar el siguiente; después, `git pull origin main` en la rama.
 - 2026-09-25: no tocar los colores (el contraste del naranja queda fuera del plan).
 - 2026-09-25: la interfaz queda toda en español, con un diccionario para el vocabulario fijo.
@@ -43,6 +54,10 @@ Retomar la crítica de Impeccable del 2026-10-17 (25/40, guardada en `.impeccabl
 - Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
 
 ## Bitácora
+### 2026-10-21
+- Brainstorming de recetas propias y enfoque fitness; se armó el plan **Mealify fitness** (4 etapas). Se revisó la documentación de Spoonacular: no hace falta cambiar de API.
+- Se encontró que la lista de compras suma la receta entera y cuenta una sola vez una receta repetida en la semana (`idsDelPlan` usa un Set); se arregla en la etapa 2.
+
 ### 2026-10-17
 - Crítica de Impeccable (dos agentes independientes: revisión de diseño y detector): 25/40. Problemas prioritarios: [P1] contenido de la lista de compras (traducciones como "Petróleo" por *oil*, casi duplicados, 46 ítems para 6 recetas); [P1] contraste del naranja #D96C2C (3,1–3,4:1); [P2] planificador denso y largo en celular; [P2] detalle sin acciones y modales sin nombre de receta, "Quitar" sin deshacer; [P2] resultados de búsqueda con "Sin categoría" y filtros que desaparecen. Guardada en `.impeccable/critique/2026-10-17T03-53-07Z__index-html.md`.
 - Doc de referencia en Claude Docs con las skills útiles para este y otros proyectos: https://claude.ai/code/artifact/df02f153-6d0e-45cf-a65f-1ffc82db1e1a
