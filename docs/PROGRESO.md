@@ -1,15 +1,15 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-21 · Rama de trabajo: `mejoras-critica` · Último commit en main: `fdff463 Merge pull request #12 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-21 · Rama de trabajo: `mejoras-critica` · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está commiteada en `mejoras-critica` y falta crear y mergear su PR. No hay código a medias.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). No hay código a medias.
 
 ## Próximo paso
-Crear y mergear el PR de la etapa 1 (contraste). Después, diseño de la etapa 2 (macros + objetivo): fórmula del objetivo, pantalla de perfil y cómo se ve el plan.
+Diseño de la etapa 2 (macros + objetivo): fórmula del objetivo, pantalla de perfil y cómo se ve el plan. Se escribe en `docs/superpowers/specs/` antes de programar.
 
 ## Plan en curso: Mealify fitness
-- [x] 1. Contraste del naranja (P1 de la crítica) (PR pendiente)
+- [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← siguiente. Macros + objetivo, junto con la lista de compras por porción (P1), el planificador (P2) y el detalle con ★ y "Agregar al plan" (P2). Antes de programar se diseña: fórmula del objetivo, pantalla de perfil y cómo se ve el plan.
 - [ ] 3. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran, cómo se guardan).
 - [ ] 4. Resultados de búsqueda (P2 de la crítica): "Sin categoría", filtros que desaparecen y ★ flotando.
@@ -55,6 +55,7 @@ Crear y mergear el PR de la etapa 1 (contraste). Después, diseño de la etapa 2
 
 ## Bitácora
 ### 2026-10-21
+- PR #13 mergeado: etapa 1, contraste del naranja (`6e8c015`). `mejoras-critica` actualizada con `main`.
 - Etapa 1: contraste del naranja. `--color-primario` pasa a `#B0501A` (5,2:1 sobre blanco, 4,8:1 sobre `#f4f4f4`); el naranja original queda como `--color-primario-claro`, solo para lo decorativo (barras del menú, contorno al arrastrar, íconos de la landing). ★ inactiva `#8A8A8A`; contador de la lista con `opacity` 0,7 (estaba en 4,27:1). Los botones de la tarjeta, "Confirmar" y "Limpiar marcados" pasan de 13,3px a 14px: con más, "Agregar al plan" se parte en dos líneas a 1024 y 320px. Verificado con un script de contraste en el navegador integrado, en landing, Buscar, Favoritos, Plan, Lista y los dos modales, a 1440 y 390px: sin textos bajo AA ni scroll horizontal.
 - La animación de aparición de la landing (`IntersectionObserver`) no se dispara si el navegador está en segundo plano; no se tocó.
 - Brainstorming de recetas propias y enfoque fitness; se armó el plan **Mealify fitness** (4 etapas). Se revisó la documentación de Spoonacular: no hace falta cambiar de API.
