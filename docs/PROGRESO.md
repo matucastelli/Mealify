@@ -1,14 +1,20 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-17 · Rama de trabajo: `mejoras-critica` · Último commit en main: `281cb81 Merge pull request #11 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-21 · Rama de trabajo: `mejoras-critica` · Último commit en main: `fdff463 Merge pull request #12 from matucastelli/mejoras-critica`
 
 ## Estado actual
-Se está ejecutando el plan de mejoras que salió de la crítica de diseño de Impeccable (puntaje 17/40). Los commits 1 a 7 están mergeados (el 7, con la interfaz y las recetas en español, en el PR #10). Los commits 1 a 8 están mergeados (el 8 en el PR #11). El commit 9 (pulido visual), el último del plan, está pusheado en `mejoras-critica`, con el PR pendiente. Con ese merge el plan queda terminado.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está commiteada en `mejoras-critica` y falta crear y mergear su PR. No hay código a medias.
 
 ## Próximo paso
-Crear y mergear el PR del commit 9. Con eso termina el plan de mejoras de la crítica; después se puede pedir una nueva crítica con Impeccable para comparar con el 17/40 inicial.
+Crear y mergear el PR de la etapa 1 (contraste). Después, diseño de la etapa 2 (macros + objetivo): fórmula del objetivo, pantalla de perfil y cómo se ve el plan.
 
-## Plan en curso: mejoras de la crítica
+## Plan en curso: Mealify fitness
+- [x] 1. Contraste del naranja (P1 de la crítica) (PR pendiente)
+- [ ] 2. ← siguiente. Macros + objetivo, junto con la lista de compras por porción (P1), el planificador (P2) y el detalle con ★ y "Agregar al plan" (P2). Antes de programar se diseña: fórmula del objetivo, pantalla de perfil y cómo se ve el plan.
+- [ ] 3. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran, cómo se guardan).
+- [ ] 4. Resultados de búsqueda (P2 de la crítica): "Sin categoría", filtros que desaparecen y ★ flotando.
+
+## Plan anterior: mejoras de la crítica (terminado)
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
 - [x] 2. Menú del celular: se cierra al navegar, inert, áreas táctiles de 44px (PR #4)
 - [x] 3. Feedback de las acciones: aviso, tab activo, carga y errores (PR #6)
@@ -17,9 +23,14 @@ Crear y mergear el PR del commit 9. Con eso termina el plan de mejoras de la cr�
 - [x] 6. Lista de compras por pasillo (cantidades limpias, contador, receta de origen) (PR #9)
 - [x] 7. Textos en español (diccionario de pasillos, unidades, categorías; días con tilde; h2 por sección) y recetas traducidas con DeepL (PR #10)
 - [x] 8. Detalle de receta (pasos numerados, tiempo y porciones, link a la receta original, imagen de reemplazo) (PR #11)
-- [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR pendiente)
+- [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-21: plan **Mealify fitness**. Las funcionalidades nuevas se mezclan con lo pendiente de la crítica, porque tocan el mismo código. Orden: contraste, macros + objetivo, recetas propias, resultados de búsqueda. Cada etapa tiene su propio diseño antes de programar.
+- 2026-10-21: (reemplaza lo del 2026-09-25 sobre los colores) se tocan los colores para arreglar el contraste del naranja.
+- 2026-10-21: cada receta del plan cuenta como 1 porción para 1 persona; los macros se comparan con un objetivo diario que calcula la app (peso, altura, edad, sexo, actividad y meta), guardado en localStorage.
+- 2026-10-21: la lista de compras va a calcular por porción: (cantidad ÷ porciones que rinde) × veces en el plan × personas, con un ajuste general de "cocino para N personas" que no cambia los macros. Se evita guardar porciones por receta en el plan, para no cambiar la forma de los datos.
+- 2026-10-21: los datos de nutrición salen de Spoonacular (`includeNutrition` en el detalle, +0,1 punto; `/recipes/analyze` para las recetas propias, 1,5 puntos; autocompletado de ingredientes, 0,1 punto). El plan gratis da 50 puntos por día. Plan B si no alcanza: USDA FoodData Central.
 - 2026-09-25: un PR por commit, todos desde la rama `mejoras-critica`. Mergear cada PR con "Create a merge commit" antes de empezar el siguiente; después, `git pull origin main` en la rama.
 - 2026-09-25: no tocar los colores (el contraste del naranja queda fuera del plan).
 - 2026-09-25: la interfaz queda toda en español, con un diccionario para el vocabulario fijo.
@@ -43,7 +54,17 @@ Crear y mergear el PR del commit 9. Con eso termina el plan de mejoras de la cr�
 - Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
 
 ## Bitácora
+### 2026-10-21
+- Etapa 1: contraste del naranja. `--color-primario` pasa a `#B0501A` (5,2:1 sobre blanco, 4,8:1 sobre `#f4f4f4`); el naranja original queda como `--color-primario-claro`, solo para lo decorativo (barras del menú, contorno al arrastrar, íconos de la landing). ★ inactiva `#8A8A8A`; contador de la lista con `opacity` 0,7 (estaba en 4,27:1). Los botones de la tarjeta, "Confirmar" y "Limpiar marcados" pasan de 13,3px a 14px: con más, "Agregar al plan" se parte en dos líneas a 1024 y 320px. Verificado con un script de contraste en el navegador integrado, en landing, Buscar, Favoritos, Plan, Lista y los dos modales, a 1440 y 390px: sin textos bajo AA ni scroll horizontal.
+- La animación de aparición de la landing (`IntersectionObserver`) no se dispara si el navegador está en segundo plano; no se tocó.
+- Brainstorming de recetas propias y enfoque fitness; se armó el plan **Mealify fitness** (4 etapas). Se revisó la documentación de Spoonacular: no hace falta cambiar de API.
+- Se encontró que la lista de compras suma la receta entera y cuenta una sola vez una receta repetida en la semana (`idsDelPlan` usa un Set); se arregla en la etapa 2.
+
 ### 2026-10-17
+- Crítica de Impeccable (dos agentes independientes: revisión de diseño y detector): 25/40. Problemas prioritarios: [P1] contenido de la lista de compras (traducciones como "Petróleo" por *oil*, casi duplicados, 46 ítems para 6 recetas); [P1] contraste del naranja #D96C2C (3,1–3,4:1); [P2] planificador denso y largo en celular; [P2] detalle sin acciones y modales sin nombre de receta, "Quitar" sin deshacer; [P2] resultados de búsqueda con "Sin categoría" y filtros que desaparecen. Guardada en `.impeccable/critique/2026-10-17T03-53-07Z__index-html.md`.
+- Doc de referencia en Claude Docs con las skills útiles para este y otros proyectos: https://claude.ai/code/artifact/df02f153-6d0e-45cf-a65f-1ffc82db1e1a
+- Fin de la sesión en LAPTOP-2UJ4PI2A: todo subido, sin código a medias.
+- PR #12 mergeado: commit 9, pulido visual (`c726597`). Plan de mejoras de la crítica terminado.
 - Commit 9: pulido visual. Botones, inputs y selects heredan Poppins (solo la familia, sin cambiar tamaños); se dejó de descargar Baloo 2, que no se usaba. Favoritos en grilla como Buscar, con el estado vacío centrado. Categorías sin comillas. El mockup de la landing pasó a ser un mini planificador (3 días, 2 debajo de 400px) con recetas reales en español; textos de la landing sin "drag & drop". Los links del footer bajan de línea en 320px. Verificado con puppeteer en 1440, 768, 390 y 320px, más las pruebas de los commits 6 a 8.
 - PR #11 mergeado: commit 8, detalle de receta (`c1bc9da`). En producción los pasos llegan en español y la CDN responde HIT. `mejoras-critica` actualizada con `main`.
 - Commit 8: detalle de receta. Pasos numerados desde `analyzedInstructions` (traducidos con DeepL; `instructions` en HTML solo como respaldo), "45 min · 2 porciones" debajo del título, link "Ver receta original" y mensaje para las recetas sin pasos. `ImagenReceta` muestra un recuadro con cubiertos si la foto no carga (tarjetas, plan, selector y modal). Se regeneraron los mocks `detalle_es_*` (~7.400 caracteres) y el cache del navegador pasó a `cacheRecetasEs2`. Las acciones dentro del modal (favorito, agregar al plan) quedaron afuera por decisión del usuario. Verificado con puppeteer en 1440px, 390px y 320px.
