@@ -3,15 +3,15 @@
 > Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: nutrición y acciones en el detalle de la receta` (2.1) · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El commit 2.1 (nutrición en el detalle) está en el PR #14, abierto y sin mergear; no hay código a medias.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El commit 2.1 (nutrición en el detalle) está en el PR #14, probado en su preview de Vercel y listo para mergear; no hay código a medias.
 
 ## Próximo paso
-En el PR #14 (commit 2.1), probar en su preview de Vercel que `/api/detalle?id=X&v=2` trae `macros` y que el segundo pedido da `x-vercel-cache: HIT`, y mergearlo. Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
+Mergear el PR #14 (commit 2.1) con "Create a merge commit" y hacer `git pull origin main` en `mejoras-critica`. Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
-  - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) — PR #14 abierto, falta mergear
+  - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) — PR #14 probado en el preview, falta mergear
   - [ ] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) ← siguiente
   - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días)
   - [ ] 2.4 Macros en el planificador
@@ -57,7 +57,8 @@ En el PR #14 (commit 2.1), probar en su preview de Vercel que `/api/detalle?id=X
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
-- PR #14 (commit 2.1): https://github.com/matucastelli/Mealify/pull/14. Antes de mergear, probar en el preview de Vercel `/api/detalle?id=632810&v=2` (trae `macros`) y repetir el pedido (`x-vercel-cache: HIT`). Después del merge, `git pull origin main` en `mejoras-critica`.
+- PR #14 (commit 2.1): https://github.com/matucastelli/Mealify/pull/14, listo para mergear. Después del merge, `git pull origin main` en `mejoras-critica`.
+- Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
 - DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
 - En DESKTOP-PA57B7I Windows tiene apagados los efectos de animación (Configuración → Accesibilidad → Efectos visuales), así que la app no anima las barras ahí: es lo esperado.
 - Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
@@ -67,6 +68,8 @@ En el PR #14 (commit 2.1), probar en su preview de Vercel que `/api/detalle?id=X
 
 ## Bitácora
 ### 2026-10-26
+- PR #14 probado en su preview de Vercel: `/api/detalle?id=X&v=2` trae `macros` (sin `nutrition`, en español); una receta nueva da `x-vercel-cache: MISS` y el segundo pedido `HIT`. Los previews de Vercel piden iniciar sesión (protección de deploys).
+- No se podía iniciar sesión en el navegador integrado: el panel estaba oculto y la sesión se iniciaba en otra ventana. Con el panel a la vista (Ctrl+Shift+B) quedó guardada.
 - PR #14 abierto para el commit 2.1 (lo abrió el usuario desde GitHub).
 - Commit 2.1: nutrición en el detalle. `/api/detalle` pide `includeNutrition` y devuelve `macros` (kcal, proteínas, grasas, carbohidratos por porción) sin el resto de la nutrición; mocks nuevos `detalle_n_*` / `detalle_es_n_*` (las 7 recetas, ~7 puntos de Spoonacular y ~8.000 caracteres de DeepL) y se borraron los viejos; el cliente pide `&v=2` y el cache del navegador pasa a `cacheRecetasEs3`. El detalle muestra las barras de macros animadas, la ★ y "Agregar al plan". Favoritos centrados. "Ver receta" ya no se deshabilita mientras carga (perdía el foco y el detalle no podía devolverlo). Verificado en el navegador integrado a 1440, 768, 390 y 320px (sin scroll horizontal, contraste AA, foco y Escape) y `npm run build`. Falta probar el preview de Vercel.
 - Plan de implementación de la etapa 2: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`.
