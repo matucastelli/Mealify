@@ -1,6 +1,6 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `0060e2f chore: mock de la receta 632810 y nombre del paquete en package-lock` · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
 
 ## Estado actual
 El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) ya tiene el diseño aprobado en `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`. Todavía no se programó nada, así que no hay código a medias.
@@ -60,6 +60,7 @@ Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (sk
 
 ## Bitácora
 ### 2026-10-26
+- Se suben el mock de la receta 632810 (inglés y español), que quedó de la prueba de las keys, y el `package-lock.json` con el nombre del paquete corregido por `npm install` (sin cambios de dependencias) (`0060e2f`).
 - Se sincronizó la otra compu con LAPTOP-2UJ4PI2A, sin cambios en el código: `main` reseteada a `origin/main` (tenía la historia vieja), `npm install`, `mejoras-critica` al día y `.env` con `SPOONACULAR_KEY` y `DEEPL_KEY` probadas (búsqueda y pasos en español). Al principio el navegador daba `ERR_CONNECTION_REFUSED` con Vite corriendo en el puerto 5173; se resolvió allá, sin que quedara registrada la causa.
 - Las sesiones y la memoria de Claude no viajan entre compus: en la otra se arranca una sesión nueva en la carpeta del proyecto y se escribe "retomemos".
 - Se sube `.claude/launch.json` (levanta `npm run dev` en el puerto 5173 para el navegador integrado de Claude), así las dos compus lo tienen.
