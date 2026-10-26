@@ -229,6 +229,20 @@ export default function App() {
         mostrarRecetasIniciales();
     }
 
+    // Favoritos guarda la misma forma que traen los resultados de búsqueda, no la receta
+    // completa con ingredientes y pasos
+    function alternarFavoritoDetalle() {
+        const { id, title, image, imageType } = recetaDetalle;
+        alternarFavorito({ id, title, image, imageType });
+    }
+
+    // Se cierra el detalle antes de abrir "Agregar al plan": así no quedan dos modales
+    // apilados y, al terminar, el foco vuelve al botón que abrió el detalle
+    function agregarAlPlanDesdeDetalle() {
+        setModalRecetaAbierto(false);
+        setRecetaParaAsignar(recetaDetalle.id);
+    }
+
     const accionesReceta = {
         onToggleFavorito: alternarFavorito,
         onVerReceta: abrirDetalleReceta,
@@ -284,7 +298,14 @@ export default function App() {
                 />
             </div>
 
-            <ModalReceta abierto={modalRecetaAbierto} receta={recetaDetalle} onCerrar={() => setModalRecetaAbierto(false)} />
+            <ModalReceta
+                abierto={modalRecetaAbierto}
+                receta={recetaDetalle}
+                esFavorito={favoritos.some(fav => fav.id === recetaDetalle?.id)}
+                onToggleFavorito={alternarFavoritoDetalle}
+                onAgregarPlan={agregarAlPlanDesdeDetalle}
+                onCerrar={() => setModalRecetaAbierto(false)}
+            />
             <ModalAsignar
                 abierto={recetaParaAsignar != null}
                 titulo="Agregar al plan"

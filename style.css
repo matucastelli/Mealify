@@ -352,7 +352,7 @@ h1 {
     min-width: 6.5rem;
 }
 
-.btn-ver-receta:disabled {
+.btn-ver-receta[aria-busy="true"] {
     cursor: progress;
     opacity: 0.8;
 }
@@ -572,6 +572,102 @@ h1 {
     margin-top: 4px;
 }
 
+/* Macros por porción: calorías arriba y una barra por macro con la parte de las calorías que aporta */
+.receta-detallada-macros {
+    margin-top: var(--espaciado-medio);
+}
+
+.macros-calorias {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.macros-calorias strong {
+    font-size: 1.05rem;
+}
+
+.macro + .macro {
+    margin-top: 6px;
+}
+
+.modal-contenido .macro-texto {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.macro-barra {
+    height: 6px;
+    margin-top: 2px;
+    background-color: var(--color-secundario);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+/* Las barras crecen desde la izquierda al abrir el detalle, mientras los números cuentan (NumeroAnimado) */
+.macro-barra div {
+    height: 100%;
+    background-color: var(--color-primario);
+    border-radius: 3px;
+    transform-origin: left;
+    animation: crecer-barra 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes crecer-barra {
+    from {
+        transform: scaleX(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .macro-barra div {
+        animation: none;
+    }
+}
+
+.macros-sin-datos {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-top: var(--espaciado-chico);
+}
+
+/* ★ y "Agregar al plan" dentro del detalle */
+.receta-detallada-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--espaciado-chico);
+    margin-top: var(--espaciado-medio);
+}
+
+.receta-detallada-acciones button {
+    flex: 1 1 10rem;
+    min-height: 44px;
+}
+
+.btn-favorito-detalle {
+    padding: var(--espaciado-chico);
+    font-size: 0.875rem;
+    background-color: transparent;
+    color: var(--color-texto);
+    border: 1px solid var(--color-terciario);
+    border-radius: var(--radio-borde);
+    cursor: pointer;
+}
+
+.btn-favorito-detalle span {
+    color: #8A8A8A;
+}
+
+.btn-favorito-detalle.activo {
+    border-color: var(--color-primario);
+    color: var(--color-primario);
+}
+
+.btn-favorito-detalle.activo span {
+    color: var(--color-primario);
+}
+
 /* Pasos numerados con el número en un círculo */
 .modal-contenido .pasos-receta {
     list-style: none;
@@ -649,6 +745,12 @@ select:last-of-type {
         gap: var(--espaciado-chico);
         margin-left: var(--espaciado-grande);
         margin-right: var(--espaciado-grande);
+    }
+    /* Favoritos centrados: las columnas vacías no ocupan lugar (auto-fit) y las tarjetas
+       no se estiran, así con pocos favoritos quedan en el medio y se acomodan al sumar más */
+    #listaFavoritos {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
+        justify-content: center;
     }
     .receta-card {
         display: flex;

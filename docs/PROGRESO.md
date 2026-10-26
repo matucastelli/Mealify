@@ -1,18 +1,18 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `0060e2f chore: mock de la receta 632810 y nombre del paquete en package-lock` · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: nutrición y acciones en el detalle de la receta` (2.1) · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) ya tiene el diseño aprobado en `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`. Todavía no se programó nada, así que no hay código a medias.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El commit 2.1 (nutrición en el detalle) está subido a `mejoras-critica`, sin código a medias; falta abrir y mergear su PR.
 
 ## Próximo paso
-Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (skill superpowers:writing-plans) y arrancar por el commit 1: nutrición en el detalle de la receta.
+Abrir el PR del commit 2.1 en GitHub (desde `mejoras-critica`), probar en su preview de Vercel que `/api/detalle?id=X&v=2` trae `macros` y que el segundo pedido da `x-vercel-cache: HIT`, y mergearlo. Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
-- [ ] 2. ← siguiente. Macros, objetivo y peso (diseño aprobado: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`). Son 5 commits/PRs:
-  - [ ] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal)
-  - [ ] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida)
+- [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
+  - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) — subido, falta el PR
+  - [ ] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) ← siguiente
   - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días)
   - [ ] 2.4 Macros en el planificador
   - [ ] 2.5 Lista de compras por porción y personas
@@ -32,6 +32,10 @@ Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (sk
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-26: **antes de cualquier decisión de diseño, Claude muestra opciones en bocetos y se elige con el usuario** (también en `CLAUDE.md`). Salió de que los macros del detalle se aplicaron sin consultar.
+- 2026-10-26: macros en el detalle con barras (elegido sobre 3 bocetos): "726 kcal por porción" y una barra por macro con nombre completo y gramos; el ancho es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (elegido sobre 3 animaciones); con "reducir movimiento" no se anima. Nada de "P · G · C": no se entendía.
+- 2026-10-26: favoritos centrados en escritorio, con la última fila arrancando a la izquierda (elegido sobre 2 bocetos).
+- 2026-10-26: la ★ del detalle guarda en favoritos solo `{ id, title, image, imageType }` (la forma de los resultados de búsqueda), no la receta completa. "Agregar al plan" en el detalle cierra el detalle y abre el modal de día y comida.
 - 2026-10-21: diseño de la etapa 2 aprobado (ver la spec). Resumen: objetivo con Mifflin-St Jeor × actividad × meta (bajar 0,8 / subir 1,1), con mínimo de 1.200 kcal (mujer) o 1.500 (hombre); reparto recomendado de proteína 1,8 g/kg, grasas 25 % y carbohidratos el resto, editable con el aviso de que el recomendado es el sugerido; un día está "en objetivo" dentro de ±10 % (rojo si se pasa, ámbar si le falta); el peso se carga cuando el usuario quiere (semanal o mensual) y solo se guarda fecha y kg; la primera vez se piden los datos, con opción de saltearlo; sección nueva "Mi progreso".
 - 2026-10-21: cuentas de usuario + base de datos van como etapa propia (la 3), antes de las recetas propias, para que esas recetas ya se guarden en la base. Hasta entonces todo va en localStorage, detrás de `storage.js` y los hooks.
 - 2026-10-21: plan **Mealify fitness**. Las funcionalidades nuevas se mezclan con lo pendiente de la crítica, porque tocan el mismo código. Orden: contraste, macros + objetivo, recetas propias, resultados de búsqueda. Cada etapa tiene su propio diseño antes de programar.
@@ -53,6 +57,8 @@ Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (sk
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
+- Abrir el PR del commit 2.1 (DESKTOP-PA57B7I no tiene `gh`): https://github.com/matucastelli/Mealify/compare/main...mejoras-critica. Antes de mergear, probar en el preview de Vercel `/api/detalle?id=632810&v=2` (trae `macros`) y repetir el pedido (`x-vercel-cache: HIT`).
+- En DESKTOP-PA57B7I Windows tiene apagados los efectos de animación (Configuración → Accesibilidad → Efectos visuales), así que la app no anima las barras ahí: es lo esperado.
 - Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
 - En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
@@ -60,6 +66,8 @@ Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (sk
 
 ## Bitácora
 ### 2026-10-26
+- Commit 2.1: nutrición en el detalle. `/api/detalle` pide `includeNutrition` y devuelve `macros` (kcal, proteínas, grasas, carbohidratos por porción) sin el resto de la nutrición; mocks nuevos `detalle_n_*` / `detalle_es_n_*` (las 7 recetas, ~7 puntos de Spoonacular y ~8.000 caracteres de DeepL) y se borraron los viejos; el cliente pide `&v=2` y el cache del navegador pasa a `cacheRecetasEs3`. El detalle muestra las barras de macros animadas, la ★ y "Agregar al plan". Favoritos centrados. "Ver receta" ya no se deshabilita mientras carga (perdía el foco y el detalle no podía devolverlo). Verificado en el navegador integrado a 1440, 768, 390 y 320px (sin scroll horizontal, contraste AA, foco y Escape) y `npm run build`. Falta probar el preview de Vercel.
+- Plan de implementación de la etapa 2: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`.
 - Se suben el mock de la receta 632810 (inglés y español), que quedó de la prueba de las keys, y el `package-lock.json` con el nombre del paquete corregido por `npm install` (sin cambios de dependencias) (`0060e2f`).
 - Se sincronizó la otra compu con LAPTOP-2UJ4PI2A, sin cambios en el código: `main` reseteada a `origin/main` (tenía la historia vieja), `npm install`, `mejoras-critica` al día y `.env` con `SPOONACULAR_KEY` y `DEEPL_KEY` probadas (búsqueda y pasos en español). Al principio el navegador daba `ERR_CONNECTION_REFUSED` con Vite corriendo en el puerto 5173; se resolvió allá, sin que quedara registrada la causa.
 - Las sesiones y la memoria de Claude no viajan entre compus: en la otra se arranca una sesión nueva en la carpeta del proyecto y se escribe "retomemos".

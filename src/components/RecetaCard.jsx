@@ -11,9 +11,10 @@ export default function RecetaCard({ receta, esFavorito, cargandoDetalle, onTogg
             </div>
             <button className={`btn-favorito ${esFavorito ? "activo" : ""}`} onClick={() => onToggleFavorito(receta)}>★</button>
             <div className="receta-acciones">
+                {/* Sin `disabled` mientras carga: un botón deshabilitado pierde el foco y el detalle
+                    ya no tiene a dónde devolverlo al cerrarse. Tocarlo de nuevo solo repite el pedido */}
                 <button
                     className="btn-ver-receta"
-                    disabled={cargandoDetalle}
                     aria-busy={cargandoDetalle}
                     onClick={() => onVerReceta(receta.id)}
                 >
