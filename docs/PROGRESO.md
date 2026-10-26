@@ -3,15 +3,15 @@
 > Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: nutrición y acciones en el detalle de la receta` (2.1) · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El commit 2.1 (nutrición en el detalle) está subido a `mejoras-critica`, sin código a medias; falta abrir y mergear su PR.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El commit 2.1 (nutrición en el detalle) está en el PR #14, abierto y sin mergear; no hay código a medias.
 
 ## Próximo paso
-Abrir el PR del commit 2.1 en GitHub (desde `mejoras-critica`), probar en su preview de Vercel que `/api/detalle?id=X&v=2` trae `macros` y que el segundo pedido da `x-vercel-cache: HIT`, y mergearlo. Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
+En el PR #14 (commit 2.1), probar en su preview de Vercel que `/api/detalle?id=X&v=2` trae `macros` y que el segundo pedido da `x-vercel-cache: HIT`, y mergearlo. Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
-  - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) — subido, falta el PR
+  - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) — PR #14 abierto, falta mergear
   - [ ] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) ← siguiente
   - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días)
   - [ ] 2.4 Macros en el planificador
@@ -57,7 +57,8 @@ Abrir el PR del commit 2.1 en GitHub (desde `mejoras-critica`), probar en su pre
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
-- Abrir el PR del commit 2.1 (DESKTOP-PA57B7I no tiene `gh`): https://github.com/matucastelli/Mealify/compare/main...mejoras-critica. Antes de mergear, probar en el preview de Vercel `/api/detalle?id=632810&v=2` (trae `macros`) y repetir el pedido (`x-vercel-cache: HIT`).
+- PR #14 (commit 2.1): https://github.com/matucastelli/Mealify/pull/14. Antes de mergear, probar en el preview de Vercel `/api/detalle?id=632810&v=2` (trae `macros`) y repetir el pedido (`x-vercel-cache: HIT`). Después del merge, `git pull origin main` en `mejoras-critica`.
+- DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
 - En DESKTOP-PA57B7I Windows tiene apagados los efectos de animación (Configuración → Accesibilidad → Efectos visuales), así que la app no anima las barras ahí: es lo esperado.
 - Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
 - En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
@@ -66,6 +67,7 @@ Abrir el PR del commit 2.1 en GitHub (desde `mejoras-critica`), probar en su pre
 
 ## Bitácora
 ### 2026-10-26
+- PR #14 abierto para el commit 2.1 (lo abrió el usuario desde GitHub).
 - Commit 2.1: nutrición en el detalle. `/api/detalle` pide `includeNutrition` y devuelve `macros` (kcal, proteínas, grasas, carbohidratos por porción) sin el resto de la nutrición; mocks nuevos `detalle_n_*` / `detalle_es_n_*` (las 7 recetas, ~7 puntos de Spoonacular y ~8.000 caracteres de DeepL) y se borraron los viejos; el cliente pide `&v=2` y el cache del navegador pasa a `cacheRecetasEs3`. El detalle muestra las barras de macros animadas, la ★ y "Agregar al plan". Favoritos centrados. "Ver receta" ya no se deshabilita mientras carga (perdía el foco y el detalle no podía devolverlo). Verificado en el navegador integrado a 1440, 768, 390 y 320px (sin scroll horizontal, contraste AA, foco y Escape) y `npm run build`. Falta probar el preview de Vercel.
 - Plan de implementación de la etapa 2: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`.
 - Se suben el mock de la receta 632810 (inglés y español), que quedó de la prueba de las keys, y el `package-lock.json` con el nombre del paquete corregido por `npm install` (sin cambios de dependencias) (`0060e2f`).
