@@ -55,7 +55,6 @@ Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (sk
 ## Pendientes para la otra compu
 - Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
 - En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
-- En LAPTOP-2UJ4PI2A quedó sin subir `.claude/launch.json` (config para levantar la app en el navegador integrado de Claude, con `npm run dev` en el puerto 5173). Decidir si se sube; si no, Claude lo puede volver a crear en la otra compu.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
 - Opcional, en la otra compu: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs, y crear `.claude/settings.local.json` con la atribución desactivada, igual que en LAPTOP-2UJ4PI2A.
 
@@ -63,6 +62,7 @@ Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (sk
 ### 2026-10-26
 - Se sincronizó la otra compu con LAPTOP-2UJ4PI2A, sin cambios en el código: `main` reseteada a `origin/main` (tenía la historia vieja), `npm install`, `mejoras-critica` al día y `.env` con `SPOONACULAR_KEY` y `DEEPL_KEY` probadas (búsqueda y pasos en español). Al principio el navegador daba `ERR_CONNECTION_REFUSED` con Vite corriendo en el puerto 5173; se resolvió allá, sin que quedara registrada la causa.
 - Las sesiones y la memoria de Claude no viajan entre compus: en la otra se arranca una sesión nueva en la carpeta del proyecto y se escribe "retomemos".
+- Se sube `.claude/launch.json` (levanta `npm run dev` en el puerto 5173 para el navegador integrado de Claude), así las dos compus lo tienen.
 
 ### 2026-10-21
 - Brainstorming y diseño de la etapa 2 (macros, objetivo y peso), con bocetos del plan con macros y de "Mi progreso" aprobados en el chat. Un revisor leyó el diseño y sus preguntas quedaron resueltas (mínimo de kcal, margen de ±10 %, sincronización del peso, cómo se acomodan los bocetos). Spec: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`.
