@@ -1,6 +1,6 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-21 · Rama de trabajo: `mejoras-critica` · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
 
 ## Estado actual
 El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) ya tiene el diseño aprobado en `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`. Todavía no se programó nada, así que no hay código a medias.
@@ -53,17 +53,17 @@ Armar el plan de implementación de la etapa 2 a partir del diseño aprobado (sk
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
-- Al retomar: `git fetch`, `git switch mejoras-critica`, `git pull --ff-only`. No cambiaron dependencias, así que no hace falta `npm install`.
-- En esta compu quedó sin subir `.claude/launch.json` (config para levantar la app en el navegador integrado de Claude, con `npm run dev` en el puerto 5173). Decidir si se sube; en la otra compu, Claude lo puede volver a crear si hace falta.
-- Agregar `DEEPL_KEY` al `.env` de la otra compu (en LAPTOP-2UJ4PI2A y en Vercel, Production y Preview, ya está) y reiniciar `npm run dev` a mano.
+- Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
+- En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
+- En LAPTOP-2UJ4PI2A quedó sin subir `.claude/launch.json` (config para levantar la app en el navegador integrado de Claude, con `npm run dev` en el puerto 5173). Decidir si se sube; si no, Claude lo puede volver a crear en la otra compu.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
-- **Tiene la historia vieja de git** (la de antes de sacar la atribución a Claude). No hacer `git pull` en `main`. Primero revisar que no haya trabajo sin subir (`git status` y `git log origin/main..main`), y después: `git fetch --prune origin`, `git switch main`, `git reset --hard origin/main`. Borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (en GitHub ya no están).
-- Correr `npm install`: el proyecto pasó a React + Vite.
-- Tener el `.env` con `SPOONACULAR_KEY` (no viaja por git).
-- Opcional: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs; en esta compu todavía no está.
-- Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
+- Opcional, en la otra compu: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs, y crear `.claude/settings.local.json` con la atribución desactivada, igual que en LAPTOP-2UJ4PI2A.
 
 ## Bitácora
+### 2026-10-26
+- Se sincronizó la otra compu con LAPTOP-2UJ4PI2A, sin cambios en el código: `main` reseteada a `origin/main` (tenía la historia vieja), `npm install`, `mejoras-critica` al día y `.env` con `SPOONACULAR_KEY` y `DEEPL_KEY` probadas (búsqueda y pasos en español). Al principio el navegador daba `ERR_CONNECTION_REFUSED` con Vite corriendo en el puerto 5173; se resolvió allá, sin que quedara registrada la causa.
+- Las sesiones y la memoria de Claude no viajan entre compus: en la otra se arranca una sesión nueva en la carpeta del proyecto y se escribe "retomemos".
+
 ### 2026-10-21
 - Brainstorming y diseño de la etapa 2 (macros, objetivo y peso), con bocetos del plan con macros y de "Mi progreso" aprobados en el chat. Un revisor leyó el diseño y sus preguntas quedaron resueltas (mínimo de kcal, margen de ±10 %, sincronización del peso, cómo se acomodan los bocetos). Spec: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`.
 - Fin de la sesión en esta compu: todo subido a `mejoras-critica`, sin código a medias.
