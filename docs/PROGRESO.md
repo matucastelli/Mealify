@@ -6,7 +6,7 @@
 El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El commit 2.1 (nutrición en el detalle) está en el PR #14, probado en su preview de Vercel y listo para mergear; no hay código a medias.
 
 ## Próximo paso
-Mergear el PR #14 (commit 2.1) con "Create a merge commit" y hacer `git pull origin main` en `mejoras-critica`. Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
+Mergear el PR #14 (commit 2.1) con "Create a merge commit" (al 2026-10-26 sigue abierto) y hacer `git pull origin main` en `mejoras-critica`. Después, programar el 2.2 con los diseños ya elegidos (ver Decisiones). Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
@@ -32,6 +32,7 @@ Mergear el PR #14 (commit 2.1) con "Create a merge commit" y hacer `git pull ori
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-26: "Mi progreso" en dos columnas (tus datos | tu objetivo, peso abajo a todo el ancho) y bienvenida en tres pasos con barra de avance (sexo y edad · altura y peso · actividad y meta). Elegidos sobre bocetos.
 - 2026-10-26: **antes de cualquier decisión de diseño, Claude muestra opciones en bocetos y se elige con el usuario** (también en `CLAUDE.md`). Salió de que los macros del detalle se aplicaron sin consultar.
 - 2026-10-26: macros en el detalle con barras (elegido sobre 3 bocetos): "726 kcal por porción" y una barra por macro con nombre completo y gramos; el ancho es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (elegido sobre 3 animaciones); con "reducir movimiento" no se anima. Nada de "P · G · C": no se entendía.
 - 2026-10-26: favoritos centrados en escritorio, con la última fila arrancando a la izquierda (elegido sobre 2 bocetos).

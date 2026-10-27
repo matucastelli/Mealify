@@ -27,7 +27,8 @@ Las cuentas de usuario y la base de datos no entran acá: son la etapa 3. Todo l
 - `storage.js`: `perfil` (`{ sexo, edad, altura, peso, actividad, meta, reparto: null | { proteinaPorKg, grasasPct } }`) y `perfilOmitido`, con try/catch.
 - `src/hooks/usePerfil.js`: perfil, objetivo calculado y guardar.
 - `MiProgreso.jsx` (quinta pestaña en `TABS` de `Header.jsx`): "Tus datos" (formulario con validación de rangos: edad 15–100, altura 120–230, peso 30–300, proteína 0,8–3 g/kg, grasas 15–45 %) y "Tu objetivo diario" (kcal, de dónde salen, aclaración de estimación, P/G/C, "podés cambiarlo" y "Volver al recomendado"). Grilla de 2 columnas en escritorio, una en celular.
-- Bienvenida: modal con el mismo formulario al tocar "Empezar ahora" (`empezar()` en `App.jsx`), solo sin perfil ni `perfilOmitido`; "Calcular mi objetivo" y "Ahora no".
+- Diseño elegido sobre bocetos (2026-10-26): en escritorio, 2 columnas con "Tus datos" a la izquierda y "Tu objetivo diario" a la derecha ("Peso" va abajo a todo el ancho en el 2.3); en celular, una columna. El objetivo muestra los macros como en el detalle: nombre completo, gramos y barra.
+- Bienvenida en tres pasos con barra de avance (elegida sobre bocetos): 1) sexo y edad, 2) altura y peso, 3) actividad y meta, con "Siguiente"/"Atrás", "Calcular mi objetivo" al final y "Ahora no" en todos. Se abre al tocar "Empezar ahora" (`empezar()` en `App.jsx`), solo sin perfil ni `perfilOmitido`.
 - **Verificación**: script de node que importe `macros.js` con casos a mano (persona de ejemplo, mínimo de kcal, los tres estados del día); bienvenida completando y salteando; formulario con valores fuera de rango.
 
 ## 2.3 Registro de peso
