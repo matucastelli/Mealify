@@ -75,6 +75,7 @@ Commit 2.4 (macros en el planificador), empezando por los bocetos; qué tiene qu
 
 ## Bitácora
 ### 2026-10-27
+- Fin de la sesión en DESKTOP-PA57B7I: todo subido, `mejoras-critica` igual a `main` (más los commits de docs) y sin código a medias. No cambiaron las dependencias. Próximo: bocetos del 2.4 (macros en el planificador).
 - PR #16 mergeado (`0b80f86`): 2.3 registro de peso y arreglos de Buscar. `mejoras-critica` actualizada con `main`. Próximo: bocetos del 2.4 (macros en el planificador).
 - PR #16 probado en su preview de Vercel: la tarjeta Peso con los datos de prueba, cargar un peso (objetivo y recordatorio actualizados), borrar y deshacer, foco de vuelta en "+ Cargar peso", recetas de la API centradas en 2 columnas a 962px y título de Buscar a la izquierda a 390px, sin scroll horizontal.
 - PR #16 abierto (2.3 y arreglos de Buscar), desde el navegador integrado, después de que el usuario lo probara en local.
