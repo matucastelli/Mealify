@@ -1,19 +1,19 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-27 · Rama de trabajo: `mejoras-critica` · Último commit: `fix: título de Buscar en celular y recetas centradas` (falta el PR) · Último commit en main: `b93fefb Merge pull request #15 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-27 · Rama de trabajo: `mejoras-critica` · Último commit: `31bac5d fix: título de Buscar en celular y recetas centradas` (PR #16 abierto) · Último commit en main: `b93fefb Merge pull request #15 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) y dos arreglos de Buscar (título en celular, recetas centradas) están commiteados y subidos en `mejoras-critica`; el usuario lo está probando en local antes de abrir el PR.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) y dos arreglos de Buscar (título en celular, recetas centradas) están en el PR #16, abierto el 2026-10-27; el usuario ya lo probó en local.
 
 ## Próximo paso
-Abrir el PR del 2.3 (registro de peso) desde GitHub, probarlo en el preview de Vercel y mergearlo; después, `git pull origin main` en `mejoras-critica`. Sigue el 2.4 (macros en el planificador), empezando por los bocetos; qué tiene que hacer está en el plan (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.4).
+Probar el PR #16 (2.3 y arreglos de Buscar) en el preview de Vercel y mergearlo con "Create a merge commit"; después, `git pull origin main` en `mejoras-critica`. Sigue el 2.4 (macros en el planificador), empezando por los bocetos; qué tiene que hacer está en el plan (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.4).
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
   - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) (PR #14)
   - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica (PR #15)
-  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) ← commiteado, falta el PR
+  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) (PR #16, abierto)
   - [ ] 2.4 Macros en el planificador ← siguiente
   - [ ] 2.5 Lista de compras por porción y personas
 - [ ] 3. Cuentas de usuario + base de datos, para usar la app desde varios dispositivos (se migra lo guardado en el navegador). Candidato: Supabase; antes de sumarlo se consulta y se revisan los límites del plan gratis.
@@ -74,6 +74,7 @@ Abrir el PR del 2.3 (registro de peso) desde GitHub, probarlo en el preview de V
 
 ## Bitácora
 ### 2026-10-27
+- PR #16 abierto (2.3 y arreglos de Buscar), desde el navegador integrado, después de que el usuario lo probara en local.
 - Arreglos de Buscar, que van en el mismo PR que el 2.3: en celular el título quedaba centrado dentro de una caja pegada a la izquierda (se veía corrido); ahora va a la izquierda. Los resultados usan la grilla centrada de Favoritos. Verificado en el navegador integrado a 1440, 1024, 768 y 390px, sin scroll horizontal; `npm run build`.
 - Commit 2.3: registro de peso. `src/lib/pesos.js` (agregar y borrar pesos, resumen del cambio, puntos del gráfico) con `scripts/probar-pesos.mjs` (9 casos, todos bien). `pesos` en `storage.js`; `usePerfil` mantiene `perfil.peso` igual al peso más reciente, y cambiar el peso en "Tus datos" o en la bienvenida lo registra con la fecha de hoy. `TarjetaPeso.jsx` (tarjeta, gráfico y lista) y `ModalPeso.jsx`. Verificado en el navegador integrado: borrar y deshacer, objetivo recalculado contra la cuenta a mano (78,5 → 79 kg: 2.170 → 2.180 kcal), carga con fecha pasada, error de rango, cambio desde "Tus datos", migración de un perfil sin pesos, estado sin datos con "Ir a Tus datos", Escape, a 1024, 390 y 320px sin scroll horizontal; `npm run build`.
 
