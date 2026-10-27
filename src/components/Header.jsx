@@ -5,6 +5,7 @@ const TABS = [
     { seccion: "favoritos", texto: "Favoritos" },
     { seccion: "planificador", texto: "Planificador" },
     { seccion: "compras", texto: "Lista de compras" },
+    { seccion: "progreso", texto: "Mi progreso" },
 ];
 
 // Mismo corte que el CSS: por debajo de 768px el nav es un menú lateral

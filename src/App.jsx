@@ -7,12 +7,15 @@ import { useFavoritos } from "./hooks/useFavoritos.js";
 import { usePlanSemanal } from "./hooks/usePlanSemanal.js";
 import { useCompras } from "./hooks/useCompras.js";
 import { useRecetasDetalle } from "./hooks/useRecetasDetalle.js";
+import { usePerfil } from "./hooks/usePerfil.js";
 import Landing from "./components/Landing.jsx";
 import Header from "./components/Header.jsx";
 import Buscar from "./components/Buscar.jsx";
 import Favoritos from "./components/Favoritos.jsx";
 import Planificador from "./components/Planificador.jsx";
 import ListaCompras from "./components/ListaCompras.jsx";
+import MiProgreso from "./components/MiProgreso.jsx";
+import Bienvenida from "./components/Bienvenida.jsx";
 import ModalReceta from "./components/ModalReceta.jsx";
 import ModalAsignar from "./components/ModalAsignar.jsx";
 import ModalElegirReceta from "./components/ModalElegirReceta.jsx";
@@ -68,10 +71,12 @@ export default function App() {
     const [idCargandoDetalle, setIdCargandoDetalle] = useState(null);
     const ultimoDetalle = useRef(0);
     const [aviso, setAviso] = useState(null);
+    const [bienvenidaAbierta, setBienvenidaAbierta] = useState(false);
 
     const { favoritos, alternarFavorito } = useFavoritos();
     const { plan, asignar, eliminar, mover } = usePlanSemanal();
     const { marcadas, ocultas, alternarCompra, limpiarMarcadas, mostrar, restaurar } = useCompras();
+    const { perfil, objetivo, omitido, guardar: guardarPerfil, omitir: omitirPerfil } = usePerfil();
 
     const idsPlan = idsDelPlan(plan);
     const { recetas: recetasPlan, cargando: cargandoPlan } = useRecetasDetalle(idsPlan);
@@ -220,6 +225,22 @@ export default function App() {
         setMostrarApp(true);
         setSeccionActiva("buscar");
         mostrarRecetasIniciales();
+        // La primera vez se piden los datos para el objetivo; se puede saltear
+        if (perfil == null && !omitido) setBienvenidaAbierta(true);
+    }
+
+    function terminarBienvenida(valores) {
+        guardarPerfil(valores);
+        setBienvenidaAbierta(false);
+        setAviso({
+            texto: "Listo: ya calculamos tu objetivo diario",
+            accion: { texto: "Verlo", onClick: () => setSeccionActiva("progreso") },
+        });
+    }
+
+    function omitirBienvenida() {
+        omitirPerfil();
+        setBienvenidaAbierta(false);
     }
 
     function volverAlInicio() {
@@ -296,6 +317,13 @@ export default function App() {
                     onLimpiar={limpiarMarcadas}
                     onRestaurar={restaurar}
                 />
+                <MiProgreso
+                    oculto={seccionActiva !== "progreso"}
+                    perfil={perfil}
+                    objetivo={objetivo}
+                    onGuardar={guardarPerfil}
+                    onAviso={setAviso}
+                />
             </div>
 
             <ModalReceta
@@ -334,6 +362,7 @@ export default function App() {
                 onBuscar={buscarParaFranja}
                 onCerrar={() => setFranjaParaAgregar(null)}
             />
+            <Bienvenida abierta={bienvenidaAbierta} onGuardar={terminarBienvenida} onOmitir={omitirBienvenida} />
             <Aviso aviso={aviso} onCerrar={() => setAviso(null)} />
         </>
     );

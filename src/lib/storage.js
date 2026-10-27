@@ -116,3 +116,38 @@ export function restaurarCompras() {
     localStorage.removeItem("comprasOcultas");
     localStorage.removeItem("comprasMarcadas");
 }
+// Perfil para el objetivo diario: { sexo, edad, altura, peso, actividad, meta, reparto }.
+// `reparto: null` es el recomendado. null si todavía no se cargó
+export function getPerfil() {
+    try {
+        const datosGuardados = localStorage.getItem("perfil");
+        return datosGuardados == null ? null : JSON.parse(datosGuardados);
+    } catch {
+        return null;
+    }
+}
+
+export function guardarPerfil(perfil) {
+    try {
+        localStorage.setItem("perfil", JSON.stringify(perfil));
+    } catch {
+        // localStorage lleno o no disponible: el perfil queda solo en memoria
+    }
+}
+
+// true si en la bienvenida se tocó "Ahora no": no se vuelve a ofrecer
+export function getPerfilOmitido() {
+    try {
+        return localStorage.getItem("perfilOmitido") === "true";
+    } catch {
+        return false;
+    }
+}
+
+export function omitirPerfil() {
+    try {
+        localStorage.setItem("perfilOmitido", "true");
+    } catch {
+        // localStorage no disponible
+    }
+}
