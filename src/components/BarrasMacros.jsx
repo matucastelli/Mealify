@@ -3,10 +3,6 @@ import { useEffect, useRef, useState } from "react";
 // Mismo tiempo que la animación de las barras (.macro-barra en style.css)
 const DURACION_ANIMACION = 600;
 
-function reducirMovimiento() {
-    return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-}
-
 // Una barra por macro con la parte de las calorías que aporta. Cada fila es
 // { clave, nombre, gramos, kcal, detalle? }; `detalle` va al lado del nombre (texto o un campo)
 export default function BarrasMacros({ filas }) {
@@ -27,17 +23,13 @@ export default function BarrasMacros({ filas }) {
 }
 
 // Al aparecer cuenta desde 0 mientras crecen las barras; si el valor cambia, se desliza
-// desde el anterior. Con "reducir movimiento" muestra el valor directo
+// desde el anterior. Se anima siempre, aunque el sistema tenga "reducir movimiento":
+// es corta y liviana (decisión del 2026-10-26)
 export function NumeroAnimado({ valor }) {
-    const [mostrado, setMostrado] = useState(() => (reducirMovimiento() ? valor : 0));
-    const ultimoMostrado = useRef(mostrado);
+    const [mostrado, setMostrado] = useState(0);
+    const ultimoMostrado = useRef(0);
 
     useEffect(() => {
-        if (reducirMovimiento()) {
-            ultimoMostrado.current = valor;
-            setMostrado(valor);
-            return;
-        }
         const desde = ultimoMostrado.current;
         const inicio = performance.now();
         let cuadro;

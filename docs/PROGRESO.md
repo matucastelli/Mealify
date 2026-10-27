@@ -32,11 +32,12 @@ Abrir el PR del 2.2, probarlo en su preview de Vercel (bienvenida y Mi progreso)
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-26: las barras de macros y sus números se animan siempre, también si el sistema tiene activado "reducir movimiento" (antes no se animaban): la animación es corta y liviana, y el usuario la quiere igual en todos los dispositivos. Elegido sobre bocetos ("animar siempre" contra una versión suave con fundido).
 - 2026-10-26: en "Tus datos", sexo, actividad y meta se eligen con botones (la actividad pasa a 2 o 3 filas en celular; cada botón con su borde para que eso no se rompa) y la meta dice Bajar / Mantener / Subir. El reparto se edita en la misma tarjeta del objetivo, con las barras actualizándose mientras se escribe. Elegidos sobre bocetos.
 - 2026-10-26: cerrar la bienvenida con × o Escape cuenta como "Ahora no": no se vuelve a ofrecer, y los datos se cargan después en Mi progreso.
 - 2026-10-26: "Mi progreso" en dos columnas (tus datos | tu objetivo, peso abajo a todo el ancho) y bienvenida en tres pasos con barra de avance (sexo y edad · altura y peso · actividad y meta). Elegidos sobre bocetos.
 - 2026-10-26: **antes de cualquier decisión de diseño, Claude muestra opciones en bocetos y se elige con el usuario** (también en `CLAUDE.md`). Salió de que los macros del detalle se aplicaron sin consultar.
-- 2026-10-26: macros en el detalle con barras (elegido sobre 3 bocetos): "726 kcal por porción" y una barra por macro con nombre completo y gramos; el ancho es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (elegido sobre 3 animaciones); con "reducir movimiento" no se anima. Nada de "P · G · C": no se entendía.
+- 2026-10-26: macros en el detalle con barras (elegido sobre 3 bocetos): "726 kcal por porción" y una barra por macro con nombre completo y gramos; el ancho es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (elegido sobre 3 animaciones); se anima siempre (ver la decisión de abajo). Nada de "P · G · C": no se entendía.
 - 2026-10-26: favoritos centrados en escritorio, con la última fila arrancando a la izquierda (elegido sobre 2 bocetos).
 - 2026-10-26: la ★ del detalle guarda en favoritos solo `{ id, title, image, imageType }` (la forma de los resultados de búsqueda), no la receta completa. "Agregar al plan" en el detalle cierra el detalle y abre el modal de día y comida.
 - 2026-10-21: diseño de la etapa 2 aprobado (ver la spec). Resumen: objetivo con Mifflin-St Jeor × actividad × meta (bajar 0,8 / subir 1,1), con mínimo de 1.200 kcal (mujer) o 1.500 (hombre); reparto recomendado de proteína 1,8 g/kg, grasas 25 % y carbohidratos el resto, editable con el aviso de que el recomendado es el sugerido; un día está "en objetivo" dentro de ±10 % (rojo si se pasa, ámbar si le falta); el peso se carga cuando el usuario quiere (semanal o mensual) y solo se guarda fecha y kg; la primera vez se piden los datos, con opción de saltearlo; sección nueva "Mi progreso".
@@ -63,7 +64,6 @@ Abrir el PR del 2.2, probarlo en su preview de Vercel (bienvenida y Mi progreso)
 - Abrir el PR del 2.2 (desde el navegador integrado ya hay sesión de GitHub en DESKTOP-PA57B7I).
 - Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
 - DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
-- En DESKTOP-PA57B7I Windows tiene apagados los efectos de animación (Configuración → Accesibilidad → Efectos visuales), así que la app no anima las barras ahí: es lo esperado.
 - Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
 - En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
@@ -71,6 +71,7 @@ Abrir el PR del 2.2, probarlo en su preview de Vercel (bienvenida y Mi progreso)
 
 ## Bitácora
 ### 2026-10-26
+- Las barras de macros se animan siempre, aunque el sistema tenga "reducir movimiento" (se quitó ese freno de `BarrasMacros.jsx` y de `style.css`). Verificado: los números cuentan desde 0 en el detalle y en Mi progreso, y al editar el reparto se deslizan del valor anterior (154 → 188 g) sin volver a 0.
 - Commit 2.2: perfil y objetivo. `src/lib/macros.js` (objetivo con Mifflin-St Jeor, mínimo de kcal, reparto, estado del día y validación), con `scripts/probar-macros.mjs` (6 casos a mano, todos bien). Perfil y `perfilOmitido` en `storage.js` y `usePerfil`. Pestaña "Mi progreso" con "Tus datos" y "Tu objetivo diario" (reparto editable en la tarjeta) y bienvenida en tres pasos al tocar "Empezar ahora". Las barras pasaron a `BarrasMacros.jsx`, compartido con el detalle. Verificado en el navegador integrado: bienvenida completa y salteada, errores de rango, teclado en los botones, objetivo y reparto contra las cuentas a mano, a 1024, 768, 390 y 320px sin scroll horizontal, contraste AA y botones de 44px; `npm run build`.
 - PR #14 mergeado: commit 2.1 (`12f8488`). `mejoras-critica` actualizada con `main`.
 - PR #14 probado en su preview de Vercel: `/api/detalle?id=X&v=2` trae `macros` (sin `nutrition`, en español); una receta nueva da `x-vercel-cache: MISS` y el segundo pedido `HIT`. Los previews de Vercel piden iniciar sesión (protección de deploys).

@@ -607,7 +607,8 @@ h1 {
     overflow: hidden;
 }
 
-/* Las barras crecen desde la izquierda al abrir el detalle, mientras los números cuentan (NumeroAnimado) */
+/* Las barras crecen desde la izquierda al aparecer, mientras los números cuentan (NumeroAnimado).
+   Se anima siempre, también con "reducir movimiento" (decisión del 2026-10-26) */
 .macro-barra div {
     height: 100%;
     background-color: var(--color-primario);
@@ -619,12 +620,6 @@ h1 {
 @keyframes crecer-barra {
     from {
         transform: scaleX(0);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .macro-barra div {
-        animation: none;
     }
 }
 

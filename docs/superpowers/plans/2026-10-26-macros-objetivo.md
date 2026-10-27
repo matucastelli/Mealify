@@ -15,7 +15,7 @@ Las cuentas de usuario y la base de datos no entran acá: son la etapa 3. Todo l
 **Cliente**
 - `src/lib/api.js`: `/api/detalle?id=X&v=2`, para no recibir de la CDN respuestas viejas sin macros.
 - `src/lib/cacheRecetas.js`: `cacheRecetasEs3`, y `cacheRecetasEs2` pasa a `CLAVES_VIEJAS`.
-- `ModalReceta.jsx` (diseño elegido sobre bocetos): "726 kcal por porción" y una barra por macro con su nombre completo y los gramos (Proteínas, Grasas, Carbohidratos); el ancho de cada barra es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (0,6 s; nada se anima con "reducir movimiento"). Sin datos: "Sin datos de nutrición". Debajo, la ★ y "Agregar al plan".
+- `ModalReceta.jsx` (diseño elegido sobre bocetos): "726 kcal por porción" y una barra por macro con su nombre completo y los gramos (Proteínas, Grasas, Carbohidratos); el ancho de cada barra es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (0,6 s; se anima siempre, también con "reducir movimiento"). Sin datos: "Sin datos de nutrición". Debajo, la ★ y "Agregar al plan".
 - Favoritos centrados en escritorio (grilla `auto-fit` con tarjetas de 280 a 340px, elegido sobre bocetos).
 - `RecetaCard.jsx`: "Ver receta" ya no se deshabilita mientras carga (`aria-busy` nada más), porque el botón deshabilitado perdía el foco y el detalle no tenía a dónde devolverlo.
 - `App.jsx`: la ★ guarda en favoritos una versión liviana `{ id, title, image, imageType }` (la forma de los resultados de búsqueda); "Agregar al plan" cierra el detalle y abre el modal de día y comida (no se apilan dos modales).
