@@ -3,16 +3,16 @@
 > Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: entrada más dinámica` · Último commit en main: `12f8488 Merge pull request #14 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle) está mergeado (PR #14). El 2.2 (perfil, objetivo y bienvenida) y la entrada más dinámica (portada, cortina, bienvenida animada) están subidos a `mejoras-critica`, sin código a medias; falta abrir su PR (van juntos).
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle) está mergeado (PR #14). El 2.2 (perfil, objetivo y bienvenida) y la entrada más dinámica (portada, cortina, bienvenida animada) están en el PR #15, abierto y probado por el usuario en local; sin código a medias.
 
 ## Próximo paso
-Abrir el PR del 2.2 con la entrada nueva, probarlo en su preview de Vercel (portada, cortina, bienvenida y Mi progreso) y mergearlo. Después, el 2.3 (registro de peso), empezando por bocetos de la tarjeta "Peso" y del modal "+ Cargar peso". Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
+Mergear el PR #15 (2.2 y entrada nueva) con "Create a merge commit" y hacer `git pull origin main` en `mejoras-critica`. Después, el 2.3 (registro de peso), empezando por bocetos de la tarjeta "Peso" y del modal "+ Cargar peso". Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
   - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) (PR #14)
-  - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) — subido, falta el PR
+  - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica — PR #15 abierto, falta mergear
   - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) ← siguiente
   - [ ] 2.4 Macros en el planificador
   - [ ] 2.5 Lista de compras por porción y personas
@@ -62,7 +62,7 @@ Abrir el PR del 2.2 con la entrada nueva, probarlo en su preview de Vercel (port
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
-- Abrir el PR del 2.2 (desde el navegador integrado ya hay sesión de GitHub en DESKTOP-PA57B7I).
+- PR #15 (2.2 y entrada nueva): https://github.com/matucastelli/Mealify/pull/15. Después del merge, `git pull origin main` en `mejoras-critica`.
 - Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
 - DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
 - Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
@@ -72,6 +72,7 @@ Abrir el PR del 2.2 con la entrada nueva, probarlo en su preview de Vercel (port
 
 ## Bitácora
 ### 2026-10-26
+- PR #15 abierto (2.2 y entrada más dinámica), desde el navegador integrado. El usuario lo probó en local.
 - Entrada más dinámica: portada en cascada con recetas que caen (`Landing.jsx`), cortina naranja entre la portada y la app (`Cortina.jsx`), pasos de la bienvenida que se deslizan, barra de avance que se llena, botones elegidos que laten con ✓ (`CamposPerfil.jsx`), cierre de la bienvenida con el objetivo animado (ya no se muestra el aviso "Listo") y presión en todos los botones. Botón pill compartido (`.btn-pill`). Verificado en el navegador integrado: orden y tiempos de la cascada, fases de la cortina (la bienvenida se abre después), deslizamiento adelante y atrás con foco en el título, latido solo al tocar, cierre que cuenta hasta 2.190 kcal, Escape sin marcar "Ahora no", "Ahora no" que sí lo marca, y sin scroll horizontal a 1280 y 320px; `npm run build`.
 - Las barras de macros se animan siempre, aunque el sistema tenga "reducir movimiento" (se quitó ese freno de `BarrasMacros.jsx` y de `style.css`). Verificado: los números cuentan desde 0 en el detalle y en Mi progreso, y al editar el reparto se deslizan del valor anterior (154 → 188 g) sin volver a 0.
 - Commit 2.2: perfil y objetivo. `src/lib/macros.js` (objetivo con Mifflin-St Jeor, mínimo de kcal, reparto, estado del día y validación), con `scripts/probar-macros.mjs` (6 casos a mano, todos bien). Perfil y `perfilOmitido` en `storage.js` y `usePerfil`. Pestaña "Mi progreso" con "Tus datos" y "Tu objetivo diario" (reparto editable en la tarjeta) y bienvenida en tres pasos al tocar "Empezar ahora". Las barras pasaron a `BarrasMacros.jsx`, compartido con el detalle. Verificado en el navegador integrado: bienvenida completa y salteada, errores de rango, teclado en los botones, objetivo y reparto contra las cuentas a mano, a 1024, 768, 390 y 320px sin scroll horizontal, contraste AA y botones de 44px; `npm run build`.
