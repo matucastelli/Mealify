@@ -1,20 +1,20 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` (igual a `main`) · Último commit en main: `b93fefb Merge pull request #15 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-27 · Rama de trabajo: `mejoras-critica` · Último commit: `feat: registro de peso` (falta el PR) · Último commit en main: `b93fefb Merge pull request #15 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. No hay código a medias: la sesión del 2026-10-26 cerró con todo subido y `mejoras-critica` igual a `main`.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) está commiteado y subido en `mejoras-critica`; falta abrir el PR y mergearlo.
 
 ## Próximo paso
-Commit 2.3: registro de peso. **Empezar por los bocetos** (regla de `CLAUDE.md`) y elegir con el usuario: la tarjeta "Peso" (va abajo a todo el ancho en "Mi progreso", como en el diseño A elegido), el gráfico, la lista de pesos con borrar, el aviso de más de 7 días y el modal "+ Cargar peso". Qué tiene que hacer está en el plan (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.3) y en la spec. Después vienen el 2.4 (macros en el planificador) y el 2.5 (lista de compras por porción).
+Abrir el PR del 2.3 (registro de peso) desde GitHub, probarlo en el preview de Vercel y mergearlo; después, `git pull origin main` en `mejoras-critica`. Sigue el 2.4 (macros en el planificador), empezando por los bocetos; qué tiene que hacer está en el plan (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.4).
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
   - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) (PR #14)
   - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica (PR #15)
-  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) ← siguiente
-  - [ ] 2.4 Macros en el planificador
+  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) ← commiteado, falta el PR
+  - [ ] 2.4 Macros en el planificador ← siguiente
   - [ ] 2.5 Lista de compras por porción y personas
 - [ ] 3. Cuentas de usuario + base de datos, para usar la app desde varios dispositivos (se migra lo guardado en el navegador). Candidato: Supabase; antes de sumarlo se consulta y se revisan los límites del plan gratis.
 - [ ] 4. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`, guardadas ya en la base de datos. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran).
@@ -32,6 +32,7 @@ Commit 2.3: registro de peso. **Empezar por los bocetos** (regla de `CLAUDE.md`)
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-27: tarjeta "Peso" (elegida sobre 3 bocetos): el último peso grande con la fecha, el cambio en una etiqueta (verde solo si va para el lado de la meta; con "mantener", solo si no cambió), "+ Cargar peso" y el gráfico al lado (debajo en celular), y la lista para borrar plegada en "Ver y borrar registros". Borrar muestra un aviso con "Deshacer". En el gráfico, los puntos se separan según la fecha, no según el orden. Modal "Cargar peso" (elegido sobre 2 bocetos y 3 estilos): ícono de pesa de Font Awesome (`fa-weight-hanging`) en un círculo, kg grande en el centro arrancando en el último peso, la fecha como etiqueta "Hoy, 27/10" que al tocarla pasa a un campo de fecha (no se aceptan fechas futuras) y botón pill "Guardar peso". Los perfiles anteriores, que no tenían pesos, toman su peso como cargado hoy.
 - 2026-10-26: entrada más dinámica, elegida sobre bocetos después de revisar sitios de cta.gallery (Snackish, Pizza Amici, RIPE): la portada aparece en cascada (título palabra por palabra, texto, botón pill con flecha) y las recetas caen una por una en el plan de ejemplo; "Empezar ahora" pasa a la app con una cortina naranja; los pasos de la bienvenida se deslizan de costado y el botón elegido late y muestra ✓; la bienvenida termina mostrando el objetivo (kcal que cuentan y barras) con "Empezar a planificar". Todos los botones se achican un poco al apretarlos. Todo se anima siempre y sin librerías (CSS y un poco de JS; esos sitios usan GSAP).
 - 2026-10-26: las barras de macros y sus números se animan siempre, también si el sistema tiene activado "reducir movimiento" (antes no se animaban): la animación es corta y liviana, y el usuario la quiere igual en todos los dispositivos. Elegido sobre bocetos ("animar siempre" contra una versión suave con fundido).
 - 2026-10-26: en "Tus datos", sexo, actividad y meta se eligen con botones (la actividad pasa a 2 o 3 filas en celular; cada botón con su borde para que eso no se rompa) y la meta dice Bajar / Mantener / Subir. El reparto se edita en la misma tarjeta del objetivo, con las barras actualizándose mientras se escribe. Elegidos sobre bocetos.
@@ -71,6 +72,9 @@ Commit 2.3: registro de peso. **Empezar por los bocetos** (regla de `CLAUDE.md`)
 - Opcional, en la otra compu: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs, y crear `.claude/settings.local.json` con la atribución desactivada, igual que en LAPTOP-2UJ4PI2A.
 
 ## Bitácora
+### 2026-10-27
+- Commit 2.3: registro de peso. `src/lib/pesos.js` (agregar y borrar pesos, resumen del cambio, puntos del gráfico) con `scripts/probar-pesos.mjs` (9 casos, todos bien). `pesos` en `storage.js`; `usePerfil` mantiene `perfil.peso` igual al peso más reciente, y cambiar el peso en "Tus datos" o en la bienvenida lo registra con la fecha de hoy. `TarjetaPeso.jsx` (tarjeta, gráfico y lista) y `ModalPeso.jsx`. Verificado en el navegador integrado: borrar y deshacer, objetivo recalculado contra la cuenta a mano (78,5 → 79 kg: 2.170 → 2.180 kcal), carga con fecha pasada, error de rango, cambio desde "Tus datos", migración de un perfil sin pesos, estado sin datos con "Ir a Tus datos", Escape, a 1024, 390 y 320px sin scroll horizontal; `npm run build`.
+
 ### 2026-10-26
 - Fin de la sesión en DESKTOP-PA57B7I: PR #15 mergeado (`b93fefb`), `mejoras-critica` igual a `main`, todo subido y sin código a medias. En esta compu ya no están las ramas viejas (`migracion-react`, `arreglos-rapidos`, `backup/main-antes-de-limpiar`). Próximo: bocetos del 2.3 (peso).
 - PR #15 abierto (2.2 y entrada más dinámica), desde el navegador integrado. El usuario lo probó en local.

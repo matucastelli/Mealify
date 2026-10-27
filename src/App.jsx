@@ -79,7 +79,7 @@ export default function App() {
     const { favoritos, alternarFavorito } = useFavoritos();
     const { plan, asignar, eliminar, mover } = usePlanSemanal();
     const { marcadas, ocultas, alternarCompra, limpiarMarcadas, mostrar, restaurar } = useCompras();
-    const { perfil, objetivo, omitido, guardar: guardarPerfil, omitir: omitirPerfil } = usePerfil();
+    const { perfil, objetivo, pesos, omitido, guardar: guardarPerfil, cargarPeso, borrarPeso, omitir: omitirPerfil } = usePerfil();
 
     const idsPlan = idsDelPlan(plan);
     const { recetas: recetasPlan, cargando: cargandoPlan } = useRecetasDetalle(idsPlan);
@@ -332,7 +332,10 @@ export default function App() {
                     oculto={seccionActiva !== "progreso"}
                     perfil={perfil}
                     objetivo={objetivo}
+                    pesos={pesos}
                     onGuardar={guardarPerfil}
+                    onCargarPeso={cargarPeso}
+                    onBorrarPeso={borrarPeso}
                     onAviso={setAviso}
                 />
             </div>

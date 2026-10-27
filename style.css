@@ -1829,6 +1829,325 @@ footer {
     background-color: var(--color-fondo);
 }
 
+/* Peso: a todo el ancho, debajo de "Tus datos" y "Tu objetivo diario".
+   Último peso grande a la izquierda y el gráfico a la derecha; en celular, uno abajo del otro */
+.tarjeta-peso {
+    grid-column: 1 / -1;
+}
+
+.peso-recordatorio {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 4px;
+    margin: var(--espaciado-chico) 0;
+    padding: 0 var(--espaciado-chico-medio);
+    background-color: #fff3ec;
+    border: 1px solid #e8c3ad;
+    border-radius: var(--radio-borde);
+    color: #7a3510;
+    font-size: 0.85rem;
+}
+
+.peso-cuerpo {
+    display: grid;
+    gap: var(--espaciado-medio);
+    margin-top: var(--espaciado-chico);
+}
+
+@media (min-width: 768px) {
+    .peso-cuerpo {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+        align-items: center;
+    }
+
+    .peso-cuerpo.sin-grafico {
+        grid-template-columns: 1fr;
+    }
+}
+
+.peso-numero {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.peso-fecha {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.peso-cambio {
+    display: inline-block;
+    margin-top: var(--espaciado-chico);
+    padding: 2px 10px;
+    background-color: var(--color-fondo);
+    border-radius: 999px;
+    font-size: 0.85rem;
+}
+
+/* Verde solo si el cambio va para el lado de la meta */
+.peso-cambio.a-favor {
+    background-color: #e3f1e7;
+    color: #1f5a32;
+}
+
+.tarjeta-progreso .peso-actual .btn-principal {
+    display: block;
+    width: auto;
+    margin-top: var(--espaciado-medio);
+}
+
+/* La línea se estira con la tarjeta; los puntos y los números son HTML para que no se deformen */
+.peso-grafico-area {
+    position: relative;
+    height: 140px;
+}
+
+.peso-grafico-area svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.peso-grafico-area polyline {
+    fill: none;
+    stroke: var(--color-primario);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+.peso-punto {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-primario);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.peso-punto.ultimo {
+    width: 14px;
+    height: 14px;
+    border: 3px solid var(--color-fondo);
+    box-sizing: content-box;
+}
+
+.peso-etiqueta {
+    position: absolute;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.peso-etiqueta.primera {
+    transform: translate(-4px, calc(-100% - 10px));
+}
+
+.peso-etiqueta.ultima {
+    transform: translate(calc(-100% + 4px), calc(-100% - 10px));
+}
+
+.peso-grafico-fechas {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.peso-registros {
+    margin-top: var(--espaciado-medio);
+    border-top: 1px solid var(--color-terciario);
+}
+
+.peso-registros summary {
+    display: flex;
+    align-items: center;
+    gap: var(--espaciado-chico);
+    width: fit-content;
+    min-height: 44px;
+    color: var(--color-primario);
+    font-size: 0.9rem;
+    cursor: pointer;
+    list-style: none;
+}
+
+.peso-registros summary::-webkit-details-marker {
+    display: none;
+}
+
+/* Flecha de Font Awesome (chevron-down) que gira al abrir */
+.peso-registros summary::before {
+    content: "\f078";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+}
+
+.peso-registros[open] summary::before {
+    transform: rotate(180deg);
+}
+
+.peso-registros ul {
+    max-width: 360px;
+    list-style: none;
+}
+
+.peso-registros li {
+    display: grid;
+    grid-template-columns: 1fr 1fr 44px;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    font-size: 0.9rem;
+}
+
+.btn-borrar-peso {
+    width: 44px;
+    height: 44px;
+    background: none;
+    border: none;
+    border-radius: var(--radio-borde);
+    color: #555;
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .btn-borrar-peso:hover {
+        color: #c0392b;
+    }
+}
+
+/* Modal "Cargar peso": ícono de pesa, kg grande en el centro y la fecha en una etiqueta */
+#modal-peso .modal-contenido {
+    max-width: 340px;
+    text-align: center;
+}
+
+.peso-modal-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto var(--espaciado-chico);
+    background-color: #fff3ec;
+    color: var(--color-primario);
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+#titulo-modal-peso {
+    color: var(--color-primario);
+    font-size: 1.25rem;
+}
+
+.peso-modal-ayuda {
+    margin-bottom: var(--espaciado-medio);
+    font-size: 0.85rem;
+    opacity: 0.75;
+}
+
+.peso-modal-kg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 64px;
+    background-color: var(--color-fondo);
+    border: 1.5px solid var(--color-primario);
+    border-radius: var(--radio-borde);
+}
+
+.peso-modal-kg:focus-within {
+    outline: 2px solid var(--color-primario);
+    outline-offset: 2px;
+}
+
+.peso-modal-kg:has(input[aria-invalid="true"]) {
+    border-color: #c0392b;
+}
+
+.peso-modal-kg input {
+    width: 4.5ch;
+    padding: 0;
+    background: none;
+    border: none;
+    color: var(--color-texto);
+    font-size: 2rem;
+    font-weight: 600;
+    text-align: right;
+}
+
+.peso-modal-kg input:focus {
+    outline: none;
+}
+
+.peso-modal-kg span {
+    opacity: 0.75;
+}
+
+.peso-fecha-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    margin-top: var(--espaciado-chico-medio);
+    padding: 0 var(--espaciado-medio);
+    background-color: var(--color-secundario);
+    border: none;
+    border-radius: 999px;
+    color: var(--color-texto);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.peso-fecha-chip .fa-chevron-down {
+    font-size: 0.7rem;
+}
+
+.peso-modal-fecha {
+    margin-top: var(--espaciado-chico-medio);
+    text-align: left;
+}
+
+.peso-modal-fecha label {
+    margin: 0 0 4px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.peso-modal-fecha input {
+    width: 100%;
+    min-height: 44px;
+    padding: 0 var(--espaciado-chico);
+    border: 1px solid var(--color-terciario);
+    border-radius: var(--radio-borde);
+    font-size: 1rem;
+}
+
+.formulario-peso .btn-pill {
+    width: 100%;
+    margin-top: var(--espaciado-medio);
+}
+
+/* Solo para lectores de pantalla */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .objetivo-reparto {
     font-size: 0.85rem;
     margin-top: var(--espaciado-chico);

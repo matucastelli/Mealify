@@ -1,11 +1,12 @@
 import { useState } from "react";
 import CampoPerfil, { CampoNumero, valoresIniciales } from "./CamposPerfil.jsx";
 import BarrasMacros, { NumeroAnimado } from "./BarrasMacros.jsx";
+import TarjetaPeso from "./TarjetaPeso.jsx";
 import { calcularObjetivo, filasMacros, formatearNumero, validarPerfil, REPARTO_RECOMENDADO, RANGOS } from "../lib/macros.js";
 
 const CAMPOS = ["sexo", "edad", "altura", "peso", "actividad", "meta"];
 
-export default function MiProgreso({ oculto, perfil, objetivo, onGuardar, onAviso }) {
+export default function MiProgreso({ oculto, perfil, objetivo, pesos, onGuardar, onCargarPeso, onBorrarPeso, onAviso }) {
     return (
         <section id="progreso" className={`seccion ${oculto ? "oculto" : ""}`}>
             <div className="seccion-cabecera">
@@ -19,6 +20,7 @@ export default function MiProgreso({ oculto, perfil, objetivo, onGuardar, onAvis
                 <TarjetaDatos key={JSON.stringify(perfil)} perfil={perfil} onGuardar={onGuardar} onAviso={onAviso} />
                 {/* Al volver a la sección, las barras y los números se animan de nuevo */}
                 <TarjetaObjetivo key={oculto ? "oculta" : "visible"} perfil={perfil} objetivo={objetivo} onGuardar={onGuardar} onAviso={onAviso} />
+                <TarjetaPeso perfil={perfil} pesos={pesos} onCargarPeso={onCargarPeso} onBorrarPeso={onBorrarPeso} onAviso={onAviso} />
             </div>
         </section>
     );
@@ -45,7 +47,7 @@ function TarjetaDatos({ perfil, onGuardar, onAviso }) {
     }
 
     return (
-        <form className="tarjeta-progreso" onSubmit={guardar} noValidate>
+        <form id="form-datos" className="tarjeta-progreso" onSubmit={guardar} noValidate>
             <h3>Tus datos</h3>
             <div className="campos-perfil">
                 {CAMPOS.map(campo => (

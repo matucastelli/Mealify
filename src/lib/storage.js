@@ -151,3 +151,21 @@ export function omitirPerfil() {
         // localStorage no disponible
     }
 }
+
+// Pesos cargados en Mi progreso: [{ fecha: "AAAA-MM-DD", kg }], ordenados por fecha
+export function getPesos() {
+    try {
+        const datosGuardados = localStorage.getItem("pesos");
+        return datosGuardados == null ? [] : JSON.parse(datosGuardados);
+    } catch {
+        return [];
+    }
+}
+
+export function guardarPesos(pesos) {
+    try {
+        localStorage.setItem("pesos", JSON.stringify(pesos));
+    } catch {
+        // localStorage lleno o no disponible: los pesos quedan solo en memoria
+    }
+}
