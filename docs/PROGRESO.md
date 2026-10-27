@@ -1,19 +1,19 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-27 · Rama de trabajo: `mejoras-critica` · Último commit: `31bac5d fix: título de Buscar en celular y recetas centradas` (PR #16 abierto) · Último commit en main: `b93fefb Merge pull request #15 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-27 · Rama de trabajo: `mejoras-critica` (igual a `main`) · Último commit en main: `0b80f86 Merge pull request #16 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) y dos arreglos de Buscar (título en celular, recetas centradas) están en el PR #16, abierto el 2026-10-27; el usuario lo probó en local y Claude en el preview de Vercel. Falta mergearlo.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) y dos arreglos de Buscar (título en celular, recetas centradas) están mergeados (PR #16) y en producción. No hay código a medias: `mejoras-critica` está igual a `main`.
 
 ## Próximo paso
-Mergear el PR #16 (2.3 y arreglos de Buscar, ya probado en el preview de Vercel) con "Create a merge commit"; después, `git pull origin main` en `mejoras-critica`. Sigue el 2.4 (macros en el planificador), empezando por los bocetos; qué tiene que hacer está en el plan (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.4).
+Commit 2.4 (macros en el planificador), empezando por los bocetos; qué tiene que hacer está en el plan (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.4).
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
   - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) (PR #14)
   - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica (PR #15)
-  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) (PR #16, abierto)
+  - [x] 2.3 Registro de peso (gráfico y aviso de 7 días) y arreglos de Buscar (PR #16)
   - [ ] 2.4 Macros en el planificador ← siguiente
   - [ ] 2.5 Lista de compras por porción y personas
 - [ ] 3. Cuentas de usuario + base de datos, para usar la app desde varios dispositivos (se migra lo guardado en el navegador). Candidato: Supabase; antes de sumarlo se consulta y se revisan los límites del plan gratis.
@@ -66,6 +66,7 @@ Mergear el PR #16 (2.3 y arreglos de Buscar, ya probado en el preview de Vercel)
 ## Pendientes para la otra compu
 - Para retomar en cualquiera de las dos compus: `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`. No cambiaron las dependencias, así que no hace falta `npm install`. Si `npm run dev` estaba corriendo, reiniciarlo.
 - En LAPTOP-2UJ4PI2A hay que hacer ese pull: tiene la rama de antes del 2.1.
+- En el navegador integrado de DESKTOP-PA57B7I (local y preview del PR #16) quedaron datos de prueba en localStorage: perfil de hombre de 78,5 kg y 7 a 8 pesos del 31/08 en adelante.
 - Para volver a ver la bienvenida al probar: en la consola del navegador (F12) `localStorage.removeItem('perfil'); localStorage.removeItem('perfilOmitido');` y recargar.
 - Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
 - DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
@@ -74,6 +75,7 @@ Mergear el PR #16 (2.3 y arreglos de Buscar, ya probado en el preview de Vercel)
 
 ## Bitácora
 ### 2026-10-27
+- PR #16 mergeado (`0b80f86`): 2.3 registro de peso y arreglos de Buscar. `mejoras-critica` actualizada con `main`. Próximo: bocetos del 2.4 (macros en el planificador).
 - PR #16 probado en su preview de Vercel: la tarjeta Peso con los datos de prueba, cargar un peso (objetivo y recordatorio actualizados), borrar y deshacer, foco de vuelta en "+ Cargar peso", recetas de la API centradas en 2 columnas a 962px y título de Buscar a la izquierda a 390px, sin scroll horizontal.
 - PR #16 abierto (2.3 y arreglos de Buscar), desde el navegador integrado, después de que el usuario lo probara en local.
 - Arreglos de Buscar, que van en el mismo PR que el 2.3: en celular el título quedaba centrado dentro de una caja pegada a la izquierda (se veía corrido); ahora va a la izquierda. Los resultados usan la grilla centrada de Favoritos. Verificado en el navegador integrado a 1440, 1024, 768 y 390px, sin scroll horizontal; `npm run build`.
