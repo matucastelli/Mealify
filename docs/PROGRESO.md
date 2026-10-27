@@ -1,18 +1,18 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: entrada más dinámica` · Último commit en main: `12f8488 Merge pull request #14 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` (igual a `main`) · Último commit en main: `b93fefb Merge pull request #15 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle) está mergeado (PR #14). El 2.2 (perfil, objetivo y bienvenida) y la entrada más dinámica (portada, cortina, bienvenida animada) están en el PR #15, abierto y probado por el usuario en local; sin código a medias.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. No hay código a medias: la sesión del 2026-10-26 cerró con todo subido y `mejoras-critica` igual a `main`.
 
 ## Próximo paso
-Mergear el PR #15 (2.2 y entrada nueva) con "Create a merge commit" y hacer `git pull origin main` en `mejoras-critica`. Después, el 2.3 (registro de peso), empezando por bocetos de la tarjeta "Peso" y del modal "+ Cargar peso". Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
+Commit 2.3: registro de peso. **Empezar por los bocetos** (regla de `CLAUDE.md`) y elegir con el usuario: la tarjeta "Peso" (va abajo a todo el ancho en "Mi progreso", como en el diseño A elegido), el gráfico, la lista de pesos con borrar, el aviso de más de 7 días y el modal "+ Cargar peso". Qué tiene que hacer está en el plan (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.3) y en la spec. Después vienen el 2.4 (macros en el planificador) y el 2.5 (lista de compras por porción).
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
   - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) (PR #14)
-  - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica — PR #15 abierto, falta mergear
+  - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica (PR #15)
   - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) ← siguiente
   - [ ] 2.4 Macros en el planificador
   - [ ] 2.5 Lista de compras por porción y personas
@@ -62,16 +62,17 @@ Mergear el PR #15 (2.2 y entrada nueva) con "Create a merge commit" y hacer `git
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
-- PR #15 (2.2 y entrada nueva): https://github.com/matucastelli/Mealify/pull/15. Después del merge, `git pull origin main` en `mejoras-critica`.
+- Para retomar en cualquiera de las dos compus: `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`. No cambiaron las dependencias, así que no hace falta `npm install`. Si `npm run dev` estaba corriendo, reiniciarlo.
+- En LAPTOP-2UJ4PI2A hay que hacer ese pull: tiene la rama de antes del 2.1.
+- Para volver a ver la bienvenida al probar: en la consola del navegador (F12) `localStorage.removeItem('perfil'); localStorage.removeItem('perfilOmitido');` y recargar.
 - Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
 - DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
-- Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
-- En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
 - Opcional, en la otra compu: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs, y crear `.claude/settings.local.json` con la atribución desactivada, igual que en LAPTOP-2UJ4PI2A.
 
 ## Bitácora
 ### 2026-10-26
+- Fin de la sesión en DESKTOP-PA57B7I: PR #15 mergeado (`b93fefb`), `mejoras-critica` igual a `main`, todo subido y sin código a medias. En esta compu ya no están las ramas viejas (`migracion-react`, `arreglos-rapidos`, `backup/main-antes-de-limpiar`). Próximo: bocetos del 2.3 (peso).
 - PR #15 abierto (2.2 y entrada más dinámica), desde el navegador integrado. El usuario lo probó en local.
 - Entrada más dinámica: portada en cascada con recetas que caen (`Landing.jsx`), cortina naranja entre la portada y la app (`Cortina.jsx`), pasos de la bienvenida que se deslizan, barra de avance que se llena, botones elegidos que laten con ✓ (`CamposPerfil.jsx`), cierre de la bienvenida con el objetivo animado (ya no se muestra el aviso "Listo") y presión en todos los botones. Botón pill compartido (`.btn-pill`). Verificado en el navegador integrado: orden y tiempos de la cascada, fases de la cortina (la bienvenida se abre después), deslizamiento adelante y atrás con foco en el título, latido solo al tocar, cierre que cuenta hasta 2.190 kcal, Escape sin marcar "Ahora no", "Ahora no" que sí lo marca, y sin scroll horizontal a 1280 y 320px; `npm run build`.
 - Las barras de macros se animan siempre, aunque el sistema tenga "reducir movimiento" (se quitó ese freno de `BarrasMacros.jsx` y de `style.css`). Verificado: los números cuentan desde 0 en el detalle y en Mi progreso, y al editar el reparto se deslizan del valor anterior (154 → 188 g) sin volver a 0.
