@@ -1,20 +1,20 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: entrada más dinámica` · Último commit en main: `12f8488 Merge pull request #14 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-27 · Rama de trabajo: `mejoras-critica` · Último commit: `31bac5d fix: título de Buscar en celular y recetas centradas` (PR #16 abierto) · Último commit en main: `b93fefb Merge pull request #15 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle) está mergeado (PR #14). El 2.2 (perfil, objetivo y bienvenida) y la entrada más dinámica (portada, cortina, bienvenida animada) están en el PR #15, abierto y probado por el usuario en local; sin código a medias.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) y dos arreglos de Buscar (título en celular, recetas centradas) están en el PR #16, abierto el 2026-10-27; el usuario lo probó en local y Claude en el preview de Vercel. Falta mergearlo.
 
 ## Próximo paso
-Mergear el PR #15 (2.2 y entrada nueva) con "Create a merge commit" y hacer `git pull origin main` en `mejoras-critica`. Después, el 2.3 (registro de peso), empezando por bocetos de la tarjeta "Peso" y del modal "+ Cargar peso". Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
+Mergear el PR #16 (2.3 y arreglos de Buscar, ya probado en el preview de Vercel) con "Create a merge commit"; después, `git pull origin main` en `mejoras-critica`. Sigue el 2.4 (macros en el planificador), empezando por los bocetos; qué tiene que hacer está en el plan (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.4).
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
   - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) (PR #14)
-  - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica — PR #15 abierto, falta mergear
-  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) ← siguiente
-  - [ ] 2.4 Macros en el planificador
+  - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica (PR #15)
+  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) (PR #16, abierto)
+  - [ ] 2.4 Macros en el planificador ← siguiente
   - [ ] 2.5 Lista de compras por porción y personas
 - [ ] 3. Cuentas de usuario + base de datos, para usar la app desde varios dispositivos (se migra lo guardado en el navegador). Candidato: Supabase; antes de sumarlo se consulta y se revisan los límites del plan gratis.
 - [ ] 4. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`, guardadas ya en la base de datos. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran).
@@ -32,6 +32,8 @@ Mergear el PR #15 (2.2 y entrada nueva) con "Create a merge commit" y hacer `git
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-27: los resultados de Buscar se centran en escritorio como Favoritos (columnas de 280 a 340px, la última fila arranca a la izquierda), y en celular el título de Buscar va a la izquierda como en las demás secciones (en escritorio sigue centrado, sobre el buscador). Pedido del usuario.
+- 2026-10-27: tarjeta "Peso" (elegida sobre 3 bocetos): el último peso grande con la fecha, el cambio en una etiqueta (verde solo si va para el lado de la meta; con "mantener", solo si no cambió), "+ Cargar peso" y el gráfico al lado (debajo en celular), y la lista para borrar plegada en "Ver y borrar registros". Borrar muestra un aviso con "Deshacer". En el gráfico, los puntos se separan según la fecha, no según el orden. Modal "Cargar peso" (elegido sobre 2 bocetos y 3 estilos): ícono de pesa de Font Awesome (`fa-weight-hanging`) en un círculo, kg grande en el centro arrancando en el último peso, la fecha como etiqueta "Hoy, 27/10" que al tocarla pasa a un campo de fecha (no se aceptan fechas futuras) y botón pill "Guardar peso". Los perfiles anteriores, que no tenían pesos, toman su peso como cargado hoy.
 - 2026-10-26: entrada más dinámica, elegida sobre bocetos después de revisar sitios de cta.gallery (Snackish, Pizza Amici, RIPE): la portada aparece en cascada (título palabra por palabra, texto, botón pill con flecha) y las recetas caen una por una en el plan de ejemplo; "Empezar ahora" pasa a la app con una cortina naranja; los pasos de la bienvenida se deslizan de costado y el botón elegido late y muestra ✓; la bienvenida termina mostrando el objetivo (kcal que cuentan y barras) con "Empezar a planificar". Todos los botones se achican un poco al apretarlos. Todo se anima siempre y sin librerías (CSS y un poco de JS; esos sitios usan GSAP).
 - 2026-10-26: las barras de macros y sus números se animan siempre, también si el sistema tiene activado "reducir movimiento" (antes no se animaban): la animación es corta y liviana, y el usuario la quiere igual en todos los dispositivos. Elegido sobre bocetos ("animar siempre" contra una versión suave con fundido).
 - 2026-10-26: en "Tus datos", sexo, actividad y meta se eligen con botones (la actividad pasa a 2 o 3 filas en celular; cada botón con su borde para que eso no se rompa) y la meta dice Bajar / Mantener / Subir. El reparto se edita en la misma tarjeta del objetivo, con las barras actualizándose mientras se escribe. Elegidos sobre bocetos.
@@ -62,16 +64,23 @@ Mergear el PR #15 (2.2 y entrada nueva) con "Create a merge commit" y hacer `git
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
-- PR #15 (2.2 y entrada nueva): https://github.com/matucastelli/Mealify/pull/15. Después del merge, `git pull origin main` en `mejoras-critica`.
+- Para retomar en cualquiera de las dos compus: `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`. No cambiaron las dependencias, así que no hace falta `npm install`. Si `npm run dev` estaba corriendo, reiniciarlo.
+- En LAPTOP-2UJ4PI2A hay que hacer ese pull: tiene la rama de antes del 2.1.
+- Para volver a ver la bienvenida al probar: en la consola del navegador (F12) `localStorage.removeItem('perfil'); localStorage.removeItem('perfilOmitido');` y recargar.
 - Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
 - DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
-- Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
-- En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
 - Opcional, en la otra compu: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs, y crear `.claude/settings.local.json` con la atribución desactivada, igual que en LAPTOP-2UJ4PI2A.
 
 ## Bitácora
+### 2026-10-27
+- PR #16 probado en su preview de Vercel: la tarjeta Peso con los datos de prueba, cargar un peso (objetivo y recordatorio actualizados), borrar y deshacer, foco de vuelta en "+ Cargar peso", recetas de la API centradas en 2 columnas a 962px y título de Buscar a la izquierda a 390px, sin scroll horizontal.
+- PR #16 abierto (2.3 y arreglos de Buscar), desde el navegador integrado, después de que el usuario lo probara en local.
+- Arreglos de Buscar, que van en el mismo PR que el 2.3: en celular el título quedaba centrado dentro de una caja pegada a la izquierda (se veía corrido); ahora va a la izquierda. Los resultados usan la grilla centrada de Favoritos. Verificado en el navegador integrado a 1440, 1024, 768 y 390px, sin scroll horizontal; `npm run build`.
+- Commit 2.3: registro de peso. `src/lib/pesos.js` (agregar y borrar pesos, resumen del cambio, puntos del gráfico) con `scripts/probar-pesos.mjs` (9 casos, todos bien). `pesos` en `storage.js`; `usePerfil` mantiene `perfil.peso` igual al peso más reciente, y cambiar el peso en "Tus datos" o en la bienvenida lo registra con la fecha de hoy. `TarjetaPeso.jsx` (tarjeta, gráfico y lista) y `ModalPeso.jsx`. Verificado en el navegador integrado: borrar y deshacer, objetivo recalculado contra la cuenta a mano (78,5 → 79 kg: 2.170 → 2.180 kcal), carga con fecha pasada, error de rango, cambio desde "Tus datos", migración de un perfil sin pesos, estado sin datos con "Ir a Tus datos", Escape, a 1024, 390 y 320px sin scroll horizontal; `npm run build`.
+
 ### 2026-10-26
+- Fin de la sesión en DESKTOP-PA57B7I: PR #15 mergeado (`b93fefb`), `mejoras-critica` igual a `main`, todo subido y sin código a medias. En esta compu ya no están las ramas viejas (`migracion-react`, `arreglos-rapidos`, `backup/main-antes-de-limpiar`). Próximo: bocetos del 2.3 (peso).
 - PR #15 abierto (2.2 y entrada más dinámica), desde el navegador integrado. El usuario lo probó en local.
 - Entrada más dinámica: portada en cascada con recetas que caen (`Landing.jsx`), cortina naranja entre la portada y la app (`Cortina.jsx`), pasos de la bienvenida que se deslizan, barra de avance que se llena, botones elegidos que laten con ✓ (`CamposPerfil.jsx`), cierre de la bienvenida con el objetivo animado (ya no se muestra el aviso "Listo") y presión en todos los botones. Botón pill compartido (`.btn-pill`). Verificado en el navegador integrado: orden y tiempos de la cascada, fases de la cortina (la bienvenida se abre después), deslizamiento adelante y atrás con foco en el título, latido solo al tocar, cierre que cuenta hasta 2.190 kcal, Escape sin marcar "Ahora no", "Ahora no" que sí lo marca, y sin scroll horizontal a 1280 y 320px; `npm run build`.
 - Las barras de macros se animan siempre, aunque el sistema tenga "reducir movimiento" (se quitó ese freno de `BarrasMacros.jsx` y de `style.css`). Verificado: los números cuentan desde 0 en el detalle y en Mi progreso, y al editar el reparto se deslizan del valor anterior (154 → 188 g) sin volver a 0.
