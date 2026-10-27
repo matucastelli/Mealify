@@ -739,8 +739,9 @@ select:last-of-type {
         margin-left: var(--espaciado-grande);
         margin-right: var(--espaciado-grande);
     }
-    /* Favoritos centrados: las columnas vacías no ocupan lugar (auto-fit) y las tarjetas
-       no se estiran, así con pocos favoritos quedan en el medio y se acomodan al sumar más */
+    /* Tarjetas centradas: las columnas vacías no ocupan lugar (auto-fit) y las tarjetas
+       no se estiran, así con pocas quedan en el medio y la última fila arranca a la izquierda */
+    #resultados,
     #listaFavoritos {
         grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
         justify-content: center;
@@ -1608,6 +1609,11 @@ footer {
     .seccion-cabecera {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    /* En celular el título de Buscar va a la izquierda, como en las demás secciones */
+    #buscar .seccion-cabecera {
+        text-align: left;
     }
 }
 
