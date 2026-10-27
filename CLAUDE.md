@@ -41,4 +41,5 @@ El estado del trabajo (qué está hecho, qué sigue, decisiones) vive en `docs/P
 - No usar `vercel dev` (crashea en Windows, bug conocido de la herramienta)
 - Nombres de variables y funciones en español, camelCase
 - No agregar librerías ni frameworks sin preguntar
+- Antes de cualquier decisión de diseño (cómo se ve o se acomoda algo), mostrar opciones en bocetos visuales y decidir con el usuario; no aplicar un diseño sin que lo haya elegido
 - No tocar la carpeta .vercel/

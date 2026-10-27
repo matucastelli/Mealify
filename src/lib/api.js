@@ -13,8 +13,10 @@ export async function buscarRecetas(query) {
     return datos.results ?? [];
 }
 
+// `v=2`: desde que el detalle trae macros. La CDN de Vercel guarda cada URL 30 días,
+// así no devuelve las respuestas viejas sin macros
 export async function obtenerDetalleReceta(id) {
-    const receta = await pedirJson(`/api/detalle?id=${encodeURIComponent(id)}`);
+    const receta = await pedirJson(`/api/detalle?id=${encodeURIComponent(id)}&v=2`);
     return receta.id == null ? null : receta;
 }
 

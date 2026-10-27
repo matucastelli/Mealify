@@ -1,18 +1,24 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-21 · Rama de trabajo: `mejoras-critica` · Último commit en main: `fdff463 Merge pull request #12 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: nutrición y acciones en el detalle de la receta` (2.1) · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está commiteada en `mejoras-critica` y falta crear y mergear su PR. No hay código a medias.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El commit 2.1 (nutrición en el detalle) está en el PR #14, probado en su preview de Vercel y listo para mergear; no hay código a medias.
 
 ## Próximo paso
-Crear y mergear el PR de la etapa 1 (contraste). Después, diseño de la etapa 2 (macros + objetivo): fórmula del objetivo, pantalla de perfil y cómo se ve el plan.
+Mergear el PR #14 (commit 2.1) con "Create a merge commit" (al 2026-10-26 sigue abierto) y hacer `git pull origin main` en `mejoras-critica`. Después, programar el 2.2 con los diseños ya elegidos (ver Decisiones). Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
 
 ## Plan en curso: Mealify fitness
-- [x] 1. Contraste del naranja (P1 de la crítica) (PR pendiente)
-- [ ] 2. ← siguiente. Macros + objetivo, junto con la lista de compras por porción (P1), el planificador (P2) y el detalle con ★ y "Agregar al plan" (P2). Antes de programar se diseña: fórmula del objetivo, pantalla de perfil y cómo se ve el plan.
-- [ ] 3. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran, cómo se guardan).
-- [ ] 4. Resultados de búsqueda (P2 de la crítica): "Sin categoría", filtros que desaparecen y ★ flotando.
+- [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
+- [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
+  - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) — PR #14 probado en el preview, falta mergear
+  - [ ] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) ← siguiente
+  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días)
+  - [ ] 2.4 Macros en el planificador
+  - [ ] 2.5 Lista de compras por porción y personas
+- [ ] 3. Cuentas de usuario + base de datos, para usar la app desde varios dispositivos (se migra lo guardado en el navegador). Candidato: Supabase; antes de sumarlo se consulta y se revisan los límites del plan gratis.
+- [ ] 4. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`, guardadas ya en la base de datos. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran).
+- [ ] 5. Resultados de búsqueda (P2 de la crítica): "Sin categoría", filtros que desaparecen y ★ flotando.
 
 ## Plan anterior: mejoras de la crítica (terminado)
 - [x] 1. Modales accesibles: solo existen abiertos, foco, Escape, clic en el fondo (PR #3)
@@ -26,6 +32,13 @@ Crear y mergear el PR de la etapa 1 (contraste). Después, diseño de la etapa 2
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-26: "Mi progreso" en dos columnas (tus datos | tu objetivo, peso abajo a todo el ancho) y bienvenida en tres pasos con barra de avance (sexo y edad · altura y peso · actividad y meta). Elegidos sobre bocetos.
+- 2026-10-26: **antes de cualquier decisión de diseño, Claude muestra opciones en bocetos y se elige con el usuario** (también en `CLAUDE.md`). Salió de que los macros del detalle se aplicaron sin consultar.
+- 2026-10-26: macros en el detalle con barras (elegido sobre 3 bocetos): "726 kcal por porción" y una barra por macro con nombre completo y gramos; el ancho es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (elegido sobre 3 animaciones); con "reducir movimiento" no se anima. Nada de "P · G · C": no se entendía.
+- 2026-10-26: favoritos centrados en escritorio, con la última fila arrancando a la izquierda (elegido sobre 2 bocetos).
+- 2026-10-26: la ★ del detalle guarda en favoritos solo `{ id, title, image, imageType }` (la forma de los resultados de búsqueda), no la receta completa. "Agregar al plan" en el detalle cierra el detalle y abre el modal de día y comida.
+- 2026-10-21: diseño de la etapa 2 aprobado (ver la spec). Resumen: objetivo con Mifflin-St Jeor × actividad × meta (bajar 0,8 / subir 1,1), con mínimo de 1.200 kcal (mujer) o 1.500 (hombre); reparto recomendado de proteína 1,8 g/kg, grasas 25 % y carbohidratos el resto, editable con el aviso de que el recomendado es el sugerido; un día está "en objetivo" dentro de ±10 % (rojo si se pasa, ámbar si le falta); el peso se carga cuando el usuario quiere (semanal o mensual) y solo se guarda fecha y kg; la primera vez se piden los datos, con opción de saltearlo; sección nueva "Mi progreso".
+- 2026-10-21: cuentas de usuario + base de datos van como etapa propia (la 3), antes de las recetas propias, para que esas recetas ya se guarden en la base. Hasta entonces todo va en localStorage, detrás de `storage.js` y los hooks.
 - 2026-10-21: plan **Mealify fitness**. Las funcionalidades nuevas se mezclan con lo pendiente de la crítica, porque tocan el mismo código. Orden: contraste, macros + objetivo, recetas propias, resultados de búsqueda. Cada etapa tiene su propio diseño antes de programar.
 - 2026-10-21: (reemplaza lo del 2026-09-25 sobre los colores) se tocan los colores para arreglar el contraste del naranja.
 - 2026-10-21: cada receta del plan cuenta como 1 porción para 1 persona; los macros se comparan con un objetivo diario que calcula la app (peso, altura, edad, sexo, actividad y meta), guardado en localStorage.
@@ -45,16 +58,31 @@ Crear y mergear el PR de la etapa 1 (contraste). Después, diseño de la etapa 2
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
-- Agregar `DEEPL_KEY` al `.env` de la otra compu (en LAPTOP-2UJ4PI2A y en Vercel, Production y Preview, ya está) y reiniciar `npm run dev` a mano.
+- PR #14 (commit 2.1): https://github.com/matucastelli/Mealify/pull/14, listo para mergear. Después del merge, `git pull origin main` en `mejoras-critica`.
+- Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
+- DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
+- En DESKTOP-PA57B7I Windows tiene apagados los efectos de animación (Configuración → Accesibilidad → Efectos visuales), así que la app no anima las barras ahí: es lo esperado.
+- Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
+- En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
-- **Tiene la historia vieja de git** (la de antes de sacar la atribución a Claude). No hacer `git pull` en `main`. Primero revisar que no haya trabajo sin subir (`git status` y `git log origin/main..main`), y después: `git fetch --prune origin`, `git switch main`, `git reset --hard origin/main`. Borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (en GitHub ya no están).
-- Correr `npm install`: el proyecto pasó a React + Vite.
-- Tener el `.env` con `SPOONACULAR_KEY` (no viaja por git).
-- Opcional: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs; en esta compu todavía no está.
-- Opcional: crear `.claude/settings.local.json` con la atribución desactivada, igual que en esta compu.
+- Opcional, en la otra compu: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs, y crear `.claude/settings.local.json` con la atribución desactivada, igual que en LAPTOP-2UJ4PI2A.
 
 ## Bitácora
+### 2026-10-26
+- PR #14 probado en su preview de Vercel: `/api/detalle?id=X&v=2` trae `macros` (sin `nutrition`, en español); una receta nueva da `x-vercel-cache: MISS` y el segundo pedido `HIT`. Los previews de Vercel piden iniciar sesión (protección de deploys).
+- No se podía iniciar sesión en el navegador integrado: el panel estaba oculto y la sesión se iniciaba en otra ventana. Con el panel a la vista (Ctrl+Shift+B) quedó guardada.
+- PR #14 abierto para el commit 2.1 (lo abrió el usuario desde GitHub).
+- Commit 2.1: nutrición en el detalle. `/api/detalle` pide `includeNutrition` y devuelve `macros` (kcal, proteínas, grasas, carbohidratos por porción) sin el resto de la nutrición; mocks nuevos `detalle_n_*` / `detalle_es_n_*` (las 7 recetas, ~7 puntos de Spoonacular y ~8.000 caracteres de DeepL) y se borraron los viejos; el cliente pide `&v=2` y el cache del navegador pasa a `cacheRecetasEs3`. El detalle muestra las barras de macros animadas, la ★ y "Agregar al plan". Favoritos centrados. "Ver receta" ya no se deshabilita mientras carga (perdía el foco y el detalle no podía devolverlo). Verificado en el navegador integrado a 1440, 768, 390 y 320px (sin scroll horizontal, contraste AA, foco y Escape) y `npm run build`. Falta probar el preview de Vercel.
+- Plan de implementación de la etapa 2: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`.
+- Se suben el mock de la receta 632810 (inglés y español), que quedó de la prueba de las keys, y el `package-lock.json` con el nombre del paquete corregido por `npm install` (sin cambios de dependencias) (`0060e2f`).
+- Se sincronizó la otra compu con LAPTOP-2UJ4PI2A, sin cambios en el código: `main` reseteada a `origin/main` (tenía la historia vieja), `npm install`, `mejoras-critica` al día y `.env` con `SPOONACULAR_KEY` y `DEEPL_KEY` probadas (búsqueda y pasos en español). Al principio el navegador daba `ERR_CONNECTION_REFUSED` con Vite corriendo en el puerto 5173; se resolvió allá, sin que quedara registrada la causa.
+- Las sesiones y la memoria de Claude no viajan entre compus: en la otra se arranca una sesión nueva en la carpeta del proyecto y se escribe "retomemos".
+- Se sube `.claude/launch.json` (levanta `npm run dev` en el puerto 5173 para el navegador integrado de Claude), así las dos compus lo tienen.
+
 ### 2026-10-21
+- Brainstorming y diseño de la etapa 2 (macros, objetivo y peso), con bocetos del plan con macros y de "Mi progreso" aprobados en el chat. Un revisor leyó el diseño y sus preguntas quedaron resueltas (mínimo de kcal, margen de ±10 %, sincronización del peso, cómo se acomodan los bocetos). Spec: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`.
+- Fin de la sesión en esta compu: todo subido a `mejoras-critica`, sin código a medias.
+- PR #13 mergeado: etapa 1, contraste del naranja (`6e8c015`). `mejoras-critica` actualizada con `main`.
 - Etapa 1: contraste del naranja. `--color-primario` pasa a `#B0501A` (5,2:1 sobre blanco, 4,8:1 sobre `#f4f4f4`); el naranja original queda como `--color-primario-claro`, solo para lo decorativo (barras del menú, contorno al arrastrar, íconos de la landing). ★ inactiva `#8A8A8A`; contador de la lista con `opacity` 0,7 (estaba en 4,27:1). Los botones de la tarjeta, "Confirmar" y "Limpiar marcados" pasan de 13,3px a 14px: con más, "Agregar al plan" se parte en dos líneas a 1024 y 320px. Verificado con un script de contraste en el navegador integrado, en landing, Buscar, Favoritos, Plan, Lista y los dos modales, a 1440 y 390px: sin textos bajo AA ni scroll horizontal.
 - La animación de aparición de la landing (`IntersectionObserver`) no se dispara si el navegador está en segundo plano; no se tocó.
 - Brainstorming de recetas propias y enfoque fitness; se armó el plan **Mealify fitness** (4 etapas). Se revisó la documentación de Spoonacular: no hace falta cambiar de API.

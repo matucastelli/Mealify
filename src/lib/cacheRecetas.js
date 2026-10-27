@@ -2,10 +2,10 @@ import { obtenerDetalleReceta } from "./api.js";
 
 // Cache de detalles de recetas compartido por toda la app y guardado en localStorage,
 // para no volver a pedir (y gastar cuota de Spoonacular) cada vez que se recarga la página.
-// La clave cambia cuando cambia lo que trae cada receta (traducción, pasos traducidos):
+// La clave cambia cuando cambia lo que trae cada receta (traducción, pasos traducidos, macros):
 // los caches viejos se descartan y las recetas se vuelven a pedir
-const CLAVE_STORAGE = "cacheRecetasEs2";
-const CLAVES_VIEJAS = ["cacheRecetas", "cacheRecetasEs"];
+const CLAVE_STORAGE = "cacheRecetasEs3";
+const CLAVES_VIEJAS = ["cacheRecetas", "cacheRecetasEs", "cacheRecetasEs2"];
 const MAXIMO_GUARDADAS = 50;
 
 try {
