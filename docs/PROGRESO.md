@@ -1,19 +1,19 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: nutrición y acciones en el detalle de la receta` (2.1) · Último commit en main: `3e5d928 Merge pull request #13 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: entrada más dinámica` · Último commit en main: `12f8488 Merge pull request #14 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El commit 2.1 (nutrición en el detalle) está en el PR #14, probado en su preview de Vercel y listo para mergear; no hay código a medias.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle) está mergeado (PR #14). El 2.2 (perfil, objetivo y bienvenida) y la entrada más dinámica (portada, cortina, bienvenida animada) están en el PR #15, abierto y probado por el usuario en local; sin código a medias.
 
 ## Próximo paso
-Mergear el PR #14 (commit 2.1) con "Create a merge commit" (al 2026-10-26 sigue abierto) y hacer `git pull origin main` en `mejoras-critica`. Después, programar el 2.2 con los diseños ya elegidos (ver Decisiones). Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
+Mergear el PR #15 (2.2 y entrada nueva) con "Create a merge commit" y hacer `git pull origin main` en `mejoras-critica`. Después, el 2.3 (registro de peso), empezando por bocetos de la tarjeta "Peso" y del modal "+ Cargar peso". Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
 - [ ] 2. ← en curso. Macros, objetivo y peso (diseño: `docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`; plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`). Son 5 commits/PRs:
-  - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) — PR #14 probado en el preview, falta mergear
-  - [ ] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) ← siguiente
-  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días)
+  - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) (PR #14)
+  - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica — PR #15 abierto, falta mergear
+  - [ ] 2.3 Registro de peso (gráfico y aviso de 7 días) ← siguiente
   - [ ] 2.4 Macros en el planificador
   - [ ] 2.5 Lista de compras por porción y personas
 - [ ] 3. Cuentas de usuario + base de datos, para usar la app desde varios dispositivos (se migra lo guardado en el navegador). Candidato: Supabase; antes de sumarlo se consulta y se revisan los límites del plan gratis.
@@ -32,9 +32,13 @@ Mergear el PR #14 (commit 2.1) con "Create a merge commit" (al 2026-10-26 sigue 
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-26: entrada más dinámica, elegida sobre bocetos después de revisar sitios de cta.gallery (Snackish, Pizza Amici, RIPE): la portada aparece en cascada (título palabra por palabra, texto, botón pill con flecha) y las recetas caen una por una en el plan de ejemplo; "Empezar ahora" pasa a la app con una cortina naranja; los pasos de la bienvenida se deslizan de costado y el botón elegido late y muestra ✓; la bienvenida termina mostrando el objetivo (kcal que cuentan y barras) con "Empezar a planificar". Todos los botones se achican un poco al apretarlos. Todo se anima siempre y sin librerías (CSS y un poco de JS; esos sitios usan GSAP).
+- 2026-10-26: las barras de macros y sus números se animan siempre, también si el sistema tiene activado "reducir movimiento" (antes no se animaban): la animación es corta y liviana, y el usuario la quiere igual en todos los dispositivos. Elegido sobre bocetos ("animar siempre" contra una versión suave con fundido).
+- 2026-10-26: en "Tus datos", sexo, actividad y meta se eligen con botones (la actividad pasa a 2 o 3 filas en celular; cada botón con su borde para que eso no se rompa) y la meta dice Bajar / Mantener / Subir. El reparto se edita en la misma tarjeta del objetivo, con las barras actualizándose mientras se escribe. Elegidos sobre bocetos.
+- 2026-10-26: cerrar la bienvenida con × o Escape cuenta como "Ahora no": no se vuelve a ofrecer, y los datos se cargan después en Mi progreso.
 - 2026-10-26: "Mi progreso" en dos columnas (tus datos | tu objetivo, peso abajo a todo el ancho) y bienvenida en tres pasos con barra de avance (sexo y edad · altura y peso · actividad y meta). Elegidos sobre bocetos.
 - 2026-10-26: **antes de cualquier decisión de diseño, Claude muestra opciones en bocetos y se elige con el usuario** (también en `CLAUDE.md`). Salió de que los macros del detalle se aplicaron sin consultar.
-- 2026-10-26: macros en el detalle con barras (elegido sobre 3 bocetos): "726 kcal por porción" y una barra por macro con nombre completo y gramos; el ancho es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (elegido sobre 3 animaciones); con "reducir movimiento" no se anima. Nada de "P · G · C": no se entendía.
+- 2026-10-26: macros en el detalle con barras (elegido sobre 3 bocetos): "726 kcal por porción" y una barra por macro con nombre completo y gramos; el ancho es la parte de las calorías que aporta. Al abrir, las barras crecen y los números cuentan desde 0 (elegido sobre 3 animaciones); se anima siempre (ver la decisión de abajo). Nada de "P · G · C": no se entendía.
 - 2026-10-26: favoritos centrados en escritorio, con la última fila arrancando a la izquierda (elegido sobre 2 bocetos).
 - 2026-10-26: la ★ del detalle guarda en favoritos solo `{ id, title, image, imageType }` (la forma de los resultados de búsqueda), no la receta completa. "Agregar al plan" en el detalle cierra el detalle y abre el modal de día y comida.
 - 2026-10-21: diseño de la etapa 2 aprobado (ver la spec). Resumen: objetivo con Mifflin-St Jeor × actividad × meta (bajar 0,8 / subir 1,1), con mínimo de 1.200 kcal (mujer) o 1.500 (hombre); reparto recomendado de proteína 1,8 g/kg, grasas 25 % y carbohidratos el resto, editable con el aviso de que el recomendado es el sugerido; un día está "en objetivo" dentro de ±10 % (rojo si se pasa, ámbar si le falta); el peso se carga cuando el usuario quiere (semanal o mensual) y solo se guarda fecha y kg; la primera vez se piden los datos, con opción de saltearlo; sección nueva "Mi progreso".
@@ -58,10 +62,9 @@ Mergear el PR #14 (commit 2.1) con "Create a merge commit" (al 2026-10-26 sigue 
 - 2026-10-12: los commits se hacen en el orden del plan; aunque aparezca algo de un commit posterior (por ejemplo la grilla de favoritos, del 9), no se adelanta.
 
 ## Pendientes para la otra compu
-- PR #14 (commit 2.1): https://github.com/matucastelli/Mealify/pull/14, listo para mergear. Después del merge, `git pull origin main` en `mejoras-critica`.
+- PR #15 (2.2 y entrada nueva): https://github.com/matucastelli/Mealify/pull/15. Después del merge, `git pull origin main` en `mejoras-critica`.
 - Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
 - DESKTOP-PA57B7I no tiene `gh`: los PR se abren desde GitHub en el navegador.
-- En DESKTOP-PA57B7I Windows tiene apagados los efectos de animación (Configuración → Accesibilidad → Efectos visuales), así que la app no anima las barras ahí: es lo esperado.
 - Las dos compus ya están sincronizadas (2026-10-26). Al retomar alcanza con `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`.
 - En la otra compu (no LAPTOP-2UJ4PI2A): borrar las ramas locales viejas `migracion-react`, `arreglos-rapidos` y `backup/main-antes-de-limpiar` si existen (`git branch -D <rama>`); en GitHub ya no están.
 - El recuadro "Contributors" de GitHub todavía muestra a Claude, aunque la API y la historia ya están limpias: es caché de GitHub. Si no se actualiza solo, pedirle a GitHub Support que lo regenere.
@@ -69,6 +72,11 @@ Mergear el PR #14 (commit 2.1) con "Create a merge commit" (al 2026-10-26 sigue 
 
 ## Bitácora
 ### 2026-10-26
+- PR #15 abierto (2.2 y entrada más dinámica), desde el navegador integrado. El usuario lo probó en local.
+- Entrada más dinámica: portada en cascada con recetas que caen (`Landing.jsx`), cortina naranja entre la portada y la app (`Cortina.jsx`), pasos de la bienvenida que se deslizan, barra de avance que se llena, botones elegidos que laten con ✓ (`CamposPerfil.jsx`), cierre de la bienvenida con el objetivo animado (ya no se muestra el aviso "Listo") y presión en todos los botones. Botón pill compartido (`.btn-pill`). Verificado en el navegador integrado: orden y tiempos de la cascada, fases de la cortina (la bienvenida se abre después), deslizamiento adelante y atrás con foco en el título, latido solo al tocar, cierre que cuenta hasta 2.190 kcal, Escape sin marcar "Ahora no", "Ahora no" que sí lo marca, y sin scroll horizontal a 1280 y 320px; `npm run build`.
+- Las barras de macros se animan siempre, aunque el sistema tenga "reducir movimiento" (se quitó ese freno de `BarrasMacros.jsx` y de `style.css`). Verificado: los números cuentan desde 0 en el detalle y en Mi progreso, y al editar el reparto se deslizan del valor anterior (154 → 188 g) sin volver a 0.
+- Commit 2.2: perfil y objetivo. `src/lib/macros.js` (objetivo con Mifflin-St Jeor, mínimo de kcal, reparto, estado del día y validación), con `scripts/probar-macros.mjs` (6 casos a mano, todos bien). Perfil y `perfilOmitido` en `storage.js` y `usePerfil`. Pestaña "Mi progreso" con "Tus datos" y "Tu objetivo diario" (reparto editable en la tarjeta) y bienvenida en tres pasos al tocar "Empezar ahora". Las barras pasaron a `BarrasMacros.jsx`, compartido con el detalle. Verificado en el navegador integrado: bienvenida completa y salteada, errores de rango, teclado en los botones, objetivo y reparto contra las cuentas a mano, a 1024, 768, 390 y 320px sin scroll horizontal, contraste AA y botones de 44px; `npm run build`.
+- PR #14 mergeado: commit 2.1 (`12f8488`). `mejoras-critica` actualizada con `main`.
 - PR #14 probado en su preview de Vercel: `/api/detalle?id=X&v=2` trae `macros` (sin `nutrition`, en español); una receta nueva da `x-vercel-cache: MISS` y el segundo pedido `HIT`. Los previews de Vercel piden iniciar sesión (protección de deploys).
 - No se podía iniciar sesión en el navegador integrado: el panel estaba oculto y la sesión se iniciaba en otra ventana. Con el panel a la vista (Ctrl+Shift+B) quedó guardada.
 - PR #14 abierto para el commit 2.1 (lo abrió el usuario desde GitHub).

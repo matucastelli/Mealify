@@ -17,6 +17,13 @@ const MOCKUP_PLAN = [
     { dia: "Miércoles", desayuno: "manzana", almuerzo: null, cena: "pasta" },
 ];
 
+const TITULO = "Organizá tu semana, un plato a la vez";
+
+// Orden en que caen las recetas del plan de ejemplo (día por día, de arriba hacia abajo)
+const ORDEN_RECETAS = MOCKUP_PLAN.flatMap(dia =>
+    FRANJAS.filter(franja => dia[franja.valor]).map(franja => `${dia.dia}-${franja.valor}`)
+);
+
 const FEATURES = [
     { icono: "fa-magnifying-glass", titulo: "Búsqueda de recetas", texto: "Encontrá miles de recetas en español, con ingredientes y pasos detallados." },
     { icono: "fa-star", titulo: "Favoritos", texto: "Guardá las recetas que más te gustan para volver a ellas cuando quieras." },
@@ -51,9 +58,19 @@ export default function Landing({ oculto, onEmpezar }) {
                 <div className="hero-interior">
                     <div className="hero-contenido">
                         <span className="marca-landing">Mealify</span>
-                        <h1>Organizá tu semana, un plato a la vez</h1>
+                        {/* Una palabra por span para la entrada en cascada; los espacios quedan, así se lee igual */}
+                        <h1>
+                            {TITULO.split(" ").map((palabra, i) => (
+                                <span key={i}>
+                                    {i > 0 && " "}
+                                    <span className="palabra" style={{ "--i": i }}>{palabra}</span>
+                                </span>
+                            ))}
+                        </h1>
                         <p>Buscá recetas, guardá tus favoritas y armá tu planificador semanal de comidas en minutos.</p>
-                        <button id="btnEmpezar" onClick={onEmpezar}>Empezar ahora</button>
+                        <button id="btnEmpezar" className="btn-pill" onClick={onEmpezar}>
+                            Empezar ahora <i className="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                        </button>
                     </div>
                     {/* Decorativo: un plan de ejemplo con el mismo aspecto que el planificador */}
                     <div className="hero-mockup" aria-hidden="true">
@@ -70,7 +87,7 @@ export default function Landing({ oculto, onEmpezar }) {
                                             <div className="mockup-franja" key={franja.valor}>
                                                 <div className="mockup-franja-titulo"><i className={`fa-solid ${franja.icono}`}></i> {franja.nombre}</div>
                                                 {receta ? (
-                                                    <div className="mockup-receta">
+                                                    <div className="mockup-receta" style={{ "--i": ORDEN_RECETAS.indexOf(`${dia.dia}-${franja.valor}`) }}>
                                                         <img src={`https://img.spoonacular.com/recipes/${receta.id}-90x90.jpg`} alt="" />
                                                         <span>{receta.titulo}</span>
                                                     </div>

@@ -7,16 +7,20 @@ import { useFavoritos } from "./hooks/useFavoritos.js";
 import { usePlanSemanal } from "./hooks/usePlanSemanal.js";
 import { useCompras } from "./hooks/useCompras.js";
 import { useRecetasDetalle } from "./hooks/useRecetasDetalle.js";
+import { usePerfil } from "./hooks/usePerfil.js";
 import Landing from "./components/Landing.jsx";
 import Header from "./components/Header.jsx";
 import Buscar from "./components/Buscar.jsx";
 import Favoritos from "./components/Favoritos.jsx";
 import Planificador from "./components/Planificador.jsx";
 import ListaCompras from "./components/ListaCompras.jsx";
+import MiProgreso from "./components/MiProgreso.jsx";
+import Bienvenida from "./components/Bienvenida.jsx";
 import ModalReceta from "./components/ModalReceta.jsx";
 import ModalAsignar from "./components/ModalAsignar.jsx";
 import ModalElegirReceta from "./components/ModalElegirReceta.jsx";
 import Aviso from "./components/Aviso.jsx";
+import Cortina from "./components/Cortina.jsx";
 
 async function cargarRecetasIniciales() {
     const claveCache = "recetasIniciales";
@@ -68,10 +72,14 @@ export default function App() {
     const [idCargandoDetalle, setIdCargandoDetalle] = useState(null);
     const ultimoDetalle = useRef(0);
     const [aviso, setAviso] = useState(null);
+    const [bienvenidaAbierta, setBienvenidaAbierta] = useState(false);
+    // Fase de la cortina naranja entre la portada y la app: "cubriendo", "descubriendo" o null
+    const [faseCortina, setFaseCortina] = useState(null);
 
     const { favoritos, alternarFavorito } = useFavoritos();
     const { plan, asignar, eliminar, mover } = usePlanSemanal();
     const { marcadas, ocultas, alternarCompra, limpiarMarcadas, mostrar, restaurar } = useCompras();
+    const { perfil, objetivo, omitido, guardar: guardarPerfil, omitir: omitirPerfil } = usePerfil();
 
     const idsPlan = idsDelPlan(plan);
     const { recetas: recetasPlan, cargando: cargandoPlan } = useRecetasDetalle(idsPlan);
@@ -216,10 +224,34 @@ export default function App() {
         setAviso({ texto: `Elegí una receta para ${describirFranja(dia, franja)}` });
     }
 
+    // "Empezar ahora" solo arranca la cortina; el cambio a la app se hace cuando tapa todo
     function empezar() {
-        setMostrarApp(true);
-        setSeccionActiva("buscar");
-        mostrarRecetasIniciales();
+        if (faseCortina == null) setFaseCortina("cubriendo");
+    }
+
+    function terminarFaseCortina(fase) {
+        if (fase === "cubriendo") {
+            setMostrarApp(true);
+            setSeccionActiva("buscar");
+            window.scrollTo(0, 0);
+            mostrarRecetasIniciales();
+            setFaseCortina("descubriendo");
+            return;
+        }
+        setFaseCortina(null);
+        // La primera vez se piden los datos para el objetivo (se puede saltear). Se abre
+        // recién ahora, así no queda debajo de la cortina
+        if (perfil == null && !omitido) setBienvenidaAbierta(true);
+    }
+
+    // La bienvenida no se cierra: pasa a mostrar el objetivo calculado
+    function terminarBienvenida(valores) {
+        guardarPerfil(valores);
+    }
+
+    function omitirBienvenida() {
+        omitirPerfil();
+        setBienvenidaAbierta(false);
     }
 
     function volverAlInicio() {
@@ -296,6 +328,13 @@ export default function App() {
                     onLimpiar={limpiarMarcadas}
                     onRestaurar={restaurar}
                 />
+                <MiProgreso
+                    oculto={seccionActiva !== "progreso"}
+                    perfil={perfil}
+                    objetivo={objetivo}
+                    onGuardar={guardarPerfil}
+                    onAviso={setAviso}
+                />
             </div>
 
             <ModalReceta
@@ -334,6 +373,14 @@ export default function App() {
                 onBuscar={buscarParaFranja}
                 onCerrar={() => setFranjaParaAgregar(null)}
             />
+            <Bienvenida
+                abierta={bienvenidaAbierta}
+                objetivo={objetivo}
+                onGuardar={terminarBienvenida}
+                onOmitir={omitirBienvenida}
+                onCerrar={() => setBienvenidaAbierta(false)}
+            />
+            <Cortina fase={faseCortina} onTerminarFase={terminarFaseCortina} />
             <Aviso aviso={aviso} onCerrar={() => setAviso(null)} />
         </>
     );
