@@ -1,12 +1,12 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: perfil y objetivo diario` (2.2) · Último commit en main: `12f8488 Merge pull request #14 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-26 · Rama de trabajo: `mejoras-critica` · Último commit en la rama: `feat: entrada más dinámica` · Último commit en main: `12f8488 Merge pull request #14 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle) está mergeado (PR #14). El 2.2 (perfil, objetivo y bienvenida) está subido a `mejoras-critica`, sin código a medias; falta su PR.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle) está mergeado (PR #14). El 2.2 (perfil, objetivo y bienvenida) y la entrada más dinámica (portada, cortina, bienvenida animada) están subidos a `mejoras-critica`, sin código a medias; falta abrir su PR (van juntos).
 
 ## Próximo paso
-Abrir el PR del 2.2, probarlo en su preview de Vercel (bienvenida y Mi progreso) y mergearlo. Después, el 2.3 (registro de peso), empezando por bocetos de la tarjeta "Peso" y del modal "+ Cargar peso". Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
+Abrir el PR del 2.2 con la entrada nueva, probarlo en su preview de Vercel (portada, cortina, bienvenida y Mi progreso) y mergearlo. Después, el 2.3 (registro de peso), empezando por bocetos de la tarjeta "Peso" y del modal "+ Cargar peso". Después, el commit 2.2 (perfil y objetivo), empezando por los bocetos de "Mi progreso" para elegir el diseño.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
@@ -32,6 +32,7 @@ Abrir el PR del 2.2, probarlo en su preview de Vercel (bienvenida y Mi progreso)
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-26: entrada más dinámica, elegida sobre bocetos después de revisar sitios de cta.gallery (Snackish, Pizza Amici, RIPE): la portada aparece en cascada (título palabra por palabra, texto, botón pill con flecha) y las recetas caen una por una en el plan de ejemplo; "Empezar ahora" pasa a la app con una cortina naranja; los pasos de la bienvenida se deslizan de costado y el botón elegido late y muestra ✓; la bienvenida termina mostrando el objetivo (kcal que cuentan y barras) con "Empezar a planificar". Todos los botones se achican un poco al apretarlos. Todo se anima siempre y sin librerías (CSS y un poco de JS; esos sitios usan GSAP).
 - 2026-10-26: las barras de macros y sus números se animan siempre, también si el sistema tiene activado "reducir movimiento" (antes no se animaban): la animación es corta y liviana, y el usuario la quiere igual en todos los dispositivos. Elegido sobre bocetos ("animar siempre" contra una versión suave con fundido).
 - 2026-10-26: en "Tus datos", sexo, actividad y meta se eligen con botones (la actividad pasa a 2 o 3 filas en celular; cada botón con su borde para que eso no se rompa) y la meta dice Bajar / Mantener / Subir. El reparto se edita en la misma tarjeta del objetivo, con las barras actualizándose mientras se escribe. Elegidos sobre bocetos.
 - 2026-10-26: cerrar la bienvenida con × o Escape cuenta como "Ahora no": no se vuelve a ofrecer, y los datos se cargan después en Mi progreso.
@@ -71,6 +72,7 @@ Abrir el PR del 2.2, probarlo en su preview de Vercel (bienvenida y Mi progreso)
 
 ## Bitácora
 ### 2026-10-26
+- Entrada más dinámica: portada en cascada con recetas que caen (`Landing.jsx`), cortina naranja entre la portada y la app (`Cortina.jsx`), pasos de la bienvenida que se deslizan, barra de avance que se llena, botones elegidos que laten con ✓ (`CamposPerfil.jsx`), cierre de la bienvenida con el objetivo animado (ya no se muestra el aviso "Listo") y presión en todos los botones. Botón pill compartido (`.btn-pill`). Verificado en el navegador integrado: orden y tiempos de la cascada, fases de la cortina (la bienvenida se abre después), deslizamiento adelante y atrás con foco en el título, latido solo al tocar, cierre que cuenta hasta 2.190 kcal, Escape sin marcar "Ahora no", "Ahora no" que sí lo marca, y sin scroll horizontal a 1280 y 320px; `npm run build`.
 - Las barras de macros se animan siempre, aunque el sistema tenga "reducir movimiento" (se quitó ese freno de `BarrasMacros.jsx` y de `style.css`). Verificado: los números cuentan desde 0 en el detalle y en Mi progreso, y al editar el reparto se deslizan del valor anterior (154 → 188 g) sin volver a 0.
 - Commit 2.2: perfil y objetivo. `src/lib/macros.js` (objetivo con Mifflin-St Jeor, mínimo de kcal, reparto, estado del día y validación), con `scripts/probar-macros.mjs` (6 casos a mano, todos bien). Perfil y `perfilOmitido` en `storage.js` y `usePerfil`. Pestaña "Mi progreso" con "Tus datos" y "Tu objetivo diario" (reparto editable en la tarjeta) y bienvenida en tres pasos al tocar "Empezar ahora". Las barras pasaron a `BarrasMacros.jsx`, compartido con el detalle. Verificado en el navegador integrado: bienvenida completa y salteada, errores de rango, teclado en los botones, objetivo y reparto contra las cuentas a mano, a 1024, 768, 390 y 320px sin scroll horizontal, contraste AA y botones de 44px; `npm run build`.
 - PR #14 mergeado: commit 2.1 (`12f8488`). `mejoras-critica` actualizada con `main`.

@@ -20,6 +20,7 @@ import ModalReceta from "./components/ModalReceta.jsx";
 import ModalAsignar from "./components/ModalAsignar.jsx";
 import ModalElegirReceta from "./components/ModalElegirReceta.jsx";
 import Aviso from "./components/Aviso.jsx";
+import Cortina from "./components/Cortina.jsx";
 
 async function cargarRecetasIniciales() {
     const claveCache = "recetasIniciales";
@@ -72,6 +73,8 @@ export default function App() {
     const ultimoDetalle = useRef(0);
     const [aviso, setAviso] = useState(null);
     const [bienvenidaAbierta, setBienvenidaAbierta] = useState(false);
+    // Fase de la cortina naranja entre la portada y la app: "cubriendo", "descubriendo" o null
+    const [faseCortina, setFaseCortina] = useState(null);
 
     const { favoritos, alternarFavorito } = useFavoritos();
     const { plan, asignar, eliminar, mover } = usePlanSemanal();
@@ -221,21 +224,29 @@ export default function App() {
         setAviso({ texto: `Elegí una receta para ${describirFranja(dia, franja)}` });
     }
 
+    // "Empezar ahora" solo arranca la cortina; el cambio a la app se hace cuando tapa todo
     function empezar() {
-        setMostrarApp(true);
-        setSeccionActiva("buscar");
-        mostrarRecetasIniciales();
-        // La primera vez se piden los datos para el objetivo; se puede saltear
+        if (faseCortina == null) setFaseCortina("cubriendo");
+    }
+
+    function terminarFaseCortina(fase) {
+        if (fase === "cubriendo") {
+            setMostrarApp(true);
+            setSeccionActiva("buscar");
+            window.scrollTo(0, 0);
+            mostrarRecetasIniciales();
+            setFaseCortina("descubriendo");
+            return;
+        }
+        setFaseCortina(null);
+        // La primera vez se piden los datos para el objetivo (se puede saltear). Se abre
+        // recién ahora, así no queda debajo de la cortina
         if (perfil == null && !omitido) setBienvenidaAbierta(true);
     }
 
+    // La bienvenida no se cierra: pasa a mostrar el objetivo calculado
     function terminarBienvenida(valores) {
         guardarPerfil(valores);
-        setBienvenidaAbierta(false);
-        setAviso({
-            texto: "Listo: ya calculamos tu objetivo diario",
-            accion: { texto: "Verlo", onClick: () => setSeccionActiva("progreso") },
-        });
     }
 
     function omitirBienvenida() {
@@ -362,7 +373,14 @@ export default function App() {
                 onBuscar={buscarParaFranja}
                 onCerrar={() => setFranjaParaAgregar(null)}
             />
-            <Bienvenida abierta={bienvenidaAbierta} onGuardar={terminarBienvenida} onOmitir={omitirBienvenida} />
+            <Bienvenida
+                abierta={bienvenidaAbierta}
+                objetivo={objetivo}
+                onGuardar={terminarBienvenida}
+                onOmitir={omitirBienvenida}
+                onCerrar={() => setBienvenidaAbierta(false)}
+            />
+            <Cortina fase={faseCortina} onTerminarFase={terminarFaseCortina} />
             <Aviso aviso={aviso} onCerrar={() => setAviso(null)} />
         </>
     );
