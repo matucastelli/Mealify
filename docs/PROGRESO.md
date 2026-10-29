@@ -1,6 +1,6 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-27 · Rama de trabajo: `mejoras-critica` (igual a `main`) · Último commit en main: `0b80f86 Merge pull request #16 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-29 · Rama de trabajo: `mejoras-critica` (igual a `main`) · Último commit en main: `0b80f86 Merge pull request #16 from matucastelli/mejoras-critica`
 
 ## Estado actual
 El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) y dos arreglos de Buscar (título en celular, recetas centradas) están mergeados (PR #16) y en producción. No hay código a medias: `mejoras-critica` está igual a `main`.
@@ -65,7 +65,6 @@ Commit 2.4 (macros en el planificador), empezando por los bocetos; qué tiene qu
 
 ## Pendientes para la otra compu
 - Para retomar en cualquiera de las dos compus: `git fetch`, `git switch mejoras-critica` y `git pull --ff-only`. No cambiaron las dependencias, así que no hace falta `npm install`. Si `npm run dev` estaba corriendo, reiniciarlo.
-- En LAPTOP-2UJ4PI2A hay que hacer ese pull: tiene la rama de antes del 2.1.
 - En el navegador integrado de DESKTOP-PA57B7I (local y preview del PR #16) quedaron datos de prueba en localStorage: perfil de hombre de 78,5 kg y 7 a 8 pesos del 31/08 en adelante.
 - Para volver a ver la bienvenida al probar: en la consola del navegador (F12) `localStorage.removeItem('perfil'); localStorage.removeItem('perfilOmitido');` y recargar.
 - Navegador integrado de Claude: para iniciar sesión (GitHub, Vercel) el panel tiene que estar a la vista en la misma conversación (Ctrl+Shift+B); si se inicia sesión en otra ventana, el navegador integrado no la recibe. En DESKTOP-PA57B7I ya quedaron guardadas las sesiones de GitHub y Vercel.
@@ -74,6 +73,9 @@ Commit 2.4 (macros en el planificador), empezando por los bocetos; qué tiene qu
 - Opcional, en la otra compu: instalar GitHub CLI (`winget install GitHub.cli` y `gh auth login`) para que Claude pueda crear los PRs, y crear `.claude/settings.local.json` con la atribución desactivada, igual que en LAPTOP-2UJ4PI2A.
 
 ## Bitácora
+### 2026-10-29
+- LAPTOP-2UJ4PI2A sincronizada: `mejoras-critica` y `main` al día con GitHub (traen el 2.1, 2.2 y 2.3). `package-lock.json` solo cambió el nombre del paquete, sin dependencias nuevas: no hace falta `npm install`. Próximo: bocetos del 2.4.
+
 ### 2026-10-27
 - Fin de la sesión en DESKTOP-PA57B7I: todo subido, `mejoras-critica` igual a `main` (más los commits de docs) y sin código a medias. No cambiaron las dependencias. Próximo: bocetos del 2.4 (macros en el planificador).
 - PR #16 mergeado (`0b80f86`): 2.3 registro de peso y arreglos de Buscar. `mejoras-critica` actualizada con `main`. Próximo: bocetos del 2.4 (macros en el planificador).
