@@ -1,12 +1,12 @@
 # Progreso de Mealify
 
-> Última actualización: 2026-10-30 · Rama de trabajo: `mejoras-critica` (con el 2.4, PR abierto) · Último commit en main: `0b80f86 Merge pull request #16 from matucastelli/mejoras-critica`
+> Última actualización: 2026-10-30 · Rama de trabajo: `mejoras-critica` (igual a `main`) · Último commit en main: `b5bb844 Merge pull request #17 from matucastelli/mejoras-critica`
 
 ## Estado actual
-El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) y dos arreglos de Buscar (título en celular, recetas centradas) están mergeados (PR #16) y en producción. El 2.4 (macros en el planificador) está commiteado en `mejoras-critica`, probado en local por el usuario, con el PR abierto y sin mergear.
+El 2026-10-21 se armó el plan **Mealify fitness**, que suma recetas propias y macros con objetivo, y lo mezcla con lo que quedó pendiente de la crítica. La etapa 1 (contraste del naranja) está mergeada (PR #13). La etapa 2 (macros, objetivo y peso) tiene el diseño aprobado (`docs/superpowers/specs/2026-10-21-macros-objetivo-design.md`) y el plan de implementación (`docs/superpowers/plans/2026-10-26-macros-objetivo.md`). El 2.1 (nutrición en el detalle, PR #14) y el 2.2 (perfil, objetivo y bienvenida) junto con la entrada más dinámica (portada en cascada, cortina, bienvenida animada; PR #15) están mergeados y en producción. El 2.3 (registro de peso) y dos arreglos de Buscar (título en celular, recetas centradas) están mergeados (PR #16) y en producción. El 2.4 (macros en el planificador) está mergeado (PR #17) y en producción. No hay código a medias: `mejoras-critica` está igual a `main`.
 
 ## Próximo paso
-Probar el preview de Vercel del PR del 2.4 y mergearlo. Después, el 2.5 (lista de compras por porción y personas), empezando por los bocetos (plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.5).
+Commit 2.5 (lista de compras por porción y personas), empezando por los bocetos (plan: `docs/superpowers/plans/2026-10-26-macros-objetivo.md`, sección 2.5). Es el último de la etapa 2.
 
 ## Plan en curso: Mealify fitness
 - [x] 1. Contraste del naranja (P1 de la crítica) (PR #13)
@@ -14,7 +14,7 @@ Probar el preview de Vercel del PR del 2.4 y mergearlo. Después, el 2.5 (lista 
   - [x] 2.1 Nutrición en el detalle (servidor, mocks, caches, ★ y "Agregar al plan" en el modal) (PR #14)
   - [x] 2.2 Perfil y objetivo (pestaña "Mi progreso" y bienvenida) y entrada más dinámica (PR #15)
   - [x] 2.3 Registro de peso (gráfico y aviso de 7 días) y arreglos de Buscar (PR #16)
-  - [ ] 2.4 Macros en el planificador ← PR abierto, falta mergear
+  - [x] 2.4 Macros en el planificador (PR #17)
   - [ ] 2.5 Lista de compras por porción y personas ← siguiente
 - [ ] 3. Cuentas de usuario + base de datos, para usar la app desde varios dispositivos (se migra lo guardado en el navegador). Candidato: Supabase; antes de sumarlo se consulta y se revisan los límites del plan gratis.
 - [ ] 4. Recetas propias: ingredientes con autocompletado de Spoonacular y macros con `/recipes/analyze`, guardadas ya en la base de datos. Antes de programar falta el brainstorming de detalle (dónde se crean, cómo se editan y se borran).
@@ -32,6 +32,7 @@ Probar el preview de Vercel del PR del 2.4 y mergearlo. Después, el 2.5 (lista 
 - [x] 9. Pulido visual (tipografía en controles, grilla de favoritos, mockup de la landing) (PR #12)
 
 ## Decisiones
+- 2026-10-30: los mocks nuevos de `mocks/` se suben solo si el usuario lo confirma; Claude pregunta antes de commitearlos (también en `CLAUDE.md`). Salió de que los de la prueba del 2.4 se subieron sin preguntar.
 - 2026-10-29: macros en el planificador (elegidos sobre bocetos: 3 de resumen y 3 de día). Resumen "A2": una tarjeta con el promedio de kcal por día en grande, "Objetivo: X kcal" con lápiz a Mi progreso y cuánto queda por encima o por debajo, y a la derecha una barra por macro contra el objetivo ("139 / 141 g"); alineada con el título de la sección y en una columna en celular. Día "B1": kcal "1.404 / 2.720" al lado del nombre (abajo si no entra), barra de color, estado ("En objetivo", "727 kcal de más", "Faltan 1.316 kcal") y los tres macros siempre a la vista, con nombre completo. Verde en objetivo (±10 %), rojo si se pasa, ámbar si falta. Una barra de macro que se pasa del objetivo queda llena en naranja (el ±10 % es solo para las kcal); decidido sin boceto, se puede cambiar.
 - 2026-10-27: los resultados de Buscar se centran en escritorio como Favoritos (columnas de 280 a 340px, la última fila arranca a la izquierda), y en celular el título de Buscar va a la izquierda como en las demás secciones (en escritorio sigue centrado, sobre el buscador). Pedido del usuario.
 - 2026-10-27: tarjeta "Peso" (elegida sobre 3 bocetos): el último peso grande con la fecha, el cambio en una etiqueta (verde solo si va para el lado de la meta; con "mantener", solo si no cambió), "+ Cargar peso" y el gráfico al lado (debajo en celular), y la lista para borrar plegada en "Ver y borrar registros". Borrar muestra un aviso con "Deshacer". En el gráfico, los puntos se separan según la fecha, no según el orden. Modal "Cargar peso" (elegido sobre 2 bocetos y 3 estilos): ícono de pesa de Font Awesome (`fa-weight-hanging`) en un círculo, kg grande en el centro arrancando en el último peso, la fecha como etiqueta "Hoy, 27/10" que al tocarla pasa a un campo de fecha (no se aceptan fechas futuras) y botón pill "Guardar peso". Los perfiles anteriores, que no tenían pesos, toman su peso como cargado hoy.
@@ -76,6 +77,7 @@ Probar el preview de Vercel del PR del 2.4 y mergearlo. Después, el 2.5 (lista 
 
 ## Bitácora
 ### 2026-10-30
+- PR #17 mergeado (`b5bb844`): 2.4 macros en el planificador. `mejoras-critica` actualizada con `main`. Regla de los mocks cambiada en `CLAUDE.md`: preguntar antes de subirlos. Próximo: bocetos del 2.5.
 - PR del 2.4 abierto (sin `gh` en LAPTOP-2UJ4PI2A: link prellenado de GitHub). Los mocks nuevos que quedaron de la prueba del usuario (búsquedas de noodles y rice y 8 detalles) no se suben, a pedido del usuario: se habían subido en un commit aparte y se sacó de la rama con un force push. Quedan sin trackear en LAPTOP-2UJ4PI2A.
 - Commit 2.4: macros en el planificador. `macrosDelDia` y `promedioSemanal` en `src/lib/macros.js` (las recetas sin macros o que fallaron cuentan como "sin datos"; el promedio usa solo los días con datos), con 2 casos nuevos en `scripts/probar-macros.mjs` (8 en total, todos bien). `Planificador.jsx`: resumen de la semana, totales por día y kcal en cada receta en lugar de las cuisines; sin perfil, totales sin comparar y "Calculá tu objetivo"; plan vacío, "Agregá recetas…". Verificado en el navegador integrado: cuentas contra los mocks, receta sin nutrición, los tres estados, sin perfil, plan vacío, lápiz a Mi progreso, 320, 390, 768, 1024 y 1440px sin scroll horizontal, contraste AA (mínimo 4,66:1); `npm run build`. El usuario lo probó en local.
 

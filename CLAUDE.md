@@ -28,7 +28,7 @@ El proyecto se trabaja en dos computadoras, que tienen que tener siempre la mism
 El estado del trabajo (qué está hecho, qué sigue, decisiones) vive en `docs/PROGRESO.md` y lo mantiene la skill `progreso-proyecto` (`.claude/skills/`): usala al empezar, después de cada avance y al cerrar.
 - Al empezar: `git fetch` y `git status`. Si la rama está atrasada respecto de GitHub, hacer `git pull` antes de tocar nada.
 - Al terminar: no dejar commits sin subir. Hacer push de la rama de trabajo, aunque el trabajo no esté terminado.
-- Commitear los mocks nuevos de `mocks/`, así la otra compu no gasta cuota de Spoonacular pidiendo lo mismo.
+- Los mocks nuevos de `mocks/` se suben solo si el usuario lo confirma: antes de commitearlos, preguntar (sirven para que la otra compu no gaste cuota de Spoonacular pidiendo lo mismo).
 - Después de un `npm install` que cambie dependencias, commitear `package.json` y `package-lock.json`; en la otra compu, correr `npm install` después del pull.
 - `.env` (SPOONACULAR_KEY, DEEPL_KEY) y `.claude/settings.local.json` no se suben a git: hay que tenerlos en ambas compus por separado.
 - Si `npm run dev` está corriendo mientras se cambia de rama o se hace pull, reiniciarlo (el plugin de /api puede quedar en mal estado).
