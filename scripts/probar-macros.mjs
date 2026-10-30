@@ -1,6 +1,6 @@
 // Compara src/lib/macros.js con cuentas hechas a mano. Uso: node scripts/probar-macros.mjs
 import assert from "node:assert/strict";
-import { calcularObjetivo, estadoDelDia, validarPerfil } from "../src/lib/macros.js";
+import { calcularObjetivo, estadoDelDia, macrosDelDia, promedioSemanal, validarPerfil } from "../src/lib/macros.js";
 
 let fallas = 0;
 function caso(nombre, prueba) {
@@ -61,6 +61,34 @@ caso("validación del formulario", () => {
     assert.deepEqual(valores, { actividad: "moderada", peso: 80.6 });
     assert.deepEqual(Object.keys(errores).sort(), ["altura", "edad", "sexo"]);
     assert.equal(errores.edad, "Tiene que estar entre 15 y 100 años.");
+});
+
+const recetas = new Map([
+    ["1", { macros: { calorias: 726, proteinas: 57, grasas: 43, carbohidratos: 24 } }],
+    ["2", { macros: { calorias: 543, proteinas: 17, grasas: 16, carbohidratos: 84 } }],
+    ["3", { title: "Sin nutrición", macros: null }],
+    ["4", null],
+]);
+
+caso("macros de un día", () => {
+    // "1" dos veces (almuerzo y cena) + "2": 726·2 + 543 = 1.995 kcal; P 131, G 102, C 132.
+    // "3" no tiene macros y "4" falló: sin datos. "5" todavía carga: no cuenta
+    const dia = { desayuno: ["2", "3"], almuerzo: ["1", "4"], cena: ["1", "5"] };
+    assert.deepEqual(macrosDelDia(dia, recetas), { calorias: 1995, proteinas: 131, grasas: 102, carbohidratos: 132, conDatos: 3, sinDatos: 2 });
+    assert.deepEqual(macrosDelDia({ desayuno: [], almuerzo: [], cena: [] }, recetas), { calorias: 0, proteinas: 0, grasas: 0, carbohidratos: 0, conDatos: 0, sinDatos: 0 });
+});
+
+caso("promedio semanal solo con los días que tienen datos", () => {
+    // (1.995 + 543) / 2 = 1.269; P (131 + 17) / 2 = 74; G (102 + 16) / 2 = 59; C (132 + 84) / 2 = 108.
+    // El día vacío y el que solo tiene recetas sin datos no cuentan
+    const dias = [
+        { calorias: 1995, proteinas: 131, grasas: 102, carbohidratos: 132, conDatos: 3, sinDatos: 0 },
+        { calorias: 543, proteinas: 17, grasas: 16, carbohidratos: 84, conDatos: 1, sinDatos: 0 },
+        { calorias: 0, proteinas: 0, grasas: 0, carbohidratos: 0, conDatos: 0, sinDatos: 0 },
+        { calorias: 0, proteinas: 0, grasas: 0, carbohidratos: 0, conDatos: 0, sinDatos: 1 },
+    ];
+    assert.deepEqual(promedioSemanal(dias), { dias: 2, calorias: 1269, proteinas: 74, grasas: 59, carbohidratos: 108 });
+    assert.equal(promedioSemanal(dias.slice(2)), null);
 });
 
 console.log(fallas === 0 ? "\nTodo bien" : `\n${fallas} caso(s) con fallas`);

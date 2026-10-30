@@ -92,6 +92,37 @@ export function estadoDelDia(consumidas, objetivo, cantidadRecetas) {
     return { estado: "en-objetivo", diferencia: Math.abs(diferencia) };
 }
 
+const MACROS = ["calorias", "proteinas", "grasas", "carbohidratos"];
+
+// Suma los macros de un día (todas las franjas). `recetas` es el Map de useRecetasDetalle:
+// las que todavía cargan no cuentan, y las que no tienen macros (o fallaron) van a `sinDatos`
+export function macrosDelDia(dia, recetas) {
+    const total = { calorias: 0, proteinas: 0, grasas: 0, carbohidratos: 0, conDatos: 0, sinDatos: 0 };
+    Object.values(dia).flat().forEach(id => {
+        if (!recetas.has(id)) return;
+        const macros = recetas.get(id)?.macros;
+        if (macros == null) {
+            total.sinDatos++;
+            return;
+        }
+        total.conDatos++;
+        MACROS.forEach(macro => total[macro] += macros[macro]);
+    });
+    return total;
+}
+
+// Promedio por día de la semana, solo sobre los días con recetas con datos
+// (si no, una semana a medio armar daría un promedio engañosamente bajo). null si no hay ninguno
+export function promedioSemanal(totalesPorDia) {
+    const dias = totalesPorDia.filter(total => total.conDatos > 0);
+    if (dias.length === 0) return null;
+    const promedio = { dias: dias.length };
+    MACROS.forEach(macro => {
+        promedio[macro] = Math.round(dias.reduce((suma, total) => suma + total[macro], 0) / dias.length);
+    });
+    return promedio;
+}
+
 // Valida los campos que vengan en `datos` (texto o número) y devuelve
 // { valores, errores }: valores ya convertidos a número y errores por campo
 export function validarPerfil(datos) {
