@@ -312,6 +312,8 @@ export default function App() {
                     oculto={seccionActiva !== "planificador"}
                     plan={plan}
                     recetas={recetasPlan}
+                    objetivo={objetivo}
+                    onIrAProgreso={() => setSeccionActiva("progreso")}
                     onVerReceta={abrirDetalleReceta}
                     onEliminar={eliminar}
                     onSoltar={soltarEnPlan}

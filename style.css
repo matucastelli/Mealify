@@ -934,6 +934,125 @@ button.receta-plan-ver {
     }
 }
 
+/* Macros del plan: verde en objetivo (±10 %), rojo si se pasa, ámbar si le falta */
+.en-objetivo { --color-estado: #2E7D32; --color-estado-barra: #2E7D32; }
+.de-mas { --color-estado: #C62828; --color-estado-barra: #C62828; }
+.de-menos { --color-estado: #8A5A00; --color-estado-barra: #E0A030; }
+
+.estado-kcal {
+    color: var(--color-estado);
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Resumen de la semana: promedio de kcal a la izquierda y los macros con barra a la derecha */
+.resumen-semana {
+    display: grid;
+    gap: var(--espaciado-chico) var(--espaciado-grande);
+    align-items: center;
+    /* Alineada con el texto de la cabecera (centrada, hasta 900px con 1rem de padding) */
+    margin: 0 max(var(--espaciado-chico), calc((100% - 900px) / 2 + var(--espaciado-medio))) var(--espaciado-medio);
+    padding: var(--espaciado-medio);
+    background-color: var(--color-secundario);
+    border-radius: var(--radio-borde);
+}
+
+.resumen-semana-vacio {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.resumen-etiqueta,
+.resumen-objetivo,
+.resumen-nota {
+    font-size: 0.85rem;
+}
+
+.resumen-etiqueta,
+.resumen-nota {
+    opacity: 0.8;
+}
+
+.resumen-kcal {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.resumen-objetivo {
+    display: flex;
+    align-items: center;
+}
+
+.resumen-semana .btn-secundario {
+    margin-top: 4px;
+}
+
+/* La tarjeta ya es gris: el fondo de la barra va blanco para que se vea el total */
+.resumen-semana .macro-barra {
+    background-color: var(--color-fondo);
+}
+
+.resumen-macros strong {
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .resumen-semana {
+        grid-template-columns: auto minmax(0, 1fr);
+        margin-inline: max(var(--espaciado-medio), calc((100% - 900px) / 2 + var(--espaciado-medio)));
+    }
+
+    .resumen-nota {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Cada día: el nombre con sus kcal al lado (abajo si la columna es angosta), barra, estado y macros */
+.dia-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    column-gap: var(--espaciado-chico);
+}
+
+.dia-kcal {
+    font-size: 0.85rem;
+}
+
+.dia-totales {
+    margin-top: 4px;
+}
+
+.dia-barra {
+    height: 4px;
+    margin-bottom: 4px;
+    background-color: var(--color-terciario);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.dia-barra div {
+    height: 100%;
+    background-color: var(--color-estado-barra);
+    border-radius: 2px;
+}
+
+.dia-macro {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+
+.dia-sin-datos {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
 /* Modal "+ Agregar": favoritos para elegir */
 .lista-elegir-receta {
     display: flex;
